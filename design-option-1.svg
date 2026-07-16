@@ -1,0 +1,57 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1200" y2="800" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0B1220"/>
+      <stop offset="1" stop-color="#121D35"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1B2A4A"/>
+      <stop offset="1" stop-color="#12213F"/>
+    </linearGradient>
+    <radialGradient id="accent" cx="0.5" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#54E4FF" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#0A1E44" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg1)"/>
+  <rect x="80" y="70" width="1040" height="660" rx="34" fill="rgba(255,255,255,0.04)" stroke="rgba(84,228,255,0.14)" stroke-width="2"/>
+  <rect x="120" y="120" width="220" height="520" rx="24" fill="url(#panel)" stroke="rgba(84,228,255,0.18)" stroke-width="1.5"/>
+  <rect x="370" y="120" width="320" height="250" rx="28" fill="url(#panel)" stroke="rgba(84,228,255,0.18)" stroke-width="1.5"/>
+  <rect x="720" y="120" width="320" height="250" rx="28" fill="url(#panel)" stroke="rgba(84,228,255,0.18)" stroke-width="1.5"/>
+  <rect x="370" y="400" width="670" height="220" rx="28" fill="url(#panel)" stroke="rgba(84,228,255,0.18)" stroke-width="1.5"/>
+  <rect x="120" y="660" width="220" height="60" rx="18" fill="#14213A"/>
+  <circle cx="220" cy="197" r="20" fill="#54E4FF" opacity="0.72"/>
+  <circle cx="220" cy="257" r="20" fill="#E96BF9" opacity="0.72"/>
+  <circle cx="220" cy="317" r="20" fill="#6BF9A1" opacity="0.72"/>
+  <rect x="150" y="400" width="180" height="22" rx="12" fill="#E0F6FF" opacity="0.2"/>
+  <rect x="150" y="440" width="180" height="22" rx="12" fill="#E0F6FF" opacity="0.15"/>
+  <rect x="150" y="480" width="180" height="22" rx="12" fill="#E0F6FF" opacity="0.15"/>
+  <rect x="160" y="550" width="80" height="80" rx="20" fill="#0D1B38" stroke="#54E4FF" stroke-width="1.5"/>
+  <rect x="260" y="550" width="80" height="80" rx="20" fill="#0D1B38" stroke="#E96BF9" stroke-width="1.5"/>
+  <path d="M450 190C470 168 520 200 540 176C560 152 610 210 640 180" stroke="#54E4FF" stroke-width="4" stroke-linecap="round"/>
+  <path d="M430 240C450 220 500 250 520 230C540 210 590 270 620 240" stroke="#E96BF9" stroke-width="4" stroke-linecap="round"/>
+  <path d="M470 320C490 300 520 340 540 320C560 300 590 360 620 330" stroke="#6BF9A1" stroke-width="4" stroke-linecap="round"/>
+  <rect x="370" y="380" width="90" height="10" rx="5" fill="#54E4FF" opacity="0.55"/>
+  <rect x="470" y="380" width="140" height="10" rx="5" fill="#E96BF9" opacity="0.55"/>
+  <circle cx="720" cy="180" r="9" fill="#54E4FF"/>
+  <circle cx="760" cy="180" r="9" fill="#E96BF9"/>
+  <circle cx="800" cy="180" r="9" fill="#6BF9A1"/>
+  <rect x="780" y="290" width="80" height="6" rx="3" fill="#E0F6FF" opacity="0.3"/>
+  <rect x="780" y="310" width="180" height="12" rx="6" fill="#E0F6FF" opacity="0.2"/>
+  <rect x="780" y="335" width="120" height="12" rx="6" fill="#E0F6FF" opacity="0.2"/>
+  <rect x="720" y="450" width="320" height="140" rx="22" fill="#111A2F" opacity="0.86"/>
+  <path d="M760 490L830 460L900 520L980 430" stroke="#54E4FF" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="760" cy="490" r="8" fill="#54E4FF"/>
+  <circle cx="830" cy="460" r="8" fill="#E96BF9"/>
+  <circle cx="900" cy="520" r="8" fill="#6BF9A1"/>
+  <circle cx="980" cy="430" r="8" fill="#54E4FF"/>
+  <g opacity="0.18">
+    <rect x="120" y="120" width="220" height="70" rx="20" fill="#FFFFFF"/>
+    <rect x="370" y="120" width="320" height="70" rx="20" fill="#FFFFFF"/>
+    <rect x="720" y="120" width="320" height="70" rx="20" fill="#FFFFFF"/>
+  </g>
+  <rect x="370" y="120" width="320" height="70" rx="20" fill="rgba(255,255,255,0.05)"/>
+  <rect x="720" y="120" width="320" height="70" rx="20" fill="rgba(255,255,255,0.05)"/>
+  <rect x="120" y="120" width="220" height="70" rx="20" fill="rgba(255,255,255,0.05)"/>
+  <circle cx="930" cy="240" r="120" fill="url(#accent)"/>
+</svg>

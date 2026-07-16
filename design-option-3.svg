@@ -1,0 +1,44 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1200" y2="800" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#EFF6FF"/>
+      <stop offset="1" stop-color="#E0F2FE"/>
+    </linearGradient>
+    <linearGradient id="panel3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#DBEAFE"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg3)"/>
+  <rect x="100" y="80" width="1000" height="640" rx="40" fill="white" opacity="0.9"/>
+  <rect x="140" y="130" width="280" height="520" rx="32" fill="url(#panel3)" stroke="#93C5FD" stroke-width="1.5"/>
+  <rect x="460" y="130" width="320" height="520" rx="32" fill="url(#panel3)" stroke="#60A5FA" stroke-width="1.5"/>
+  <rect x="810" y="130" width="180" height="160" rx="28" fill="url(#panel3)" stroke="#38BDF8" stroke-width="1.5"/>
+  <rect x="810" y="310" width="180" height="160" rx="28" fill="url(#panel3)" stroke="#22D3EE" stroke-width="1.5"/>
+  <rect x="810" y="490" width="180" height="160" rx="28" fill="url(#panel3)" stroke="#7DD3FC" stroke-width="1.5"/>
+  <rect x="150" y="160" width="240" height="24" rx="12" fill="#BFDBFE" opacity="0.8"/>
+  <rect x="150" y="200" width="180" height="20" rx="10" fill="#EFF6FF"/>
+  <rect x="150" y="240" width="220" height="20" rx="10" fill="#EFF6FF"/>
+  <rect x="150" y="280" width="120" height="20" rx="10" fill="#DBEAFE"/>
+  <rect x="480" y="160" width="170" height="25" rx="13" fill="#BFDBFE" opacity="0.8"/>
+  <rect x="480" y="210" width="280" height="18" rx="9" fill="#EFF6FF"/>
+  <rect x="480" y="245" width="200" height="18" rx="9" fill="#EFF6FF"/>
+  <rect x="480" y="280" width="140" height="18" rx="9" fill="#DBEAFE"/>
+  <rect x="150" y="360" width="240" height="120" rx="24" fill="#EFF6FF"/>
+  <rect x="150" y="500" width="240" height="120" rx="24" fill="#EFF6FF"/>
+  <rect x="490" y="360" width="280" height="120" rx="24" fill="#EFF6FF"/>
+  <rect x="490" y="500" width="280" height="120" rx="24" fill="#EFF6FF"/>
+  <circle cx="890" cy="210" r="12" fill="#0EA5E9"/>
+  <circle cx="930" cy="210" r="12" fill="#38BDF8"/>
+  <circle cx="970" cy="210" r="12" fill="#60A5FA"/>
+  <line x1="840" y1="360" x2="970" y2="360" stroke="#93C5FD" stroke-width="3" stroke-linecap="round"/>
+  <line x1="840" y1="420" x2="970" y2="420" stroke="#7DD3FC" stroke-width="3" stroke-linecap="round"/>
+  <rect x="880" y="520" width="90" height="42" rx="20" fill="#38BDF8"/>
+  <rect x="880" y="580" width="90" height="42" rx="20" fill="#0EA5E9"/>
+  <text x="150" y="620" fill="#1E3A8A" font-family="Inter, sans-serif" font-size="28" font-weight="700">Futuristic content layout</text>
+  <text x="150" y="660" fill="#1E40AF" font-family="Inter, sans-serif" font-size="16" font-weight="500">High clarity panels, gentle gradients, and accessible spacing for modern enterprise interfaces.</text>
+  <rect x="700" y="630" width="320" height="120" rx="28" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.5"/>
+  <rect x="730" y="660" width="100" height="20" rx="10" fill="#60A5FA"/>
+  <rect x="730" y="700" width="180" height="18" rx="9" fill="#E0F2FE"/>
+  <rect x="730" y="730" width="240" height="18" rx="9" fill="#DBEAFE"/>
+</svg>

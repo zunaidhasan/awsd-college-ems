@@ -1,0 +1,52 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1200" y2="800" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#090B12"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="cardGlow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#00F6FF" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#6F60FF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg2)"/>
+  <pattern id="gridPattern" width="80" height="80" patternUnits="userSpaceOnUse">
+    <path d="M80 0H0V80" stroke="#1E293B" stroke-width="1"/>
+  </pattern>
+  <rect width="1200" height="800" fill="url(#gridPattern)" opacity="0.4"/>
+  <rect x="80" y="70" width="1040" height="660" rx="40" fill="rgba(15,23,42,0.72)" stroke="#0EA5E9" stroke-width="1.5"/>
+  <rect x="120" y="120" width="960" height="160" rx="30" fill="rgba(15,23,42,0.95)" stroke="#38BDF8" stroke-width="1.5"/>
+  <rect x="120" y="310" width="360" height="300" rx="30" fill="rgba(15,23,42,0.95)" stroke="#A78BFA" stroke-width="1.5"/>
+  <rect x="520" y="310" width="260" height="300" rx="30" fill="rgba(15,23,42,0.95)" stroke="#F472B6" stroke-width="1.5"/>
+  <rect x="810" y="310" width="270" height="300" rx="30" fill="rgba(15,23,42,0.95)" stroke="#22C55E" stroke-width="1.5"/>
+  <circle cx="170" cy="200" r="10" fill="#38BDF8"/>
+  <circle cx="200" cy="200" r="10" fill="#A78BFA"/>
+  <circle cx="230" cy="200" r="10" fill="#F472B6"/>
+  <rect x="150" y="220" width="150" height="20" rx="10" fill="#93C5FD" opacity="0.4"/>
+  <rect x="150" y="250" width="100" height="20" rx="10" fill="#C4B5FD" opacity="0.35"/>
+  <path d="M160 320H300" stroke="#22D3EE" stroke-width="4" stroke-linecap="round"/>
+  <path d="M160 360H260" stroke="#F5D0FE" stroke-width="4" stroke-linecap="round"/>
+  <path d="M160 400H220" stroke="#FBCFE8" stroke-width="4" stroke-linecap="round"/>
+  <rect x="520" y="340" width="220" height="36" rx="18" fill="#22D3EE" opacity="0.15"/>
+  <rect x="520" y="390" width="220" height="20" rx="10" fill="#F472B6" opacity="0.18"/>
+  <rect x="520" y="430" width="220" height="20" rx="10" fill="#34D399" opacity="0.18"/>
+  <rect x="530" y="500" width="200" height="22" rx="11" fill="#60A5FA" opacity="0.2"/>
+  <rect x="530" y="540" width="150" height="22" rx="11" fill="#C084FC" opacity="0.2"/>
+  <rect x="830" y="340" width="150" height="36" rx="18" fill="#EC4899" opacity="0.15"/>
+  <rect x="830" y="400" width="210" height="40" rx="20" fill="#22C55E" opacity="0.15"/>
+  <circle cx="880" cy="480" r="38" fill="#0F172A" stroke="#22C55E" stroke-width="1.5"/>
+  <path d="M838 486L863 460L910 505" stroke="#22C55E" stroke-width="4" stroke-linecap="round"/>
+  <rect x="160" y="500" width="180" height="80" rx="24" fill="#0F172A" stroke="#A78BFA" stroke-width="1.5"/>
+  <rect x="420" y="500" width="180" height="80" rx="24" fill="#0F172A" stroke="#38BDF8" stroke-width="1.5"/>
+  <circle cx="530" cy="560" r="8" fill="#38BDF8"/>
+  <circle cx="565" cy="560" r="8" fill="#A78BFA"/>
+  <rect x="815" y="500" width="60" height="20" rx="10" fill="#22C55E"/>
+  <rect x="900" y="500" width="120" height="20" rx="10" fill="#F472B6"/>
+  <rect x="130" y="140" width="280" height="40" rx="18" fill="#0F172A" opacity="0.9"/>
+  <text x="150" y="170" fill="#E0F2FE" font-family="Inter, sans-serif" font-size="20" font-weight="700">Modern Metrics</text>
+  <text x="540" y="180" fill="#EDE9FE" font-family="Inter, sans-serif" font-size="22" font-weight="700">Smart panel overview</text>
+  <rect x="670" y="170" width="220" height="30" rx="15" fill="#0F172A" opacity="0.85"/>
+  <text x="700" y="190" fill="#A5F3FC" font-family="Inter, sans-serif" font-size="14" font-weight="600">Real-time insights</text>
+  <path d="M870 145L930 115L970 155" stroke="#22C55E" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="1010" cy="145" r="12" fill="#22C55E"/>
+</svg>
