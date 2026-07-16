@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
+import { getSessionUser, clearSessionUser, getUserHomeRoute } from "../../lib/auth";
 import { Globe, Sun, Moon, LogOut, LayoutDashboard, LogIn, GraduationCap, Menu, X } from "lucide-react";
 import { Button } from "../ui/Button";
 
@@ -15,15 +16,10 @@ export const TopNavbar: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const [currentUser, setCurrentUser] = useState<{ role: string; name: string } | null>(null);
+  const [currentUser, setCurrentUser] = useState<ReturnType<typeof getSessionUser> | null>(null);
 
   useEffect(() => {
-    const user = sessionStorage.getItem("user");
-    if (user) {
-      setCurrentUser(JSON.parse(user));
-    } else {
-      setCurrentUser(null);
-    }
+    setCurrentUser(getSessionUser());
   }, [pathname]);
 
   useEffect(() => {
@@ -33,7 +29,7 @@ export const TopNavbar: React.FC = () => {
   }, [pathname]);
 
   const handleLogout = () => {
-    sessionStorage.removeItem("user");
+    clearSessionUser();
     setCurrentUser(null);
     setMobileOpen(false);
     router.push("/");
@@ -102,7 +98,7 @@ export const TopNavbar: React.FC = () => {
 
           {currentUser ? (
             <div className="hidden sm:flex items-center gap-2">
-              <Link href={`/${currentUser.role}`}>
+              <Link href={getUserHomeRoute(currentUser.role as any)}>
                 <Button variant="outline" size="sm" className="items-center gap-1.5">
                   <LayoutDashboard size={14} />
                   <span>{t("dashboard")}</span>

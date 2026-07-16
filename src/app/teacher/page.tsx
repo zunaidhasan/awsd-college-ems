@@ -12,6 +12,7 @@ import { Badge } from "../../components/ui/Badge";
 import { Input } from "../../components/ui/Input";
 import { TableContainer, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "../../components/ui/Table";
 import { mockClassStudents, mockTimetable, mockNotices } from "../../data/mockData";
+import { useRequireAuth } from "../../hooks/useRequireAuth";
 import {
   Calendar,
   UserCheck,
@@ -29,22 +30,12 @@ function TeacherDashboardContent() {
   const router = useRouter();
 
   const tab = searchParams.get("tab") || "overview";
+  const { user, ready } = useRequireAuth("teacher");
+  const teacherName = user?.name ?? "Dr. Md. Kamruzzaman";
 
-  // Login Check
-  const [teacherName, setTeacherName] = useState<string>("Dr. Md. Kamruzzaman");
-  useEffect(() => {
-    const userStr = sessionStorage.getItem("user");
-    if (!userStr) {
-      router.push("/login");
-    } else {
-      const user = JSON.parse(userStr);
-      if (user.role !== "teacher") {
-        router.push(`/${user.role}`);
-      } else {
-        setTeacherName(user.name);
-      }
-    }
-  }, [router]);
+  if (!ready) {
+    return <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center text-sm font-semibold text-slate-500">Loading teacher dashboard...</div>;
+  }
 
   // Attendance management states
   const [selectedClass, setSelectedClass] = useState("Class 11");

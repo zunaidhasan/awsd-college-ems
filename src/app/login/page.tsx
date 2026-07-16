@@ -4,12 +4,13 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "../../context/LanguageContext";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/Card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../components/ui/Tabs";
+import { Tabs, TabsList, TabsTrigger } from "../../components/ui/Tabs";
 import { Input } from "../../components/ui/Input";
 import { Button } from "../../components/ui/Button";
 import { Badge } from "../../components/ui/Badge";
 import { demoCredentials } from "../../data/mockData";
-import { ShieldAlert, User, KeyRound, Smartphone, HelpCircle } from "lucide-react";
+import { setSessionUser, getUserHomeRoute } from "../../lib/auth";
+import { ShieldAlert, KeyRound, Smartphone } from "lucide-react";
 import { Footer } from "../../components/layout/Footer";
 
 export default function LoginPage() {
@@ -22,6 +23,7 @@ export default function LoginPage() {
   const [otpMode, setOtpMode] = useState<boolean>(false);
   const [otpCode, setOtpCode] = useState<string>("");
   const [otpSent, setOtpSent] = useState<boolean>(false);
+  const [loginError, setLoginError] = useState<string>("");
 
   // Autofill fields when role changes
   useEffect(() => {
@@ -32,30 +34,30 @@ export default function LoginPage() {
     }
   }, [activeRole]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoginError("");
 
-    // Mock Login Session Setup
-    const sessionUser = {
-      role: activeRole,
-      username: username,
-      name:
-        activeRole === "admin"
-          ? "Prof. Dr. Rafiqul Islam"
-          : activeRole === "teacher"
-          ? "Dr. Md. Kamruzzaman"
-          : activeRole === "student"
-          ? "Arif Rahman"
-          : "Md. Lutfar Rahman (Guardian)",
-    };
+    try {
+      const response = await fetch("/api/auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-    sessionStorage.setItem("user", JSON.stringify(sessionUser));
+      const data = await response.json();
+      if (!response.ok) {
+        setLoginError(data.error || "Invalid credentials.");
+        return;
+      }
 
-    // Redirect to correct dashboard
-    if (activeRole === "guardian") {
-      router.push("/student?mode=guardian");
-    } else {
-      router.push(`/${activeRole}`);
+      setSessionUser(data.user);
+      router.push(getUserHomeRoute(data.user.role));
+    } catch (error) {
+      setLoginError("Unable to login at this time. Please try again.");
+      console.error(error);
     }
   };
 
@@ -162,12 +164,17 @@ export default function LoginPage() {
                     </a>
                   </div>
 
-                  <Button type="submit" variant="primary" fullWidth className="py-2.5 mt-2 font-bold shadow-md shadow-brand-primary/10">
-                    <KeyRound size={16} className="mr-2" />
-                    {t("loginBtn")}
-                  </Button>
-                </form>
-              </Tabs>
+                  {loginError ? (
+                <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  {loginError}
+                </div>
+              ) : null}
+              <Button type="submit" variant="primary" fullWidth className="py-2.5 mt-2 font-bold shadow-md shadow-brand-primary/10">
+                <KeyRound size={16} className="mr-2" />
+                {t("loginBtn")}
+              </Button>
+            </form>
+          </Tabs>
             </CardContent>
           </Card>
 

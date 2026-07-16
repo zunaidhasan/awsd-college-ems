@@ -12,6 +12,7 @@ import { Badge } from "../../components/ui/Badge";
 import { Input } from "../../components/ui/Input";
 import { TableContainer, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "../../components/ui/Table";
 import { mockNotices, mockClassStudents, mockResults, Notice } from "../../data/mockData";
+import { useRequireAuth } from "../../hooks/useRequireAuth";
 import {
   Users,
   BookOpen,
@@ -34,22 +35,12 @@ function AdminDashboardContent() {
 
   // Get active tab from URL query params
   const tab = searchParams.get("tab") || "overview";
+  const { user, ready } = useRequireAuth("admin");
+  const adminName = user?.name ?? "Prof. Dr. Rafiqul Islam";
 
-  // Check login
-  const [adminName, setAdminName] = useState<string>("Prof. Dr. Rafiqul Islam");
-  useEffect(() => {
-    const userStr = sessionStorage.getItem("user");
-    if (!userStr) {
-      router.push("/login");
-    } else {
-      const user = JSON.parse(userStr);
-      if (user.role !== "admin") {
-        router.push(`/${user.role}`);
-      } else {
-        setAdminName(user.name);
-      }
-    }
-  }, [router]);
+  if (!ready) {
+    return <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center text-sm font-semibold text-slate-500">Loading dashboard...</div>;
+  }
 
   // Notice states
   const [notices, setNotices] = useState<Notice[]>(mockNotices);

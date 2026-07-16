@@ -12,6 +12,7 @@ import { Badge } from "../../components/ui/Badge";
 import { TableContainer, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "../../components/ui/Table";
 import { Modal } from "../../components/ui/Modal";
 import { mockTimetable, mockResults, mockInvoices, studentProfile, Invoice } from "../../data/mockData";
+import { useRequireAuth } from "../../hooks/useRequireAuth";
 import {
   Calendar,
   FileSpreadsheet,
@@ -34,25 +35,13 @@ function StudentDashboardContent() {
 
   const tab = searchParams.get("tab") || "overview";
   const mode = searchParams.get("mode") || "student";
+  const { user, ready } = useRequireAuth(["student", "guardian"]);
+  const userName = user?.name ?? "Arif Rahman";
+  const isGuardian = user?.role === "guardian" || mode === "guardian";
 
-  // Login Check
-  const [userName, setUserName] = useState<string>("Arif Rahman");
-  const [isGuardian, setIsGuardian] = useState<boolean>(false);
-
-  useEffect(() => {
-    const userStr = sessionStorage.getItem("user");
-    if (!userStr) {
-      router.push("/login");
-    } else {
-      const user = JSON.parse(userStr);
-      if (user.role !== "student" && user.role !== "guardian") {
-        router.push(`/${user.role}`);
-      } else {
-        setUserName(user.name);
-        setIsGuardian(user.role === "guardian" || mode === "guardian");
-      }
-    }
-  }, [router, mode]);
+  if (!ready) {
+    return <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center text-sm font-semibold text-slate-500">Loading student dashboard...</div>;
+  }
 
   // Invoices and Payment state
   const [invoices, setInvoices] = useState<Invoice[]>(mockInvoices);
