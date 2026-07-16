@@ -2,20 +2,99 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: light;
+  font-size: 16px;
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 20px 60px rgba(15, 23, 42, 0.12);
+  --color-bg: #FFFFFF;
+  --color-surface: #F8FAFC;
+  --color-border: #E2E8F0;
+  --color-text: #0F172A;
+  --color-muted: #475569;
+  --color-primary: #1E3A8A;
+  --color-secondary: #15803D;
+  --color-accent: #CA8A04;
+  --color-danger: #EF4444;
+  --color-success: #16A34A;
+  --color-warning: #F59E0B;
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+
+.dark {
+  color-scheme: dark;
+  --color-bg: #0F172A;
+  --color-surface: #111827;
+  --color-border: #334155;
+  --color-text: #F8FAFC;
+  --color-muted: #CBD5E1;
+  --color-primary: #1E3A8A;
+  --color-secondary: #15803D;
+  --color-accent: #CA8A04;
+  --color-danger: #F87171;
+  --color-success: #34D399;
+  --color-warning: #FBBF24;
+}
+
 @layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    min-height: 100%;
+  }
+
   body {
-    @apply transition-colors duration-200;
+    margin: 0;
+    min-height: 100svh;
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+    background: var(--color-bg);
+    color: var(--color-text);
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+
+  button, input, textarea, select {
+    font: inherit;
+  }
+
+  img, picture, svg {
+    max-width: 100%;
+    display: block;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  @apply bg-transparent;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 dark:bg-slate-700 rounded-full hover:bg-gray-400 dark:hover:bg-slate-600;
+  background-color: rgba(100, 116, 139, 0.55);
+  border-radius: 9999px;
 }

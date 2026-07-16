@@ -18,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} bg-slate-50 dark:bg-slate-950 text-gray-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200`}>
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <body className={`${inter.className} bg-slate-50 dark:bg-slate-950 text-gray-900 dark:text-slate-100 min-h-screen flex flex-col overflow-x-hidden transition-colors duration-200`}>
         <ThemeProvider>
           <LanguageProvider>
             <TopNavbar />
