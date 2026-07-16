@@ -137,17 +137,11 @@ const translations: Record<Language, Record<string, string>> = {
     aboutFacilities: "সুযোগ-সুবিধা",
     aboutLeadership: "নেতৃত্ব",
     aboutAtAGlance: "এক নজরে",
-
-    // Contact Page
-    contactUs: "যোগাযোগ করুন",
-    contactAddress: "ঠিকানা",
-    contactPhone: "ফোন",
-    contactMobile: "মোবাইল",
-    contactEmail: "ইমেইল",
-    contactForm: "বার্তা পাঠান",
-    contactName: "আপনার নাম",
-    contactMessage: "আপনার বার্তা",
-    contactSend: "বার্তা পাঠান",
+    profileTitle: "প্রোফাইল",
+    profileAcademicSummary: "একাডেমিক সারসংক্ষেপ",
+    profilePersonalInfo: "ব্যক্তিগত তথ্য",
+    profileDocumentsTitle: "প্রয়োজনীয় নথিপত্র",
+    profileDocuments: "ডকুমেন্ট অ্যালবাম",
     contactMap: "মানচিত্রে অবস্থান",
 
     // Academics Page
@@ -313,17 +307,11 @@ const translations: Record<Language, Record<string, string>> = {
     aboutFacilities: "Facilities",
     aboutLeadership: "Leadership",
     aboutAtAGlance: "At a Glance",
-
-    // Contact Page
-    contactUs: "Contact Us",
-    contactAddress: "Address",
-    contactPhone: "Phone",
-    contactMobile: "Mobile",
-    contactEmail: "Email",
-    contactForm: "Send a Message",
-    contactName: "Your Name",
-    contactMessage: "Your Message",
-    contactSend: "Send Message",
+    profileTitle: "Profile",
+    profileAcademicSummary: "Academic Snapshot",
+    profilePersonalInfo: "Personal Information",
+    profileDocumentsTitle: "Required Documents",
+    profileDocuments: "Document Album",
     contactMap: "Location on Map",
 
     // Academics Page

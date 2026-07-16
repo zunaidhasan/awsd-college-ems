@@ -57,10 +57,12 @@ export const TopNavbar: React.FC = () => {
         {!isDashboard && (
           <nav className="hidden lg:flex items-center space-x-8 text-sm font-bold text-gray-650 dark:text-slate-200">
             <Link href="/" className="hover:text-brand-primary transition-colors">{t("home")}</Link>
-            <Link href="#" className="hover:text-brand-primary transition-colors">Academics</Link>
+            <Link href="/academics" className="hover:text-brand-primary transition-colors">{t("academicsTitle")}</Link>
             <Link href="/#notices-section" className="hover:text-brand-primary transition-colors">{t("notices")}</Link>
-            <Link href="/#gallery" className="hover:text-brand-primary transition-colors">{t("gallery")}</Link>
-            <Link href="#" className="hover:text-brand-primary transition-colors">About</Link>
+            <Link href="/gallery" className="hover:text-brand-primary transition-colors">{t("gallery")}</Link>
+            <Link href="/about" className="hover:text-brand-primary transition-colors">{t("aboutUs")}</Link>
+            <Link href="/admissions" className="hover:text-brand-primary transition-colors">{t("admissionsTitle")}</Link>
+            <Link href="/contact" className="hover:text-brand-primary transition-colors">{t("contactUs")}</Link>
           </nav>
         )}
 
