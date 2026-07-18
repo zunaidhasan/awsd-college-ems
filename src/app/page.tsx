@@ -56,6 +56,10 @@ export default function LandingPage() {
     <div className="min-h-screen flex flex-col">
       {/* 1. Hero Section */}
       <section className="relative bg-gradient-to-r from-blue-900 via-indigo-950 to-blue-950 text-white py-24 px-4 overflow-hidden border-b-4 border-blue-600">
+        {/* Hero background image */}
+        <div className="absolute inset-0 z-0">
+          <img src="/images/campus-hero.png" alt="Campus" className="w-full h-full object-cover object-center opacity-30" />
+        </div>
         {/* Subtle grid pattern background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20" />
         <div className="absolute inset-0 bg-blue-950/70 mix-blend-multiply" />
@@ -248,59 +252,48 @@ export default function LandingPage() {
               <span>{t("gallery")}</span>
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              
               <div className="group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 aspect-[4/3] md:col-span-2 md:row-span-2 transition-all duration-300 hover:shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent z-10" />
+                <img src="/images/campus/College-entrance.png" alt="College entrance" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent z-10" />
                 <div className="absolute inset-0 flex flex-col justify-end p-4 z-20">
                   <span className="text-[10px] text-blue-400 font-bold uppercase tracking-wider">Campus View</span>
                   <h4 className="text-sm font-extrabold text-white">কলেজ ক্যাম্পাস ও খেলার মাঠ</h4>
                 </div>
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-950/45 to-slate-950/85 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                  <Building2 size={64} className="text-white/20" />
-                </div>
               </div>
 
               <div className="group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 aspect-[4/3] transition-all duration-300 hover:shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent z-10" />
+                <img src="/images/campus/New-Building.jpg" alt="New Building" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/70 to-transparent z-10" />
                 <div className="absolute inset-0 flex flex-col justify-end p-4 z-20">
                   <span className="text-[10px] text-blue-400 font-bold uppercase tracking-wider">Academics</span>
                   <h4 className="text-xs font-extrabold text-white">আধুনিক বিজ্ঞানাগার (Science Lab)</h4>
                 </div>
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-950/45 to-slate-950/85 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                  <BookOpen size={36} className="text-white/20" />
-                </div>
               </div>
 
               <div className="group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 aspect-[4/3] transition-all duration-300 hover:shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent z-10" />
+                <img src="/images/campus/campus-lawn-buildings.png" alt="Campus lawn and buildings" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/70 to-transparent z-10" />
                 <div className="absolute inset-0 flex flex-col justify-end p-4 z-20">
                   <span className="text-[10px] text-blue-400 font-bold uppercase tracking-wider">ICT Center</span>
                   <h4 className="text-xs font-extrabold text-white">কম্পিউটার ল্যাব (Computer Lab)</h4>
                 </div>
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-950/45 to-slate-950/85 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                  <Award size={36} className="text-white/20" />
-                </div>
               </div>
 
               <div className="group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 aspect-[4/3] transition-all duration-300 hover:shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent z-10" />
+                <img src="/images/campus/walkway.png" alt="Walkway" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/70 to-transparent z-10" />
                 <div className="absolute inset-0 flex flex-col justify-end p-4 z-20">
                   <span className="text-[10px] text-blue-400 font-bold uppercase tracking-wider">Events</span>
                   <h4 className="text-xs font-extrabold text-white">বার্ষিক ক্রীড়া প্রতিযোগিতা</h4>
                 </div>
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-950/45 to-slate-950/85 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                  <Users size={36} className="text-white/20" />
-                </div>
               </div>
 
               <div className="group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 aspect-[4/3] transition-all duration-300 hover:shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent z-10" />
+                <img src="/images/campus/monument.png" alt="Monument" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/70 to-transparent z-10" />
                 <div className="absolute inset-0 flex flex-col justify-end p-4 z-20">
                   <span className="text-[10px] text-blue-400 font-bold uppercase tracking-wider">Culture</span>
                   <h4 className="text-xs font-extrabold text-white">সাংস্কৃতিক উৎসব ও পুরস্কার বিতরণ</h4>
-                </div>
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-950/45 to-slate-950/85 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                  <GraduationCap size={36} className="text-white/20" />
                 </div>
               </div>
 

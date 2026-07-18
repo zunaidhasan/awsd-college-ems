@@ -38,10 +38,6 @@ function AdminDashboardContent() {
   const { user, ready } = useRequireAuth("admin");
   const adminName = user?.name ?? "Prof. Dr. Rafiqul Islam";
 
-  if (!ready) {
-    return <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center text-sm font-semibold text-slate-500">Loading dashboard...</div>;
-  }
-
   // Notice states
   const [notices, setNotices] = useState<Notice[]>(mockNotices);
   const [newNoticeTitleBn, setNewNoticeTitleBn] = useState("");
@@ -62,6 +58,10 @@ function AdminDashboardContent() {
   const [selectedResultClass, setSelectedResultClass] = useState("Class 11");
   const [resultSubject, setResultSubject] = useState("Math");
   const [resultPublishedMsg, setResultPublishedMsg] = useState("");
+
+  if (!ready) {
+    return <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center text-sm font-semibold text-slate-500">Loading dashboard...</div>;
+  }
 
   const handleCreateNotice = (e: React.FormEvent) => {
     e.preventDefault();

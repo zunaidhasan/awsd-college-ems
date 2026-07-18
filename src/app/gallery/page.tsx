@@ -60,6 +60,14 @@ const gallerySections = [
   },
 ];
 
+const campusImages = [
+  "/images/campus/College-entrance.png",
+  "/images/campus/New-Building.jpg",
+  "/images/campus/campus-lawn-buildings.png",
+  "/images/campus/monument.png",
+  "/images/campus/walkway.png",
+];
+
 export default function GalleryPage() {
   const { language, t } = useLanguage();
 
@@ -125,8 +133,9 @@ export default function GalleryPage() {
       <section className="bg-slate-100 dark:bg-slate-900/70 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 8 }).map((_, idx) => (
+            {campusImages.map((src, idx) => (
               <div key={idx} className="aspect-[4/3] rounded-[2rem] overflow-hidden bg-slate-950/80 border border-slate-200 dark:border-slate-800 relative group">
+                <img src={src} alt={`Campus ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-300" />
                 <div className="absolute inset-0 flex items-end p-5">
                   <div>

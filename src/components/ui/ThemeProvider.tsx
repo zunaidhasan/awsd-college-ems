@@ -72,7 +72,7 @@ export const ThemeProvider: React.FC<{ defaultTheme?: ThemeMode; children: React
 
   return (
     <ThemeContext.Provider value={value}>
-      <style>{`:root {${buildCssVariables("light")}} [data-theme='dark'] {${buildCssVariables("dark")}}`}</style>
+      <style>{`:root {${buildCssVariables("light")}} [data-theme=dark] {${buildCssVariables("dark")}}`}</style>
       {children}
     </ThemeContext.Provider>
   );
