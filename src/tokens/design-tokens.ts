@@ -1,35 +1,36 @@
 export const tokens = {
   colors: {
     action: {
-      primary: "#1d4ed8",
-      secondary: "#059669",
-      accent: "#0ea5e9",
-      danger: "#dc2626",
-      success: "#16a34a",
-      warning: "#f59e0b",
+      primary: "#00236f", // Academic Blue
+      secondary: "#006d30", // Scholastic Green
+      accent: "#ca8a04", // Heritage Amber
+      danger: "#ba1a1a",
+      success: "#006d30",
+      warning: "#ca8a04",
     },
     neutral: {
-      100: "#f8fafc",
-      200: "#e2e8f0",
-      300: "#cbd5e1",
-      400: "#94a3b8",
-      500: "#64748b",
-      600: "#475569",
+      100: "#f8f9ff",
+      200: "#e5eeff",
+      300: "#c5c5d3",
+      400: "#757682",
+      500: "#64748B",
+      600: "#444651",
       700: "#334155",
-      800: "#1e293b",
-      900: "#0f172a",
+      800: "#1e2937",
+      900: "#111c2a",
     },
     surface: {
-      base: "#ffffff",
-      muted: "#f8fafc",
-      card: "#f1f5f9",
+      base: "#f8f9ff",
+      muted: "#eff4ff",
+      card: "#ffffff",
       panel: "#0f172a",
-      overlay: "rgba(15,23,42,0.75)",
+      overlay: "rgba(17, 28, 42, 0.75)",
     },
   },
   typography: {
     fontFamily: {
       sans: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      bengali: "'Noto Sans Bengali', sans-serif",
       mono: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
     },
     sizes: {
@@ -65,16 +66,16 @@ export const tokens = {
     "3xl": "4rem",
   },
   radii: {
-    sm: "0.375rem",
-    md: "0.75rem",
-    lg: "1rem",
-    xl: "1.5rem",
+    sm: "0.25rem",
+    md: "0.5rem", // ROUND_EIGHT (8px)
+    lg: "0.75rem",
+    xl: "1rem",
     round: "9999px",
   },
   shadows: {
-    sm: "0 1px 2px rgba(15, 23, 42, 0.06)",
-    md: "0 8px 24px rgba(15, 23, 42, 0.08)",
-    lg: "0 20px 60px rgba(15, 23, 42, 0.12)",
+    sm: "0 1px 3px rgba(0, 35, 111, 0.02), 0 1px 2px rgba(0, 35, 111, 0.04)",
+    md: "0 4px 12px rgba(0, 35, 111, 0.02), 0 2px 4px rgba(0, 35, 111, 0.04)",
+    lg: "0 12px 24px rgba(0, 35, 111, 0.04), 0 4px 8px rgba(0, 35, 111, 0.06)",
   },
   breakpoints: {
     sm: "640px",
@@ -83,3 +84,4 @@ export const tokens = {
     xl: "1280px",
   },
 };
+

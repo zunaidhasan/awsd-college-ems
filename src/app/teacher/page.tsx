@@ -33,28 +33,11 @@ function TeacherDashboardContent() {
   const { user, ready } = useRequireAuth("teacher");
   const teacherName = user?.name ?? "Dr. Md. Kamruzzaman";
 
-  if (!ready) {
-    return <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center text-sm font-semibold text-slate-500">Loading teacher dashboard...</div>;
-  }
-
   // Attendance management states
   const [selectedClass, setSelectedClass] = useState("Class 11");
   const [students, setStudents] = useState(mockClassStudents);
   const [attendanceSavedMsg, setAttendanceSavedMsg] = useState("");
 
-  const handleToggleAttendance = (id: string) => {
-    const updated = students.map((std) => {
-      if (std.id === id) {
-        return { ...std, present: !std.present };
-      }
-      return std;
-    });
-    setStudents(updated);
-  };
-
-  const handleSaveAttendance = () => {
-    setAttendanceSavedMsg(t("attendanceSaved"));
-    setTimeout(() => setAttendanceSavedMsg(""), 4000);
   };
 
   // Grade Entry states

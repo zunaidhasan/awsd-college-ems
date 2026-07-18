@@ -39,10 +39,6 @@ function StudentDashboardContent() {
   const userName = user?.name ?? "Arif Rahman";
   const isGuardian = user?.role === "guardian" || mode === "guardian";
 
-  if (!ready) {
-    return <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center text-sm font-semibold text-slate-500">Loading student dashboard...</div>;
-  }
-
   // Invoices and Payment state
   const [invoices, setInvoices] = useState<Invoice[]>(mockInvoices);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
@@ -52,6 +48,10 @@ function StudentDashboardContent() {
   const [bkashPhone, setBkashPhone] = useState<string>("01712123456");
   const [bkashOtp, setBkashOtp] = useState<string>("");
   const [bkashPin, setBkashPin] = useState<string>("");
+
+  if (!ready) {
+    return <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center text-sm font-semibold text-slate-500">Loading student dashboard...</div>;
+  }
 
   const handleOpenBkash = (invoice: Invoice) => {
     setSelectedInvoice(invoice);

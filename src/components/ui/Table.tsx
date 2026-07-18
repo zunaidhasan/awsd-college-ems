@@ -6,7 +6,7 @@ export const TableContainer: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   ...props
 }) => {
   return (
-    <div className={`w-full overflow-x-auto rounded-3xl border border-slate-200 dark:border-slate-800 ${className}`} {...props}>
+    <div className={`w-full overflow-x-auto rounded-md border border-slate-200 dark:border-slate-800 ${className}`} {...props}>
       <table className="w-full min-w-[640px] text-left border-collapse text-sm text-slate-800 dark:text-slate-200">
         {children}
       </table>

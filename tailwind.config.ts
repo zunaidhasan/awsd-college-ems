@@ -18,46 +18,50 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          primary: "#1E3A8A",
-          secondary: "#15803D",
-          accent: "#CA8A04",
-          danger: "#EF4444",
-          success: "#16A34A",
-          warning: "#F59E0B",
+          primary: "#00236f", // Academic Blue
+          secondary: "#006d30", // Scholastic Green
+          accent: "#ca8a04", // Heritage Amber
+          danger: "#ba1a1a",
+          success: "#006d30",
+          warning: "#ca8a04",
         },
         surface: {
-          DEFAULT: "#FFFFFF",
-          muted: "#F8FAFC",
-          dark: "#0F172A",
+          DEFAULT: "#f8f9ff",
+          muted: "#eff4ff",
+          dark: "#0f172a",
           darker: "#020617",
         },
         neutral: {
-          150: "#F2F4F7",
-          450: "#94A3B8",
-          650: "#475569",
-          850: "#1E293B",
+          150: "#e5eeff",
+          450: "#757682",
+          650: "#444651",
+          850: "#1e2937",
         },
         slate: {
-          850: "#0F172A",
+          850: "#0f172a",
         },
         yellow: {
-          350: "#F5C325",
+          350: "#ca8a04",
         },
         border: {
-          DEFAULT: "#E2E8F0",
-          dark: "#334155",
+          DEFAULT: "#c5c5d3",
+          dark: "#757682",
         },
         text: {
-          DEFAULT: "#0F172A",
-          muted: "#475569",
-          inverse: "#F8FAFC",
+          DEFAULT: "#111c2a",
+          muted: "#444651",
+          inverse: "#f8f9ff",
         },
       },
+      fontFamily: {
+        bengali: ["var(--font-bengali)", "Inter", "sans-serif"],
+        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+      },
       boxShadow: {
-        sm: "0 1px 2px rgba(15, 23, 42, 0.06)",
-        md: "0 8px 24px rgba(15, 23, 42, 0.08)",
-        lg: "0 20px 60px rgba(15, 23, 42, 0.12)",
-        xl: "0 30px 80px rgba(15, 23, 42, 0.14)",
+        sm: "0 1px 3px rgba(0, 35, 111, 0.02), 0 1px 2px rgba(0, 35, 111, 0.04)",
+        md: "0 4px 12px rgba(0, 35, 111, 0.02), 0 2px 4px rgba(0, 35, 111, 0.04)",
+        lg: "0 12px 24px rgba(0, 35, 111, 0.04), 0 4px 8px rgba(0, 35, 111, 0.06)",
+        xl: "0 30px 80px rgba(0, 35, 111, 0.08)",
       },
       borderRadius: {
         xl: "1rem",
