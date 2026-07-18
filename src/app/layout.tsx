@@ -21,6 +21,9 @@ const notoBengali = Noto_Sans_Bengali({
 export const metadata: Metadata = {
   title: "Abdul Wadud Shah Degree College EMS",
   description: "Education Management System - AWSD Degree College, Lalpur, Natore",
+  icons: {
+    icon: "/images/favicon.ico",
+  },
 };
 
 export default function RootLayout({

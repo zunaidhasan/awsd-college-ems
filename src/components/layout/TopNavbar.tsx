@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
 import { getSessionUser, clearSessionUser, getUserHomeRoute } from "../../lib/auth";
-import { Globe, Sun, Moon, LogOut, LayoutDashboard, LogIn, GraduationCap, Menu, X } from "lucide-react";
+import { Globe, Sun, Moon, LogOut, LayoutDashboard, LogIn, Menu, X } from "lucide-react";
 import { Button } from "../ui/Button";
 
 export const TopNavbar: React.FC = () => {
@@ -52,8 +52,8 @@ export const TopNavbar: React.FC = () => {
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3 min-w-0">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-primary text-white shadow-md shadow-brand-primary/20 transition-transform group-hover:scale-105">
-              <GraduationCap size={26} className="text-brand-accent animate-pulse" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl overflow-hidden bg-white shadow-md shadow-brand-primary/20 transition-transform group-hover:scale-105">
+              <img src="/images/logo.png" alt="AWSD logo" className="h-11 w-11 object-cover" />
             </div>
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold text-slate-900 dark:text-white">{t("collegeName")}</p>
