@@ -1,12 +1,12 @@
 export const tokens = {
   colors: {
     action: {
-      primary: "#00236f", // Academic Blue
-      secondary: "#006d30", // Scholastic Green
-      accent: "#ca8a04", // Heritage Amber
+      primary: "#1E3A8A", // Deep Professional Blue (System-prompt §1)
+      secondary: "#15803D", // Forest Green (System-prompt §1)
+      accent: "#B45309", // Warm Amber (System-prompt §1)
       danger: "#ba1a1a",
-      success: "#006d30",
-      warning: "#ca8a04",
+      success: "#15803D",
+      warning: "#B45309",
     },
     neutral: {
       100: "#f8f9ff",
@@ -73,9 +73,9 @@ export const tokens = {
     round: "9999px",
   },
   shadows: {
-    sm: "0 1px 3px rgba(0, 35, 111, 0.02), 0 1px 2px rgba(0, 35, 111, 0.04)",
-    md: "0 4px 12px rgba(0, 35, 111, 0.02), 0 2px 4px rgba(0, 35, 111, 0.04)",
-    lg: "0 12px 24px rgba(0, 35, 111, 0.04), 0 4px 8px rgba(0, 35, 111, 0.06)",
+    sm: "0 1px 3px rgba(30, 58, 138, 0.02), 0 1px 2px rgba(30, 58, 138, 0.04)",
+    md: "0 4px 12px rgba(30, 58, 138, 0.02), 0 2px 4px rgba(30, 58, 138, 0.04)",
+    lg: "0 12px 24px rgba(30, 58, 138, 0.04), 0 4px 8px rgba(30, 58, 138, 0.06)",
   },
   breakpoints: {
     sm: "640px",

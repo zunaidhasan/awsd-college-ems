@@ -18,12 +18,12 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          primary: "#00236f", // Academic Blue
-          secondary: "#006d30", // Scholastic Green
-          accent: "#ca8a04", // Heritage Amber
+          primary: "#1E3A8A", // Deep Professional Blue
+          secondary: "#15803D", // Forest Green
+          accent: "#B45309", // Warm Amber
           danger: "#ba1a1a",
-          success: "#006d30",
-          warning: "#ca8a04",
+          success: "#15803D",
+          warning: "#B45309",
         },
         surface: {
           DEFAULT: "#f8f9ff",
@@ -70,7 +70,7 @@ const config: Config = {
         "surface-container": "#e5eeff",
         "surface-bright": "#f8f9ff",
         "secondary-container": "#92f5a4",
-        secondary: "#006d30",
+        secondary: "#15803D",
         "secondary-fixed": "#95f8a7",
         background: "#f8f9ff",
         "on-tertiary-container": "#e39f24",
@@ -95,7 +95,7 @@ const config: Config = {
         "surface-container-low": "#eff4ff",
         "on-secondary": "#ffffff",
         "on-error-container": "#93000a",
-        primary: "#00236f",
+        primary: "#1E3A8A",
         "surface-variant": "#d8e3f6",
         "primary-container": "#1e3a8a",
         "gray-muted": "#64748B",
@@ -109,10 +109,10 @@ const config: Config = {
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        sm: "0 1px 3px rgba(0, 35, 111, 0.02), 0 1px 2px rgba(0, 35, 111, 0.04)",
-        md: "0 4px 12px rgba(0, 35, 111, 0.02), 0 2px 4px rgba(0, 35, 111, 0.04)",
-        lg: "0 12px 24px rgba(0, 35, 111, 0.04), 0 4px 8px rgba(0, 35, 111, 0.06)",
-        xl: "0 30px 80px rgba(0, 35, 111, 0.08)",
+        sm: "0 1px 3px rgba(30, 58, 138, 0.02), 0 1px 2px rgba(30, 58, 138, 0.04)",
+        md: "0 4px 12px rgba(30, 58, 138, 0.02), 0 2px 4px rgba(30, 58, 138, 0.04)",
+        lg: "0 12px 24px rgba(30, 58, 138, 0.04), 0 4px 8px rgba(30, 58, 138, 0.06)",
+        xl: "0 30px 80px rgba(30, 58, 138, 0.08)",
       },
       borderRadius: {
         xl: "1rem",
