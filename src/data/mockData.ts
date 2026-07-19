@@ -161,12 +161,12 @@ export const studentProfile: StudentProfile = {
 };
 
 export const mockClassStudents = [
-  { id: "std-01", nameBn: "আরিফ রহমান", nameEn: "Arif Rahman", roll: "১০১", present: true },
-  { id: "std-02", nameBn: "তানভীর হাসান", nameEn: "Tanvir Hasan", roll: "১০২", present: true },
-  { id: "std-03", nameBn: "সাদিয়া আফরিন", nameEn: "Sadia Afrin", roll: "১০৩", present: true },
-  { id: "std-04", nameBn: "মেহেদী হাসান", nameEn: "Mehedi Hasan", roll: "১০৪", present: false },
-  { id: "std-05", nameBn: "ফাতেমা তুজ জোহরা", nameEn: "Fatema Tuz Zohra", roll: "১০৫", present: true },
-  { id: "std-06", nameBn: "মাহমুদুল হাসান", nameEn: "Mahmudul Hasan", roll: "১০৬", present: true },
+  { id: "std-01", nameBn: "আরিফ রহমান", nameEn: "Arif Rahman", roll: "১০১", present: true, avatar: "", gender: "Male", group: "Science" },
+  { id: "std-02", nameBn: "তানভীর হাসান", nameEn: "Tanvir Hasan", roll: "১০২", present: true, avatar: "", gender: "Male", group: "Science" },
+  { id: "std-03", nameBn: "সাদিয়া আফরিন", nameEn: "Sadia Afrin", roll: "১০৩", present: true, avatar: "", gender: "Female", group: "Science" },
+  { id: "std-04", nameBn: "মেহেদী হাসান", nameEn: "Mehedi Hasan", roll: "১০৪", present: false, avatar: "", gender: "Male", group: "Science" },
+  { id: "std-05", nameBn: "ফাতেমা তুজ জোহরা", nameEn: "Fatema Tuz Zohra", roll: "১০৫", present: true, avatar: "", gender: "Female", group: "Science" },
+  { id: "std-06", nameBn: "মাহমুদুল হাসান", nameEn: "Mahmudul Hasan", roll: "১০৬", present: true, avatar: "", gender: "Male", group: "Science" },
 ];
 
 export const demoCredentials = {

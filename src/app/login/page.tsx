@@ -7,7 +7,7 @@ import { demoCredentials } from "../../data/mockData";
 import { setSessionUser, getUserHomeRoute } from "../../lib/auth";
 
 export default function LoginPage() {
-  const { t, locale, setLocale } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
   const router = useRouter();
 
   const [activeRole, setActiveRole] = useState<string>("admin");
@@ -64,7 +64,7 @@ export default function LoginPage() {
   };
 
   const toggleLanguage = () => {
-    setLocale(locale === "bn" ? "en" : "bn");
+    setLanguage(language === "bn" ? "en" : "bn");
   };
 
   return (
@@ -73,19 +73,19 @@ export default function LoginPage() {
       <nav className="w-full h-16 bg-[#ffffff] border-b border-[#c5c5d3] flex items-center px-6 sticky top-0 z-50">
         <div className="max-w-[1280px] mx-auto w-full flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#00236f] rounded-lg flex items-center justify-center text-white">
+            <div className="w-10 h-10 bg-[#1E3A8A] rounded-lg flex items-center justify-center text-white">
               <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>school</span>
             </div>
-            <span className="text-2xl font-bold text-[#00236f]">AWSD College</span>
+            <span className="text-2xl font-bold text-[#1E3A8A]">AWSD College</span>
           </div>
           <div className="flex items-center gap-4">
             <button
               onClick={toggleLanguage}
-              className="text-sm text-[#00236f] font-bold px-4 py-2 hover:bg-[#e5eeff] transition-colors rounded-full"
+              className="text-sm text-[#1E3A8A] font-bold px-4 py-2 hover:bg-[#e5eeff] transition-colors rounded-full"
             >
-              {locale === "bn" ? "English" : "বাংলা"}
+              {language === "bn" ? "English" : "বাংলা"}
             </button>
-            <a className="text-sm text-[#444651] hover:text-[#00236f] transition-colors" href="/">Home</a>
+            <a className="text-sm text-[#444651] hover:text-[#1E3A8A] transition-colors" href="/">Home</a>
           </div>
         </div>
       </nav>
@@ -98,7 +98,7 @@ export default function LoginPage() {
         <div className="w-full max-w-[480px] z-10 space-y-6">
           {/* Institutional Branding Header */}
           <div className="text-center">
-            <h1 className="text-3xl font-extrabold text-[#00236f] mb-2">Login Portal</h1>
+            <h1 className="text-3xl font-extrabold text-[#1E3A8A] mb-2">Login Portal</h1>
             <p className="text-sm text-[#444651] font-medium">আব্দুল ওয়াদুদ শাহ ডিগ্রি কলেজ এডুকেশন পোর্টাল</p>
           </div>
 
@@ -114,7 +114,7 @@ export default function LoginPage() {
                     setOtpMode(false);
                   }}
                   className={`flex-1 py-4 text-xs font-semibold text-[#444651] hover:bg-[#d8e3f6] transition-colors ${
-                    activeRole === role ? "text-[#00236f] border-b-2 border-[#00236f] bg-white font-bold" : ""
+                    activeRole === role ? "text-[#1E3A8A] border-b-2 border-[#1E3A8A] bg-white font-bold" : ""
                   }`}
                 >
                   {t(role)}
@@ -146,7 +146,7 @@ export default function LoginPage() {
                           </div>
                         </div>
                         <input
-                          className="block w-full pl-16 pr-4 py-3 bg-white border border-[#c5c5d3] rounded-lg focus:ring-2 focus:ring-[#00236f] focus:border-[#00236f] transition-all text-sm"
+                          className="block w-full pl-16 pr-4 py-3 bg-white border border-[#c5c5d3] rounded-lg focus:ring-2 focus:ring-[#1E3A8A] focus:border-[#1E3A8A] transition-all text-sm"
                           placeholder="Enter identification or email"
                           value={username}
                           onChange={(e) => setUsername(e.target.value)}
@@ -160,14 +160,14 @@ export default function LoginPage() {
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <label className="text-xs font-semibold text-[#111c2a]">{t("password")}</label>
-                        <a className="text-xs text-[#00236f] hover:underline" href="#">{t("forgotPass")}</a>
+                        <a className="text-xs text-[#1E3A8A] hover:underline" href="#">{t("forgotPass")}</a>
                       </div>
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#444651]">
                           <span className="material-symbols-outlined text-[20px]">lock</span>
                         </div>
                         <input
-                          className="block w-full pl-10 pr-12 py-3 bg-white border border-[#c5c5d3] rounded-lg focus:ring-2 focus:ring-[#00236f] focus:border-[#00236f] transition-all text-sm"
+                          className="block w-full pl-10 pr-12 py-3 bg-white border border-[#c5c5d3] rounded-lg focus:ring-2 focus:ring-[#1E3A8A] focus:border-[#1E3A8A] transition-all text-sm"
                           placeholder="••••••••"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
@@ -175,7 +175,7 @@ export default function LoginPage() {
                           type={showPassword ? "text" : "password"}
                         />
                         <button
-                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#444651] hover:text-[#00236f]"
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#444651] hover:text-[#1E3A8A]"
                           onClick={() => setShowPassword(!showPassword)}
                           type="button"
                         >
@@ -191,7 +191,7 @@ export default function LoginPage() {
                     <div>
                       <label className="block text-xs font-semibold text-[#111c2a] mb-2">{t("username")}</label>
                       <input
-                        className="block w-full px-4 py-3 bg-white border border-[#c5c5d3] rounded-lg focus:ring-2 focus:ring-[#00236f] focus:border-[#00236f] transition-all text-sm"
+                        className="block w-full px-4 py-3 bg-white border border-[#c5c5d3] rounded-lg focus:ring-2 focus:ring-[#1E3A8A] focus:border-[#1E3A8A] transition-all text-sm"
                         placeholder="Enter registered phone number"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
@@ -203,7 +203,7 @@ export default function LoginPage() {
                       <div>
                         <label className="block text-xs font-semibold text-[#111c2a] mb-2">ওটিপি কোড (OTP Code)</label>
                         <input
-                          className="block w-full px-4 py-3 bg-white border border-[#c5c5d3] rounded-lg focus:ring-2 focus:ring-[#00236f] focus:border-[#00236f] transition-all text-sm"
+                          className="block w-full px-4 py-3 bg-white border border-[#c5c5d3] rounded-lg focus:ring-2 focus:ring-[#1E3A8A] focus:border-[#1E3A8A] transition-all text-sm"
                           placeholder="Enter 6-digit code"
                           value={otpCode}
                           onChange={(e) => setOtpCode(e.target.value)}
@@ -215,7 +215,7 @@ export default function LoginPage() {
                       <button
                         type="button"
                         onClick={handleSendOTP}
-                        className="w-full py-3 px-4 border border-[#c5c5d3] bg-white text-[#00236f] font-semibold rounded-lg hover:bg-[#eff4ff] transition-all flex items-center justify-center gap-2"
+                        className="w-full py-3 px-4 border border-[#c5c5d3] bg-white text-[#1E3A8A] font-semibold rounded-lg hover:bg-[#eff4ff] transition-all flex items-center justify-center gap-2"
                       >
                         <span className="material-symbols-outlined text-lg">sms</span>
                         {t("getOTP")}
@@ -227,7 +227,7 @@ export default function LoginPage() {
                 {/* Primary Action Button */}
                 <button
                   disabled={isLoading}
-                  className="w-full py-4 px-4 bg-[#00236f] hover:bg-[#1e3a8a] text-white font-bold text-sm rounded-lg shadow-lg hover:shadow-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                  className="w-full py-4 px-4 bg-[#1E3A8A] hover:bg-[#1e3a8a] text-white font-bold text-sm rounded-lg shadow-lg hover:shadow-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2"
                   type="submit"
                 >
                   {isLoading ? (
@@ -245,19 +245,19 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setOtpMode(!otpMode)}
-                    className="text-[#006d30] hover:underline"
+                    className="text-[#15803D] hover:underline"
                   >
                     {otpMode ? "লগইন পাসওয়ার্ড দিয়ে (Password Mode)" : t("orLoginWith")}
                   </button>
-                  <a className="text-[#00236f] hover:underline" href="#">New Admission? Register</a>
+                  <a className="text-[#1E3A8A] hover:underline" href="#">New Admission? Register</a>
                 </div>
               </form>
             </div>
           </div>
 
           {/* Autofill Demo Credentials Helper */}
-          <div className="border-dashed border-2 border-[#006d30]/30 bg-green-50/50 rounded-xl p-4 space-y-2">
-            <h4 className="text-xs font-bold text-[#006d30] flex items-center gap-1.5">
+          <div className="border-dashed border-2 border-[#15803D]/30 bg-green-50/50 rounded-xl p-4 space-y-2">
+            <h4 className="text-xs font-bold text-[#15803D] flex items-center gap-1.5">
               <span className="material-symbols-outlined text-[16px]">verified_user</span>
               <span>{t("autoFill")}</span>
             </h4>
@@ -278,17 +278,18 @@ export default function LoginPage() {
       <footer className="bg-[#d8e3f6] border-t border-[#c5c5d3] py-8 px-6 mt-auto">
         <div className="max-w-[1280px] mx-auto w-full flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col items-center md:items-start">
-            <span className="text-xl text-[#00236f] font-bold">AWSD College</span>
+            <span className="text-xl text-[#1E3A8A] font-bold">AWSD College</span>
             <p className="text-xs text-[#444651] mt-1">© 2026 Abdul Wadud Shah Degree College. All Rights Reserved.</p>
           </div>
           <div className="flex flex-wrap justify-center gap-6 text-[11px] font-bold uppercase text-[#444651]">
-            <a className="hover:text-[#00236f] transition-colors" href="#">Contact Us</a>
-            <a className="hover:text-[#00236f] transition-colors" href="#">EIIN: 123456</a>
-            <a className="hover:text-[#00236f] transition-colors" href="#">Govt Board</a>
-            <a className="hover:text-[#00236f] transition-colors" href="#">Privacy Policy</a>
+            <a className="hover:text-[#1E3A8A] transition-colors" href="#">Contact Us</a>
+            <a className="hover:text-[#1E3A8A] transition-colors" href="#">EIIN: 123456</a>
+            <a className="hover:text-[#1E3A8A] transition-colors" href="#">Govt Board</a>
+            <a className="hover:text-[#1E3A8A] transition-colors" href="#">Privacy Policy</a>
           </div>
         </div>
       </footer>
     </div>
   );
 }
+

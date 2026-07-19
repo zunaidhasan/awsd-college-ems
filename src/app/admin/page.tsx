@@ -86,6 +86,9 @@ function AdminDashboardContent() {
       nameEn: newStudentNameEn || newStudentNameBn,
       roll: newStudentRoll,
       present: true,
+      avatar: "",
+      gender: "",
+      group: "",
     };
 
     setStudents([...students, newStd]);

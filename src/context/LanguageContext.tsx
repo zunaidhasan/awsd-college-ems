@@ -102,6 +102,7 @@ const translations: Record<Language, Record<string, string>> = {
     studentList: "শিক্ষার্থী তালিকা",
     present: "উপস্থিত",
     absent: "অনুপস্থিত",
+    late: "বিলম্ব",
     saveAttendance: "উপস্থিতি সংরক্ষণ করুন",
     attendanceSaved: "উপস্থিতি সফলভাবে সংরক্ষিত হয়েছে!",
     submitMarks: "নম্বর জমা দিন",
@@ -180,6 +181,16 @@ const translations: Record<Language, Record<string, string>> = {
     facultyDepartment: "বিভাগ",
     facultyDesignation: "পদবী",
     facultySearch: "শিক্ষক অনুসন্ধান",
+
+    // Contact
+    contactUs: "যোগাযোগ",
+    contactForm: "বার্তা পাঠান",
+    contactSend: "বার্তা পাঠান",
+
+    // Guardian
+    guardianTitle: "অভিভাবক পোর্টাল",
+    guardianWelcome: "স্বাগতম, প্রিয় অভিভাবক",
+    guardianViewYourWard: "আপনার শিশুর একাডেমিক তথ্য দেখুন",
   },
   en: {
     // Branding & Header
@@ -272,6 +283,7 @@ const translations: Record<Language, Record<string, string>> = {
     studentList: "Student List",
     present: "Present",
     absent: "Absent",
+    late: "Late",
     saveAttendance: "Save Attendance",
     attendanceSaved: "Attendance saved successfully!",
     submitMarks: "Submit Marks",
@@ -350,6 +362,16 @@ const translations: Record<Language, Record<string, string>> = {
     facultyDepartment: "Department",
     facultyDesignation: "Designation",
     facultySearch: "Search Faculty",
+
+    // Contact
+    contactUs: "Contact Us",
+    contactForm: "Send a Message",
+    contactSend: "Send Message",
+
+    // Guardian
+    guardianTitle: "Guardian Portal",
+    guardianWelcome: "Welcome, Dear Guardian",
+    guardianViewYourWard: "View your ward's academic information",
   },
 };
 
