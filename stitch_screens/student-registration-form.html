@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<html class="light" lang="bn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>নতুন শিক্ষার্থী ভর্তি | AWSD College EMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+Bengali:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-dim": "#cfdbee",
+                "secondary-fixed": "#95f8a7",
+                "on-tertiary-fixed-variant": "#614000",
+                "surface-light": "#F8FAFC",
+                "gray-muted": "#64748B",
+                "on-surface-variant": "#444651",
+                "danger": "#EF4444",
+                "error-container": "#ffdad6",
+                "surface-bright": "#f8f9ff",
+                "on-secondary-fixed": "#00210a",
+                "on-primary": "#ffffff",
+                "on-primary-fixed": "#00164e",
+                "tertiary-fixed-dim": "#ffba46",
+                "background": "#f8f9ff",
+                "on-surface": "#111c2a",
+                "on-background": "#111c2a",
+                "surface-container-highest": "#d8e3f6",
+                "outline-variant": "#c5c5d3",
+                "outline": "#757682",
+                "primary": "#00236f",
+                "surface-container": "#e5eeff",
+                "primary-container": "#1e3a8a",
+                "surface-container-lowest": "#ffffff",
+                "tertiary-fixed": "#ffddb0",
+                "secondary-fixed-dim": "#79db8d",
+                "on-primary-fixed-variant": "#264191",
+                "inverse-on-surface": "#eaf1ff",
+                "on-secondary": "#ffffff",
+                "inverse-surface": "#26313f",
+                "on-primary-container": "#90a8ff",
+                "error": "#ba1a1a",
+                "surface-tint": "#4059aa",
+                "on-secondary-fixed-variant": "#005323",
+                "surface-variant": "#d8e3f6",
+                "primary-fixed-dim": "#b6c4ff",
+                "on-tertiary-fixed": "#281800",
+                "surface": "#f8f9ff",
+                "on-tertiary": "#ffffff",
+                "tertiary-container": "#593a00",
+                "tertiary": "#3c2600",
+                "surface-container-low": "#eff4ff",
+                "surface-container-high": "#dee9fc",
+                "secondary": "#006d30",
+                "on-tertiary-container": "#e39f24",
+                "on-error": "#ffffff",
+                "secondary-container": "#92f5a4",
+                "primary-fixed": "#dce1ff",
+                "surface-dark": "#0F172A",
+                "on-error-container": "#93000a",
+                "on-secondary-container": "#007233",
+                "inverse-primary": "#b6c4ff"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "gutter": "24px",
+                "base": "8px",
+                "sidebar-width": "260px",
+                "margin-mobile": "16px",
+                "container-max": "1280px"
+            },
+            "fontFamily": {
+                "label-sm": ["Inter"],
+                "headline-lg": ["Noto Sans Bengali"],
+                "display-lg": ["Noto Sans Bengali"],
+                "body-lg": ["Inter"],
+                "headline-md": ["Noto Sans Bengali"],
+                "label-md": ["Inter"],
+                "display-lg-mobile": ["Noto Sans Bengali"],
+                "body-md": ["Inter"]
+            },
+            "fontSize": {
+                "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                "display-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', 'Noto Sans Bengali', sans-serif; background-color: #F8FAFC; }
+        .form-input-focus:focus { outline: none; border-color: #00236f; box-shadow: 0 0 0 2px rgba(0, 35, 111, 0.1); }
+        .bengali-font { font-family: 'Noto Sans Bengali', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface-light overflow-x-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-surface-container-low border-r border-outline-variant flex-col hidden lg:flex z-50">
+<div class="p-6">
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-surface">Admin Portal</h1>
+<p class="text-label-sm text-on-surface-variant">AWSD Degree College</p>
+</div>
+<nav class="flex-1 mt-4 px-2 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg transition-all font-semibold" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Student Management</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-label-md text-label-md">Faculty Records</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-label-md text-label-md">Attendance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">grade</span>
+<span class="font-label-md text-label-md">Grading System</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md text-label-md">Fee Collection</span>
+</a>
+</nav>
+<div class="p-4 mt-auto border-t border-outline-variant">
+<button class="w-full bg-primary text-on-primary py-2.5 rounded-full font-label-md mb-4 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">description</span>
+                Generate Report
+            </button>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-variant rounded-lg mb-1" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-variant rounded-lg" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="lg:ml-[260px] min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-40 bg-surface-container-lowest h-16 border-b border-outline-variant flex items-center justify-between px-gutter shadow-sm">
+<div class="flex items-center gap-4">
+<span class="lg:hidden material-symbols-outlined cursor-pointer">menu</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">AWSD College EMS</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-6">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="#">Academic</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Finance</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Reports</a>
+</div>
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">notifications</span>
+<div class="flex items-center gap-1 bg-surface-container rounded-full px-3 py-1 cursor-pointer border border-outline-variant">
+<span class="material-symbols-outlined text-sm">language</span>
+<span class="text-label-sm">BN/EN</span>
+</div>
+<img class="w-8 h-8 rounded-full border border-primary/20 bg-primary-container" data-alt="A professional headshot of a college administrator wearing formal attire, captured in a brightly lit office with minimalist decor. The lighting is soft and neutral, reflecting a clean academic environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAR88n7T3u5KxwFpMObGLJD6_b4fBGtW8uDFk0CD4pT1pIQIp9Wte1ekX1grxdac25zIA_OAHdMBN8uwo8SO-_lZGd9s63zFo4naOfYePMSDGoKY9sTUnRj7T7KrvELKNUrKMf4zDzi58h4xwvbYbmHKIYw-HVoX-5xshvsAdVLojrlrfDRGUlzDn-ZvJPPO1HwqBHDdSCYOmGzoQzcZEfJ0OJgMN1jP0reFP_IylsDsMJ-pdlncJhtk9DGC1kwuelapj8sAeRyM5px"/>
+</div>
+</div>
+</header>
+<!-- Enrollment Form Content -->
+<div class="flex-1 p-6 md:p-8 max-w-[1200px]">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface bengali-font">নতুন শিক্ষার্থী ভর্তি</h2>
+<nav class="flex text-label-sm text-on-surface-variant gap-2 mt-1">
+<span>Dashboard</span> / <span>Student Management</span> / <span class="text-primary font-bold">New Enrollment</span>
+</nav>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2 rounded-full border-1.5 border-primary text-primary font-semibold hover:bg-primary/5 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">save</span>
+                        Save Draft
+                    </button>
+<button class="px-8 py-2 rounded-full bg-primary text-on-primary font-semibold hover:opacity-90 shadow-sm transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">how_to_reg</span>
+                        Complete Registration
+                    </button>
+</div>
+</div>
+<!-- Form Stepper -->
+<div class="mb-8 grid grid-cols-2 md:grid-cols-4 gap-2">
+<button class="flex items-center gap-3 p-4 bg-primary-container/20 border-b-4 border-primary rounded-t-lg text-primary">
+<span class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-on-primary text-label-sm">1</span>
+<span class="font-label-md whitespace-nowrap">Personal Info</span>
+</button>
+<button class="flex items-center gap-3 p-4 bg-white border-b-4 border-outline-variant hover:border-primary/40 rounded-t-lg text-on-surface-variant transition-all">
+<span class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant text-label-sm">2</span>
+<span class="font-label-md whitespace-nowrap">Academic Record</span>
+</button>
+<button class="flex items-center gap-3 p-4 bg-white border-b-4 border-outline-variant hover:border-primary/40 rounded-t-lg text-on-surface-variant transition-all">
+<span class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant text-label-sm">3</span>
+<span class="font-label-md whitespace-nowrap">Guardian Details</span>
+</button>
+<button class="flex items-center gap-3 p-4 bg-white border-b-4 border-outline-variant hover:border-primary/40 rounded-t-lg text-on-surface-variant transition-all">
+<span class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant text-label-sm">4</span>
+<span class="font-label-md whitespace-nowrap">Documents</span>
+</button>
+</div>
+<!-- Form Sections (Bento-ish Grid Layout) -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<!-- Left Column: Main Form Area -->
+<div class="xl:col-span-2 space-y-6">
+<!-- Personal Information Card -->
+<section class="bg-white p-gutter rounded-xl border border-outline-variant shadow-sm transition-hover hover:shadow-md">
+<div class="flex items-center gap-3 mb-6 border-b border-surface-variant pb-4">
+<span class="material-symbols-outlined text-primary">person</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Personal Information</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface">Full Name (English)</label>
+<input class="w-full h-11 px-4 rounded-lg border border-outline-variant form-input-focus transition-all text-body-md" placeholder="e.g. Abdullah Al Mamun" type="text"/>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface bengali-font">সম্পূর্ণ নাম (বাংলা)</label>
+<input class="w-full h-11 px-4 rounded-lg border border-outline-variant form-input-focus transition-all text-body-md" placeholder="উদা: আবদুল্লাহ আল মামুন" type="text"/>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface">Date of Birth</label>
+<div class="relative">
+<input class="w-full h-11 px-4 rounded-lg border border-outline-variant form-input-focus transition-all text-body-md" type="date"/>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface">Gender</label>
+<select class="w-full h-11 px-4 rounded-lg border border-outline-variant form-input-focus transition-all text-body-md appearance-none bg-white">
+<option value="">Select Gender</option>
+<option>Male</option>
+<option>Female</option>
+<option>Other</option>
+</select>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface">Blood Group</label>
+<select class="w-full h-11 px-4 rounded-lg border border-outline-variant form-input-focus transition-all text-body-md bg-white">
+<option value="">Select</option>
+<option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+<option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+</select>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface">NID / Birth Registration</label>
+<input class="w-full h-11 px-4 rounded-lg border border-outline-variant form-input-focus transition-all text-body-md" placeholder="17 digit number" type="text"/>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface">Phone Number</label>
+<div class="flex">
+<span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-outline-variant bg-surface-variant text-on-surface-variant text-label-sm">+880</span>
+<input class="flex-1 h-11 px-4 rounded-r-lg border border-outline-variant form-input-focus transition-all text-body-md" placeholder="1XXXXXXXXX" type="tel"/>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface">Email Address</label>
+<input class="w-full h-11 px-4 rounded-lg border border-outline-variant form-input-focus transition-all text-body-md" placeholder="example@college.edu.bd" type="email"/>
+</div>
+</div>
+</section>
+<!-- Academic Section -->
+<section class="bg-white p-gutter rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center gap-3 mb-6 border-b border-surface-variant pb-4">
+<span class="material-symbols-outlined text-primary">school</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Academic Record</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface">Class / Level</label>
+<select class="w-full h-11 px-4 rounded-lg border border-outline-variant form-input-focus transition-all text-body-md bg-white">
+<option>HSC 1st Year</option>
+<option>HSC 2nd Year</option>
+<option>Degree 1st Year</option>
+</select>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface">Section / Group</label>
+<select class="w-full h-11 px-4 rounded-lg border border-outline-variant form-input-focus transition-all text-body-md bg-white">
+<option>Science</option>
+<option>Commerce</option>
+<option>Arts</option>
+</select>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface">Shift</label>
+<div class="flex gap-4 h-11 items-center">
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="w-4 h-4 text-primary border-outline-variant" name="shift" type="radio"/>
+<span class="text-body-md">Day</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="w-4 h-4 text-primary border-outline-variant" name="shift" type="radio"/>
+<span class="text-body-md">Morning</span>
+</label>
+</div>
+</div>
+<div class="md:col-span-2 space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface">Previous School/College Name</label>
+<input class="w-full h-11 px-4 rounded-lg border border-outline-variant form-input-focus transition-all text-body-md" type="text"/>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-md text-label-md text-on-surface">Admission Date</label>
+<input class="w-full h-11 px-4 rounded-lg border border-outline-variant form-input-focus transition-all text-body-md" type="date"/>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Sidebar Form Components -->
+<div class="space-y-6">
+<!-- Document Upload & Photo -->
+<section class="bg-white p-gutter rounded-xl border border-outline-variant shadow-sm">
+<h3 class="font-label-sm text-label-sm text-outline mb-4 uppercase tracking-wider">Student Profile</h3>
+<div class="flex flex-col items-center gap-4">
+<div class="relative group cursor-pointer">
+<div class="w-32 h-32 rounded-lg bg-surface-container flex items-center justify-center border-2 border-dashed border-outline-variant group-hover:border-primary group-hover:bg-primary/5 transition-all overflow-hidden">
+<div class="text-center p-2">
+<span class="material-symbols-outlined text-4xl text-outline-variant group-hover:text-primary">add_a_photo</span>
+<p class="text-[10px] mt-1 text-on-surface-variant">Upload Photo</p>
+</div>
+<!-- Hidden img if uploaded -->
+</div>
+<div class="absolute -bottom-2 -right-2 bg-primary text-on-primary w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-lg">edit</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant text-center px-4">JPEG or PNG, Max 500KB. Ensure face is clearly visible with white background.</p>
+</div>
+<div class="mt-8 space-y-4">
+<h4 class="font-label-md text-label-md text-on-surface">Required Documents</h4>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-light border border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">description</span>
+<span class="text-label-sm">Birth Certificate</span>
+</div>
+<button class="text-primary hover:underline text-label-sm">Upload</button>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-light border border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">picture_as_pdf</span>
+<span class="text-label-sm">SSC Marksheet</span>
+</div>
+<button class="text-primary hover:underline text-label-sm">Upload</button>
+</div>
+<button class="w-full py-2.5 border-1.5 border-dashed border-primary/40 rounded-lg text-primary text-label-sm flex items-center justify-center gap-2 hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined text-sm">cloud_upload</span>
+                                    Scan &amp; Upload More
+                                </button>
+</div>
+</div>
+</section>
+<!-- Guardian Quick Info -->
+<section class="bg-white p-gutter rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center gap-3 mb-6 border-b border-surface-variant pb-4">
+<span class="material-symbols-outlined text-primary">family_restroom</span>
+<h3 class="font-label-md text-label-md text-on-surface">Guardian Details</h3>
+</div>
+<div class="space-y-4">
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Father's Name</label>
+<input class="w-full h-10 px-3 rounded-lg border border-outline-variant form-input-focus text-label-md" type="text"/>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Mother's Name</label>
+<input class="w-full h-10 px-3 rounded-lg border border-outline-variant form-input-focus text-label-md" type="text"/>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Guardian's Phone</label>
+<input class="w-full h-10 px-3 rounded-lg border border-outline-variant form-input-focus text-label-md" type="tel"/>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Residential Address</label>
+<textarea class="w-full p-3 rounded-lg border border-outline-variant form-input-focus text-label-md resize-none" rows="3"></textarea>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Bottom Action Bar (Mobile Responsive) -->
+<div class="mt-8 flex justify-end gap-4 pb-12">
+<button class="px-8 py-3 rounded-full bg-surface-container-highest text-on-surface-variant font-semibold hover:bg-surface-variant transition-colors">
+                    Reset Form
+                </button>
+<button class="px-10 py-3 rounded-full bg-secondary text-on-secondary font-semibold hover:opacity-90 shadow-md transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">send</span>
+                    Proceed to Verification
+                </button>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full py-base px-gutter flex flex-col md:flex-row justify-between items-center gap-4 bg-surface-container-high border-t border-outline-variant mt-auto">
+<div class="flex items-center gap-4">
+<span class="font-bold text-primary">AWSD</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">© 2024 Abdul Wadud Shah Degree College (AWSD). All Rights Reserved.</p>
+</div>
+<div class="flex gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Contact Support</a>
+</div>
+</footer>
+</main>
+<!-- Micro-interaction Script -->
+<script>
+        // Simple ripple-like effect on primary buttons or focus handling
+        document.querySelectorAll('input, select, textarea').forEach(el => {
+            el.addEventListener('focus', () => {
+                el.parentElement.classList.add('scale-[1.01]');
+                el.parentElement.style.transition = 'transform 0.2s ease';
+            });
+            el.addEventListener('blur', () => {
+                el.parentElement.classList.remove('scale-[1.01]');
+            });
+        });
+
+        // Tab switching logic (Visual only for prototype)
+        const tabs = document.querySelectorAll('.md\\:grid-cols-4 button');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => {
+                    t.classList.remove('bg-primary-container/20', 'border-primary', 'text-primary');
+                    t.classList.add('bg-white', 'border-outline-variant', 'text-on-surface-variant');
+                    const dot = t.querySelector('span:first-child');
+                    dot.classList.remove('bg-primary', 'text-on-primary');
+                    dot.classList.add('bg-surface-container-highest', 'text-on-surface-variant');
+                });
+                tab.classList.remove('bg-white', 'border-outline-variant', 'text-on-surface-variant');
+                tab.classList.add('bg-primary-container/20', 'border-primary', 'text-primary');
+                const activeDot = tab.querySelector('span:first-child');
+                activeDot.classList.remove('bg-surface-container-highest', 'text-on-surface-variant');
+                activeDot.classList.add('bg-primary', 'text-on-primary');
+            });
+        });
+    </script>
+</body></html>

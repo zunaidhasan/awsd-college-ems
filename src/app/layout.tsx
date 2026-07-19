@@ -33,6 +33,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <head>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+      </head>
       <body className={`${inter.variable} ${notoBengali.variable} font-sans min-h-screen flex flex-col overflow-x-hidden transition-colors duration-200 bg-[var(--color-bg)] text-[var(--color-text)]`}>
         <ThemeProvider>
           <LanguageProvider>

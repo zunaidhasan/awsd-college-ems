@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html class="light" lang="bn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AWSD College - Notifications</title>
+<!-- Google Fonts: Inter for UI, Noto Sans Bengali for Headlines -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+Bengali:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-container": "#007233",
+                    "on-surface-variant": "#444651",
+                    "danger": "#EF4444",
+                    "inverse-primary": "#b6c4ff",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#90a8ff",
+                    "primary": "#00236f",
+                    "surface-tint": "#4059aa",
+                    "secondary": "#006d30",
+                    "secondary-container": "#92f5a4",
+                    "surface-dim": "#cfdbee",
+                    "on-secondary-fixed": "#00210a",
+                    "surface-container-low": "#eff4ff",
+                    "surface-variant": "#d8e3f6",
+                    "surface-container-high": "#dee9fc",
+                    "inverse-on-surface": "#eaf1ff",
+                    "gray-muted": "#64748B",
+                    "on-background": "#111c2a",
+                    "on-tertiary-fixed": "#281800",
+                    "primary-fixed": "#dce1ff",
+                    "on-primary": "#ffffff",
+                    "surface-bright": "#f8f9ff",
+                    "on-primary-fixed-variant": "#264191",
+                    "tertiary-fixed-dim": "#ffba46",
+                    "outline-variant": "#c5c5d3",
+                    "background": "#f8f9ff",
+                    "surface-container": "#e5eeff",
+                    "primary-fixed-dim": "#b6c4ff",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#00164e",
+                    "outline": "#757682",
+                    "tertiary-container": "#593a00",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-light": "#F8FAFC",
+                    "surface-dark": "#0F172A",
+                    "surface": "#f8f9ff",
+                    "on-secondary-fixed-variant": "#005323",
+                    "tertiary-fixed": "#ffddb0",
+                    "inverse-surface": "#26313f",
+                    "secondary-fixed": "#95f8a7",
+                    "on-tertiary-fixed-variant": "#614000",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#3c2600",
+                    "on-surface": "#111c2a",
+                    "surface-container-highest": "#d8e3f6",
+                    "secondary-fixed-dim": "#79db8d",
+                    "on-tertiary-container": "#e39f24",
+                    "primary-container": "#1e3a8a",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "sidebar-width": "260px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Noto Sans Bengali"],
+                    "display-lg-mobile": ["Noto Sans Bengali"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Noto Sans Bengali"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Noto Sans Bengali"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+        }
+        .bengali-font {
+            font-family: 'Noto Sans Bengali', sans-serif;
+        }
+        /* Custom Scrollbar for Notifications */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        /* Overlay Animation */
+        #notification-sidebar {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .sidebar-hidden {
+            transform: translateX(100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopNavBar (Authority Source: Shared Components JSON) -->
+<header class="docked full-width top-0 sticky z-50 bg-surface border-b border-outline-variant shadow-sm flex justify-between items-center w-full h-16 px-gutter md:pl-[284px] max-w-full">
+<div class="flex items-center gap-4">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">AWSD পোর্টাল</h1>
+</div>
+<div class="flex items-center gap-gutter">
+<nav class="hidden md:flex gap-6">
+<a class="font-label-md text-label-md text-primary border-b-2 border-primary font-bold pb-1" href="#">হোম</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">রুটিন</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">লাইব্রেরি</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-variant transition-all duration-200 cursor-pointer" onclick="toggleNotifications()">
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-variant transition-all duration-200 cursor-pointer">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="help">help</span>
+</button>
+<div class="flex items-center gap-2 border-l border-outline-variant pl-4">
+<span class="font-label-md text-label-md text-primary font-bold">BN/EN</span>
+<img class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A professional student profile picture in a square format with rounded corners, showing a South Asian male student wearing a white college uniform, brightly lit in an academic setting, high quality digital photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-ungRve_a1259aeX6XH7_Y0tUCSctMrg_d-eolmz9imvyYk25h61eQ12GVLtzvvrI8CkEJ3w-ATunMMiCeqs571it8bkPdfCFNnPVn1xmA0Z6Xl0FmwcaGROD2Bt7QH9XiVSXRtmV0-CTAiEZQxu-cjQ_ZUyzVL5k_g7syHRvCPy2y0nIl1O_D5wU9ES2bsfLHZEDY-OWuUFf7qQQ27bUenwiEyfXJsQU8cL_zlnWo-7JwAcVnFnQaxLJKFh8UktkssccPhbgsyLk"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Authority Source: Shared Components JSON) -->
+<aside class="fixed left-0 top-0 h-full w-[260px] z-40 bg-surface-container-low border-r border-outline-variant hidden md:flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white" data-icon="school">school</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md font-bold text-primary leading-tight">AWSD College</h2>
+<p class="font-body-md text-label-md text-on-surface-variant">ছাত্র পোর্টাল</p>
+</div>
+</div>
+<nav class="flex-1 px-4 mt-4 space-y-1">
+<a class="flex items-center gap-base px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg font-bold transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-base px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-md text-label-md">আমার কোর্সসমূহ</span>
+</a>
+<a class="flex items-center gap-base px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+<span class="font-label-md text-label-md">পরীক্ষা</span>
+</a>
+<a class="flex items-center gap-base px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-md text-label-md">ফি</span>
+</a>
+<a class="flex items-center gap-base px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-md text-label-md">নোটিশ বোর্ড</span>
+</a>
+</nav>
+<div class="p-4 border-t border-outline-variant space-y-1">
+<a class="flex items-center gap-base px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">সেটিংস</span>
+</a>
+<a class="flex items-center gap-base px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-md text-label-md">লগআউট</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="md:pl-[260px] min-h-screen pt-16">
+<div class="p-gutter max-w-container-max mx-auto">
+<!-- Dashboard Content Placeholder -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-gutter">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">উপস্থিতি</span>
+<span class="material-symbols-outlined text-primary" data-icon="calendar_today">calendar_today</span>
+</div>
+<span class="font-headline-lg text-headline-lg text-primary">৮৫%</span>
+<span class="text-secondary font-label-sm text-label-sm">+২% গত মাস থেকে</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">চলমান কোর্স</span>
+<span class="material-symbols-outlined text-primary" data-icon="auto_stories">auto_stories</span>
+</div>
+<span class="font-headline-lg text-headline-lg text-primary">০৬</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">সেমিস্টার ৩</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">পেমেন্ট স্ট্যাটাস</span>
+<span class="material-symbols-outlined text-secondary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="font-headline-lg text-headline-lg text-secondary">পরিশোধিত</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">টার্ম পরীক্ষা ফি</span>
+</div>
+</div>
+<!-- News/Notice Area (Asymmetric Layout) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-primary">সাম্প্রতিক ক্লাস শিডিউল</h3>
+<button class="text-primary font-label-md text-label-md hover:underline">সবগুলো দেখুন</button>
+</div>
+<div class="space-y-4">
+<div class="flex items-center p-4 bg-surface-light rounded-lg border border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center mr-4">
+<span class="material-symbols-outlined text-primary" data-icon="history_edu">history_edu</span>
+</div>
+<div class="flex-1">
+<h4 class="font-label-md text-label-md font-bold text-on-surface">Political Sociology</h4>
+<p class="text-label-sm text-on-surface-variant">রুম: ৩০২ • সময়: ১০:৩০ AM</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="flex items-center p-4 bg-surface-light rounded-lg border border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center mr-4">
+<span class="material-symbols-outlined text-primary" data-icon="language">language</span>
+</div>
+<div class="flex-1">
+<h4 class="font-label-md text-label-md font-bold text-on-surface">English Composition</h4>
+<p class="text-label-sm text-on-surface-variant">রুম: ১০৫ • সময়: ১২:০০ PM</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 space-y-gutter">
+<div class="bg-primary p-6 rounded-xl text-white shadow-lg overflow-hidden relative">
+<div class="relative z-10">
+<h4 class="font-headline-md text-headline-md mb-2">সহায়তা প্রয়োজন?</h4>
+<p class="text-white/80 text-label-md mb-4">আমাদের এডমিন টিমের সাথে যোগাযোগ করুন সরাসরি পোর্টাল থেকে।</p>
+<button class="bg-white text-primary px-6 py-2 rounded-full font-bold font-label-md hover:bg-surface-variant transition-colors">যোগাযোগ করুন</button>
+</div>
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-white/10 text-[120px]" data-icon="support_agent">support_agent</span>
+</div>
+<div class="bg-secondary-container p-6 rounded-xl border border-on-secondary-container/20">
+<h4 class="font-label-md text-label-md font-bold text-on-secondary-container mb-2">আসন্ন ইভেন্ট</h4>
+<div class="flex items-center gap-4">
+<div class="bg-white px-3 py-2 rounded text-center min-w-[60px]">
+<span class="block text-primary font-bold text-headline-md leading-none">২৫</span>
+<span class="text-label-sm text-on-surface-variant uppercase">Mar</span>
+</div>
+<p class="text-on-secondary-container font-label-md">বার্ষিক ক্রীড়া প্রতিযোগিতা ২০২৪</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Notification Sidebar Overlay -->
+<div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] opacity-0 pointer-events-none transition-opacity duration-300" id="notification-overlay" onclick="toggleNotifications()"></div>
+<aside class="fixed top-0 right-0 h-full w-full max-w-[400px] bg-surface-container-lowest z-[70] shadow-2xl sidebar-hidden flex flex-col border-l border-outline-variant" id="notification-sidebar">
+<!-- Sidebar Header -->
+<div class="p-6 border-b border-outline-variant flex items-center justify-between bg-surface-container-low">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="notifications" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<h2 class="font-headline-md text-headline-md text-primary">নোটিফিকেশন</h2>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors" onclick="toggleNotifications()">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="close">close</span>
+</button>
+</div>
+<!-- Sidebar Content -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-4">
+<!-- Category: New -->
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest px-2 mb-3">নতুন (৩)</p>
+<!-- Notification Item 1 -->
+<div class="bg-surface-container-high/40 p-4 rounded-xl border-l-4 border-secondary hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="payments">payments</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md font-bold text-on-surface">Term Exam Fees Paid Successfully</h4>
+<span class="text-[10px] text-outline font-medium">২ মিনিট আগে</span>
+</div>
+<p class="text-label-md text-on-surface-variant mt-1">আপনার সেমিস্টার ৩ এর পরীক্ষার ফি সফলভাবে গ্রহণ করা হয়েছে। রসিদটি ডাউনলোড করতে পারেন।</p>
+<div class="mt-3 flex gap-2">
+<button class="px-3 py-1 bg-primary text-white text-[12px] font-bold rounded-full hover:bg-primary-container transition-colors">রসিদ ডাউনলোড</button>
+<button class="px-3 py-1 border border-outline text-[12px] font-bold rounded-full hover:bg-surface-variant transition-colors">বন্ধ করুন</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Item 2 -->
+<div class="mt-3 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant hover:bg-surface-light transition-colors cursor-pointer">
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary" data-icon="campaign">campaign</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md font-bold text-on-surface">New Notice: Admission Open</h4>
+<span class="text-[10px] text-outline font-medium">৩০ মিনিট আগে</span>
+</div>
+<p class="text-label-md text-on-surface-variant mt-1">২০২৪-২৫ সেশনের অনার্স প্রথম বর্ষের ভর্তি কার্যক্রম শুরু হয়েছে। বিস্তারিত জানতে নোটিশ বোর্ড চেক করুন।</p>
+</div>
+</div>
+</div>
+<!-- Notification Item 3 -->
+<div class="mt-3 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant hover:bg-surface-light transition-colors cursor-pointer">
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-error-container/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-error" data-icon="schedule">schedule</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md font-bold text-on-surface">Class Rescheduled: Political Sociology</h4>
+<span class="text-[10px] text-outline font-medium">২ ঘণ্টা আগে</span>
+</div>
+<p class="text-label-md text-on-surface-variant mt-1">আজকের পলিটিক্যাল সোসিওলজি ক্লাসটি অনিবার্য কারণে সকাল ১০:৩০ এর পরিবর্তে দুপুর ২:০০ টায় অনুষ্ঠিত হবে।</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Category: Earlier -->
+<div class="pt-4">
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest px-2 mb-3">আগের নোটিফিকেশন</p>
+<div class="opacity-70 grayscale-[0.5] space-y-3">
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant flex gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="description">description</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md font-medium text-on-surface">Assignment Submitted</h4>
+<span class="text-[10px] text-outline font-medium">গতকাল</span>
+</div>
+<p class="text-label-sm text-on-surface-variant mt-0.5">Sociology Unit 4 assignment has been received.</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant flex gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="update">update</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md font-medium text-on-surface">Portal System Update</h4>
+<span class="text-[10px] text-outline font-medium">২ দিন আগে</span>
+</div>
+<p class="text-label-sm text-on-surface-variant mt-0.5">Your portal was updated to version 2.4.1 for better performance.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Footer -->
+<div class="p-4 border-t border-outline-variant bg-surface-container-low flex justify-center">
+<button class="text-primary font-bold font-label-md hover:underline py-2">সকল নোটিফিকেশন ক্লিয়ার করুন</button>
+</div>
+</aside>
+<script>
+        function toggleNotifications() {
+            const sidebar = document.getElementById('notification-sidebar');
+            const overlay = document.getElementById('notification-overlay');
+            
+            if (sidebar.classList.contains('sidebar-hidden')) {
+                sidebar.classList.remove('sidebar-hidden');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100');
+                document.body.style.overflow = 'hidden';
+            } else {
+                sidebar.classList.add('sidebar-hidden');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                overlay.classList.remove('opacity-100');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Add hover effects for dashboard cards
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.borderColor = 'rgba(0, 35, 111, 0.2)';
+                card.style.transform = 'translateY(-2px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.borderColor = '';
+                card.style.transform = '';
+            });
+        });
+    </script>
+</body></html>

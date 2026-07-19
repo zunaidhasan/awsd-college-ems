@@ -21,7 +21,9 @@ import {
   Sparkles,
   ClipboardCheck,
   CheckCircle,
-  Save
+  Save,
+  Search,
+  ChevronRight
 } from "lucide-react";
 
 function TeacherDashboardContent() {
@@ -38,6 +40,18 @@ function TeacherDashboardContent() {
   const [students, setStudents] = useState(mockClassStudents);
   const [attendanceSavedMsg, setAttendanceSavedMsg] = useState("");
 
+  // New: handle attendance toggle for individual student
+  const handleToggleAttendance = (id: string) => {
+    setStudents((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, present: !s.present } : s))
+    );
+  };
+
+  // New: save attendance action (placeholder)
+  const handleSaveAttendance = () => {
+    const msg = `${selectedClass} attendance saved successfully!`;
+    setAttendanceSavedMsg(msg);
+    setTimeout(() => setAttendanceSavedMsg(""), 4000);
   };
 
   // Grade Entry states
@@ -67,7 +81,7 @@ function TeacherDashboardContent() {
         : `Marks for ${gradeSubject} saved successfully!`
     );
     setTimeout(() => setGradesSavedMsg(""), 4000);
-  };
+  }
 
   return (
     <div className="flex flex-1 min-h-[calc(100vh-4rem)]">
@@ -168,133 +182,283 @@ function TeacherDashboardContent() {
 
         {/* Tab 2: Mark Attendance */}
         {tab === "attendance" && (
-          <Card>
-            <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
-              <CardTitle className="text-base font-extrabold text-brand-primary dark:text-white flex items-center space-x-2">
-                <UserCheck size={18} />
-                <span>{t("markAttendance")}</span>
-              </CardTitle>
-              
-              <div className="flex space-x-2">
-                <select
-                  value={selectedClass}
-                  onChange={(e) => setSelectedClass(e.target.value)}
-                  className="px-2.5 py-1.5 border rounded-lg text-xs font-semibold bg-transparent outline-none border-gray-300 dark:border-slate-700 text-gray-900 dark:text-slate-100"
-                >
-                  <option value="Class 11">একাদশ শ্রেণী (Class 11)</option>
-                  <option value="Class 12">দ্বাদশ শ্রেণী (Class 12)</option>
+          <div className="space-y-6">
+            {/* Selectors */}
+            <div className="lg:col-span-8 flex flex-col sm:flex-row gap-4">
+              <div className="flex-1 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant shadow-sm">
+                <label className="block font-label-sm text-on-surface-variant mb-1 uppercase tracking-wider">Department &amp; Class</label>
+                <select className="w-full border-none bg-transparent font-label-md text-on-surface focus:ring-0 p-0 cursor-pointer">
+                  <option>Science - Grade 12 (Section A)</option>
+                  <option>Arts - Grade 12 (Section B)</option>
+                  <option>Commerce - Grade 11 (Section A)</option>
                 </select>
-                <Button size="sm" variant="secondary" onClick={handleSaveAttendance} className="flex items-center space-x-1 font-bold">
-                  <Save size={14} />
-                  <span>{t("saveAttendance")}</span>
-                </Button>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              
-              {attendanceSavedMsg && (
-                <div className="p-3 bg-green-50 dark:bg-green-950/20 text-brand-secondary dark:text-green-400 text-xs font-bold rounded-lg border border-green-200 dark:border-green-800 flex items-center space-x-1.5">
-                  <CheckCircle size={14} />
-                  <span>{attendanceSavedMsg}</span>
+              <div className="flex-1 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant shadow-sm">
+                <label className="block font-label-sm text-on-surface-variant mb-1 uppercase tracking-wider">Select Date</label>
+                <div className="flex items-center justify-between">
+                  <input className="border-none bg-transparent font-label-md text-on-surface focus:ring-0 p-0 cursor-pointer" type="date" value={new Date().toISOString().slice(0,10)} />
+                  <span className="material-symbols-outlined text-primary">calendar_month</span>
                 </div>
-              )}
-
-              <TableContainer>
-                <TableHead>
-                  <TableRow>
-                    <TableHeaderCell>{t("roll")}</TableHeaderCell>
-                    <TableHeaderCell>শিক্ষার্থীর নাম (Name)</TableHeaderCell>
-                    <TableHeaderCell>উপস্থিতি স্ট্যাটাস (Status)</TableHeaderCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {students.map((student) => (
-                    <TableRow key={student.id}>
-                      <TableCell className="font-bold text-xs">{student.roll}</TableCell>
-                      <TableCell className="font-bold text-xs">{language === "bn" ? student.nameBn : student.nameEn}</TableCell>
-                      <TableCell>
-                        <button
-                          type="button"
-                          onClick={() => handleToggleAttendance(student.id)}
-                          className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all border ${
-                            student.present
-                              ? "bg-green-50 border-green-200 text-green-700"
-                              : "bg-red-50 border-red-200 text-red-700"
-                          }`}
-                        >
-                          {student.present ? t("present") : t("absent")}
-                        </button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </TableContainer>
-            </CardContent>
-          </Card>
+              </div>
+            </div>
+            {/* Stats */}
+            <div className="lg:col-span-4 flex gap-4">
+              <div className="flex-1 bg-primary-container text-on-primary-container p-4 rounded-xl flex flex-col justify-center border border-primary-fixed shadow-sm">
+                <p className="font-label-sm text-primary-fixed uppercase tracking-wider">Total Students</p>
+                <p className="text-[28px] font-bold">{students.length}</p>
+              </div>
+              <div className="flex-1 bg-secondary-container text-on-secondary-container p-4 rounded-xl flex flex-col justify-center border border-secondary-fixed shadow-sm">
+                <p className="font-label-sm text-on-secondary-fixed-variant uppercase tracking-wider">Present Today</p>
+                <p className="text-[28px] font-bold">{students.filter(s => s.present).length}</p>
+              </div>
+            </div>
+            {/* Table */}
+            <div className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+              <div className="overflow-x-auto no-scrollbar">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="bg-surface-container text-left border-b border-outline-variant">
+                      <th className="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-widest">Roll No</th>
+                      <th className="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-widest">Student Name</th>
+                      <th className="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-widest text-right">Attendance Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-outline-variant">
+                    {students.map((student) => (
+                      <tr key={student.id} className="hover:bg-surface-container-low transition-colors group">
+                        <td className="px-6 py-4 font-label-md text-primary font-bold">{student.roll}</td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden">
+                              <img className="w-full h-full object-cover" src={student.avatar || ""} alt="" />
+                            </div>
+                            <div>
+                              <p className="font-label-md font-bold text-on-surface">{language === "bn" ? student.nameBn : student.nameEn}</p>
+                              <p className="font-label-sm text-on-surface-variant">{student.gender} • {student.group}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <div className="inline-flex bg-surface-container rounded-full p-1 border border-outline-variant">
+                            <button
+                              className={`attendance-active-${student.present ? "present" : "absent"} px-4 py-1.5 rounded-full font-label-sm flex items-center gap-1 transition-all`}
+                              onClick={() => handleToggleAttendance(student.id)}
+                            >
+                              {student.present ? t("present") : t("absent")}
+                            </button>
+                            <button
+                              className="px-4 py-1.5 rounded-full font-label-sm text-on-surface-variant hover:text-on-surface transition-all"
+                              onClick={() => handleToggleAttendance(student.id)}
+                            >
+                              {t("late")}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            {/* Save Attendance */}
+            <div className="flex space-x-2">
+              <Button size="sm" variant="secondary" onClick={handleSaveAttendance} className="flex items-center gap-2 font-bold">
+                <Save size={14} />
+                <span>{t("saveAttendance")}</span>
+              </Button>
+            </div>
+            {/* Saved Message */}
+            {attendanceSavedMsg && (
+              <div className="p-3 bg-green-50 dark:bg-green-950/20 text-brand-secondary dark:text-green-400 text-xs font-bold rounded-lg border border-green-200 dark:border-green-800 flex items-center space-x-1.5">
+                <CheckCircle size={14} />
+                <span>{attendanceSavedMsg}</span>
+              </div>
+            )}
+          </div>
         )}
 
-        {/* Tab 3: Enter Marks */}
+        {/* Tab 3: Enter Marks (Stitch Design) */}
         {tab === "marks" && (
-          <Card>
-            <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
-              <CardTitle className="text-base font-extrabold text-brand-primary dark:text-white flex items-center space-x-2">
-                <FileSpreadsheet size={18} />
-                <span>{t("enterMarks")}</span>
-              </CardTitle>
-
-              <div className="flex space-x-2">
-                <select
-                  value={gradeSubject}
-                  onChange={(e) => setGradeSubject(e.target.value)}
-                  className="px-2.5 py-1.5 border rounded-lg text-xs font-semibold bg-transparent outline-none border-gray-300 dark:border-slate-700 text-gray-900 dark:text-slate-100"
-                >
-                  <option value="Physics">পদার্থবিজ্ঞান (Physics)</option>
-                  <option value="Chemistry">রসায়ন (Chemistry)</option>
-                </select>
-                <Button size="sm" variant="primary" onClick={handleSaveGrades} className="flex items-center space-x-1 font-bold">
-                  <Save size={14} />
+          <div className="space-y-6">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                <h1 className="text-2xl font-bold text-primary flex items-center gap-2">
+                  <FileSpreadsheet size={22} />
+                  <span>{t("enterMarks")}</span>
+                </h1>
+                <nav className="flex items-center text-xs text-on-surface-variant mt-1 gap-1">
+                  <span>Teacher Portal</span>
+                  <ChevronRight size={12} />
+                  <span>Grading System</span>
+                  <ChevronRight size={12} />
+                  <span className="text-primary font-bold">Marks Entry</span>
+                </nav>
+              </div>
+              <div className="flex gap-3">
+                <div className="flex items-center bg-green-50 dark:bg-green-950/20 text-brand-secondary px-4 py-2 rounded-full border border-green-200 dark:border-green-800 text-xs font-bold gap-2">
+                  <FileSpreadsheet size={16} />
+                  <span>Status: Draft</span>
+                </div>
+                <Button variant="primary" onClick={handleSaveGrades} className="flex items-center gap-2 font-bold rounded-full px-6 py-2.5 shadow-md active:scale-95 transition-all">
+                  <Save size={16} />
                   <span>{t("submitMarks")}</span>
                 </Button>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              
-              {gradesSavedMsg && (
-                <div className="p-3 bg-green-50 dark:bg-green-950/20 text-brand-secondary dark:text-green-400 text-xs font-bold rounded-lg border border-green-200 dark:border-green-800 flex items-center space-x-1.5">
-                  <CheckCircle size={14} />
-                  <span>{gradesSavedMsg}</span>
-                </div>
-              )}
+            </div>
 
-              <TableContainer>
-                <TableHead>
-                  <TableRow>
-                    <TableHeaderCell>{t("roll")}</TableHeaderCell>
-                    <TableHeaderCell>শিক্ষার্থীর নাম (Name)</TableHeaderCell>
-                    <TableHeaderCell>প্রাপ্ত নম্বর (Obtained Mark)</TableHeaderCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {students.map((student) => (
-                    <TableRow key={student.id}>
-                      <TableCell className="font-bold text-xs">{student.roll}</TableCell>
-                      <TableCell className="font-bold text-xs">{language === "bn" ? student.nameBn : student.nameEn}</TableCell>
-                      <TableCell>
-                        <input
-                          type="number"
-                          value={studentMarks[student.id] || 0}
-                          onChange={(e) => handleMarkChange(student.id, e.target.value)}
-                          max={100}
-                          min={0}
-                          className="px-3 py-1.5 border rounded-lg text-xs font-bold w-20 text-center outline-none bg-transparent border-gray-300 dark:border-slate-700 text-slate-800 dark:text-white"
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </TableContainer>
-            </CardContent>
-          </Card>
+            {/* Saved Message */}
+            {gradesSavedMsg && (
+              <div className="p-3 bg-green-50 dark:bg-green-950/20 text-brand-secondary dark:text-green-400 text-xs font-bold rounded-lg border border-green-200 dark:border-green-800 flex items-center space-x-1.5">
+                <CheckCircle size={14} />
+                <span>{gradesSavedMsg}</span>
+              </div>
+            )}
+
+            {/* Bento Selectors Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm p-5 rounded-xl shadow-sm border border-outline-variant">
+                <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">শ্রেণী (Class)</label>
+                <div className="relative">
+                  <select className="w-full bg-surface-container-low dark:bg-slate-800 border border-outline-variant rounded-lg px-3 py-2 text-sm text-on-surface focus:ring-2 focus:ring-primary focus:border-transparent outline-none appearance-none">
+                    <option>HSC 1st Year (Science)</option>
+                    <option>HSC 2nd Year (Science)</option>
+                    <option>BBS Honors 1st Year</option>
+                  </select>
+                  <ChevronRight size={16} className="absolute right-3 top-2.5 text-gray-400 rotate-90 pointer-events-none" />
+                </div>
+              </div>
+              <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm p-5 rounded-xl shadow-sm border border-outline-variant">
+                <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">বিষয় (Subject)</label>
+                <div className="relative">
+                  <select
+                    value={gradeSubject}
+                    onChange={(e) => setGradeSubject(e.target.value)}
+                    className="w-full bg-surface-container-low dark:bg-slate-800 border border-outline-variant rounded-lg px-3 py-2 text-sm text-on-surface focus:ring-2 focus:ring-primary focus:border-transparent outline-none appearance-none"
+                  >
+                    <option value="Physics">Physics (Paper I)</option>
+                    <option value="Chemistry">Chemistry (Paper II)</option>
+                  </select>
+                  <ChevronRight size={16} className="absolute right-3 top-2.5 text-gray-400 rotate-90 pointer-events-none" />
+                </div>
+              </div>
+              <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm p-5 rounded-xl shadow-sm border border-outline-variant">
+                <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">পরীক্ষার ধরন (Exam Type)</label>
+                <div className="relative">
+                  <select className="w-full bg-surface-container-low dark:bg-slate-800 border border-outline-variant rounded-lg px-3 py-2 text-sm text-on-surface focus:ring-2 focus:ring-primary focus:border-transparent outline-none appearance-none">
+                    <option>Midterm Examination</option>
+                    <option>Final Examination</option>
+                    <option>Model Test</option>
+                  </select>
+                  <ChevronRight size={16} className="absolute right-3 top-2.5 text-gray-400 rotate-90 pointer-events-none" />
+                </div>
+              </div>
+              <div className="bg-primary text-white p-5 rounded-xl shadow-md flex items-center justify-between">
+                <div>
+                  <p className="text-xs opacity-80">Total Students</p>
+                  <p className="text-3xl font-bold leading-none mt-1">{students.length}</p>
+                </div>
+                <UserCheck size={36} className="opacity-40" />
+              </div>
+            </div>
+
+            {/* Sort & Search Bar */}
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3 bg-white dark:bg-slate-900 px-4 py-2 rounded-lg border border-outline-variant text-xs">
+                <span className="text-gray-400 font-semibold">Sort by:</span>
+                <button className="text-primary font-bold border-b-2 border-primary pb-0.5">Roll Number</button>
+                <button className="text-on-surface-variant hover:text-primary transition-colors">Student Name</button>
+              </div>
+              <div className="relative w-full md:w-64">
+                <input
+                  className="w-full pl-10 pr-4 py-2 rounded-lg border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent text-sm bg-white dark:bg-slate-900 outline-none"
+                  placeholder="Search Student..."
+                  type="text"
+                />
+                <Search size={16} className="absolute left-3 top-2.5 text-gray-400" />
+              </div>
+            </div>
+
+            {/* Marks Entry Table */}
+            <div className="bg-white dark:bg-slate-900 rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-surface-container-low dark:bg-slate-800/50 border-b border-outline-variant">
+                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-20">রোল (Roll)</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">শিক্ষার্থীর নাম (Student Name)</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-32">থিওরি (Theory)</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-32">ব্যবহারিক (Prac.)</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-32">মোট (Total)</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-outline-variant/30">
+                    {students.map((student) => {
+                      const theory = studentMarks[student.id] || 0;
+                      const prac = Math.round(theory * 0.25); // mock practical as 25% of theory
+                      const total = theory + prac;
+                      const totalColorClass = total >= 80
+                        ? "bg-green-50 dark:bg-green-950/30 text-brand-secondary dark:text-green-400 border border-green-200 dark:border-green-800"
+                        : total < 33
+                          ? "bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800"
+                          : "bg-blue-50 dark:bg-blue-950/30 text-primary border border-blue-200 dark:border-blue-800";
+                      return (
+                        <tr key={student.id} className="hover:bg-surface-container-low dark:hover:bg-slate-800/50 transition-colors group">
+                          <td className="px-6 py-4 text-sm text-primary font-bold">{student.roll}</td>
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
+                                {(language === "bn" ? student.nameBn : student.nameEn).substring(0, 2).toUpperCase()}
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-on-surface">{language === "bn" ? student.nameBn : student.nameEn}</p>
+                                <p className="text-xs text-gray-400">ID: {student.id}</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <input
+                              type="number"
+                              value={studentMarks[student.id] || 0}
+                              onChange={(e) => handleMarkChange(student.id, e.target.value)}
+                              max={80}
+                              min={0}
+                              className="w-24 px-3 py-1.5 rounded-md border border-outline-variant focus:ring-2 focus:ring-primary text-center text-sm bg-transparent outline-none"
+                            />
+                          </td>
+                          <td className="px-6 py-4">
+                            <input
+                              type="number"
+                              value={prac}
+                              readOnly
+                              className="w-24 px-3 py-1.5 rounded-md border border-outline-variant text-center text-sm bg-gray-50 dark:bg-slate-800 outline-none cursor-not-allowed"
+                            />
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className={`w-24 px-3 py-1.5 rounded-md text-center font-bold text-sm ${totalColorClass}`}>
+                              {total}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              {/* Table Footer */}
+              <div className="bg-surface-container-low dark:bg-slate-800/50 p-4 flex justify-between items-center border-t border-outline-variant">
+                <div className="flex gap-2 text-xs">
+                  <button className="px-4 py-2 rounded-lg border border-outline-variant hover:bg-white dark:hover:bg-slate-700 transition-all">Previous</button>
+                  <button className="px-4 py-2 rounded-lg bg-white dark:bg-slate-700 border border-outline-variant shadow-sm font-bold">1</button>
+                  <button className="px-4 py-2 rounded-lg border border-outline-variant hover:bg-white dark:hover:bg-slate-700 transition-all">Next</button>
+                </div>
+                <button onClick={handleSaveGrades} className="text-brand-secondary font-bold text-xs flex items-center gap-2 hover:bg-green-50 dark:hover:bg-green-950/20 px-4 py-2 rounded-lg transition-all">
+                  <Save size={16} />
+                  Save Progress
+                </button>
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Tab 4: Notices */}

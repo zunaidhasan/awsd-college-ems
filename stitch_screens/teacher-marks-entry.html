@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html class="light" lang="bn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>নম্বর এন্ট্রি - AWSD College EMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+Bengali:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#cfdbee",
+                    "secondary-fixed": "#95f8a7",
+                    "on-tertiary-fixed-variant": "#614000",
+                    "surface-light": "#F8FAFC",
+                    "gray-muted": "#64748B",
+                    "on-surface-variant": "#444651",
+                    "danger": "#EF4444",
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#f8f9ff",
+                    "on-secondary-fixed": "#00210a",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed": "#00164e",
+                    "tertiary-fixed-dim": "#ffba46",
+                    "background": "#f8f9ff",
+                    "on-surface": "#111c2a",
+                    "on-background": "#111c2a",
+                    "surface-container-highest": "#d8e3f6",
+                    "outline-variant": "#c5c5d3",
+                    "outline": "#757682",
+                    "primary": "#00236f",
+                    "surface-container": "#e5eeff",
+                    "primary-container": "#1e3a8a",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed": "#ffddb0",
+                    "secondary-fixed-dim": "#79db8d",
+                    "on-primary-fixed-variant": "#264191",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-secondary": "#ffffff",
+                    "inverse-surface": "#26313f",
+                    "on-primary-container": "#90a8ff",
+                    "error": "#ba1a1a",
+                    "surface-tint": "#4059aa",
+                    "on-secondary-fixed-variant": "#005323",
+                    "surface-variant": "#d8e3f6",
+                    "primary-fixed-dim": "#b6c4ff",
+                    "on-tertiary-fixed": "#281800",
+                    "surface": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#593a00",
+                    "tertiary": "#3c2600",
+                    "surface-container-low": "#eff4ff",
+                    "surface-container-high": "#dee9fc",
+                    "secondary": "#006d30",
+                    "on-tertiary-container": "#e39f24",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#92f5a4",
+                    "primary-fixed": "#dce1ff",
+                    "surface-dark": "#0F172A",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#007233",
+                    "inverse-primary": "#b6c4ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "base": "8px",
+                    "sidebar-width": "260px",
+                    "margin-mobile": "16px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Noto Sans Bengali"],
+                    "display-lg": ["Noto Sans Bengali"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Noto Sans Bengali"],
+                    "label-md": ["Inter"],
+                    "display-lg-mobile": ["Noto Sans Bengali"],
+                    "body-md": ["Inter"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', 'Noto Sans Bengali', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-50 flex justify-between items-center w-full px-gutter h-16 bg-surface-container-lowest border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold text-primary">AWSD College EMS</span>
+<div class="hidden md:flex gap-6 ml-8">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors cursor-pointer" href="#">Dashboard</a>
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1 cursor-pointer" href="#">Academic</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors cursor-pointer" href="#">Finance</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors cursor-pointer" href="#">Reports</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container rounded-full px-3 py-1 flex items-center gap-2 border border-outline-variant">
+<span class="text-label-sm font-label-sm text-primary">BN</span>
+<div class="w-[1px] h-4 bg-outline-variant"></div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">EN</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">notifications</span>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a South Asian male professor in a formal blue shirt, standing against a blurred academic background with bookshelves. The lighting is soft and studio-quality, emphasizing a professional yet approachable teacher persona for a high-end college management portal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClwwb48npT8TozJLw5d_OHEHnEcJ85yux2XMDhRwMbar7AiuiHgO7nWwlJMiX2BPCNBv9PSha1bq6nFvf9hQIv1GEkwAearzdUhK9X_OheQouRdk2ljYH19__d3lOhZxrIIMozheyvsUaK4TXlmfifGz6tIiVL_mV7FWgrW1_3y2OlRcAGRhHPW4k1tfIoM9zdX8tIOM-DJKj_VCVXNkj0-qMgPLf9FWSl2nUbpcIChcXTH1pkfEsQB89Nx40ool3vZGf6Aj__6p0t"/>
+</div>
+</div>
+</header>
+<div class="flex">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col h-[calc(100vh-64px)] w-sidebar-width fixed left-0 top-16 bg-surface-container-low border-r border-outline-variant pt-8 pb-4">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm font-bold text-on-surface">Admin Portal</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant">AWSD Degree College</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-all cursor-pointer mx-2 rounded-lg">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-label-md text-label-md">Overview</span>
+</div>
+<div class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-all cursor-pointer mx-2 rounded-lg">
+<span class="material-symbols-outlined mr-3">group</span>
+<span class="font-label-md text-label-md">Student Management</span>
+</div>
+<div class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-all cursor-pointer mx-2 rounded-lg">
+<span class="material-symbols-outlined mr-3">school</span>
+<span class="font-label-md text-label-md">Faculty Records</span>
+</div>
+<div class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-all cursor-pointer mx-2 rounded-lg">
+<span class="material-symbols-outlined mr-3">fact_check</span>
+<span class="font-label-md text-label-md">Attendance</span>
+</div>
+<div class="flex items-center px-6 py-3 bg-secondary-container text-on-secondary-container mx-2 rounded-lg cursor-pointer">
+<span class="material-symbols-outlined mr-3">grade</span>
+<span class="font-label-md text-label-md">Grading System</span>
+</div>
+<div class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-all cursor-pointer mx-2 rounded-lg">
+<span class="material-symbols-outlined mr-3">payments</span>
+<span class="font-label-md text-label-md">Fee Collection</span>
+</div>
+</nav>
+<div class="mt-auto pt-4 border-t border-outline-variant mx-4">
+<div class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all cursor-pointer rounded-lg">
+<span class="material-symbols-outlined mr-3">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</div>
+<div class="flex items-center px-4 py-3 text-danger hover:bg-error-container transition-all cursor-pointer rounded-lg">
+<span class="material-symbols-outlined mr-3">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-0 lg:ml-sidebar-width p-gutter">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary mb-1">নম্বর এন্ট্রি (Marks Entry)</h1>
+<nav class="flex items-center text-label-sm font-label-sm text-on-surface-variant">
+<span>Teacher Portal</span>
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<span>Grading System</span>
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<span class="text-primary font-bold">Marks Entry</span>
+</nav>
+</div>
+<div class="flex gap-3">
+<div class="flex items-center bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full border border-secondary/20">
+<span class="material-symbols-outlined mr-2 text-[20px]">drafts</span>
+<span class="text-label-md font-label-md">Status: Draft</span>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-md text-label-md flex items-center gap-2 hover:bg-primary-container transition-all shadow-md active:scale-95">
+<span class="material-symbols-outlined text-[20px]">send</span>
+                        Submit to Admin
+                    </button>
+</div>
+</div>
+<!-- Selectors Grid (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+<div class="glass-card p-5 rounded-xl shadow-sm">
+<label class="block text-label-sm font-label-sm text-gray-muted mb-2">শ্রেণী (Class)</label>
+<div class="relative">
+<select class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-on-surface font-body-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none appearance-none">
+<option>HSC 1st Year (Science)</option>
+<option>HSC 2nd Year (Science)</option>
+<option>BBS Honors 1st Year</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-gray-muted pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="glass-card p-5 rounded-xl shadow-sm">
+<label class="block text-label-sm font-label-sm text-gray-muted mb-2">বিষয় (Subject)</label>
+<div class="relative">
+<select class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-on-surface font-body-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none appearance-none">
+<option>Physics (Paper I)</option>
+<option>Chemistry (Paper II)</option>
+<option>Biology (Paper I)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-gray-muted pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="glass-card p-5 rounded-xl shadow-sm">
+<label class="block text-label-sm font-label-sm text-gray-muted mb-2">পরীক্ষার ধরন (Exam Type)</label>
+<div class="relative">
+<select class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-on-surface font-body-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none appearance-none">
+<option>Midterm Examination</option>
+<option>Final Examination</option>
+<option>Model Test</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-gray-muted pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="bg-primary text-on-primary p-5 rounded-xl shadow-md flex items-center justify-between">
+<div>
+<p class="text-label-sm font-label-sm opacity-80">Total Students</p>
+<p class="text-display-lg font-display-lg leading-none">৪৫</p>
+</div>
+<span class="material-symbols-outlined text-4xl opacity-40" style="font-variation-settings: 'FILL' 1;">groups</span>
+</div>
+</div>
+<!-- Table Filters -->
+<div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+<div class="flex items-center gap-3 bg-surface-container-lowest px-4 py-2 rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-gray-muted">filter_list</span>
+<span class="text-label-md font-label-md text-gray-muted">Sort by:</span>
+<button class="text-primary font-bold text-label-md border-b-2 border-primary">Roll Number</button>
+<button class="text-on-surface-variant text-label-md hover:text-primary transition-colors">Student Name</button>
+</div>
+<div class="relative w-full md:w-64">
+<input class="w-full pl-10 pr-4 py-2 rounded-lg border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Search Student..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-2 text-gray-muted">search</span>
+</div>
+</div>
+<!-- Interactive Grading Table -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-6 py-4 font-label-sm text-label-sm text-gray-muted uppercase tracking-wider w-20">রোল (Roll)</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-gray-muted uppercase tracking-wider">শিক্ষার্থীর নাম (Student Name)</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-gray-muted uppercase tracking-wider w-32">থিওরি (Theory)</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-gray-muted uppercase tracking-wider w-32">ব্যবহারিক (Prac.)</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-gray-muted uppercase tracking-wider w-32">মোট (Total)</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-gray-muted uppercase tracking-wider w-24">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30" id="marksTableBody">
+<!-- Student Row 1 -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-6 py-4 font-label-md text-label-md text-primary font-bold">১০১</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">AM</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium">আরিফুল ইসলাম (Ariful Islam)</p>
+<p class="text-xs text-gray-muted">ID: 2024-0012</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<input class="theory-input w-24 px-3 py-1.5 rounded-md border border-outline-variant focus:ring-2 focus:ring-primary text-center font-body-md" max="80" min="0" type="number" value="৭৫"/>
+</td>
+<td class="px-6 py-4">
+<input class="prac-input w-24 px-3 py-1.5 rounded-md border border-outline-variant focus:ring-2 focus:ring-primary text-center font-body-md" max="20" min="0" type="number" value="১৮"/>
+</td>
+<td class="px-6 py-4">
+<div class="total-display w-24 px-3 py-1.5 rounded-md bg-primary-fixed text-on-primary-fixed text-center font-bold font-body-md">৯৩</div>
+</td>
+<td class="px-6 py-4">
+<button class="opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:bg-primary-container p-2 rounded-full">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</td>
+</tr>
+<!-- Student Row 2 -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-6 py-4 font-label-md text-label-md text-primary font-bold">১০২</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-xs">TA</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium">তানজিলা আক্তার (Tanjila Akter)</p>
+<p class="text-xs text-gray-muted">ID: 2024-0015</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<input class="theory-input w-24 px-3 py-1.5 rounded-md border border-outline-variant focus:ring-2 focus:ring-primary text-center font-body-md" max="80" min="0" type="number" value="৬৮"/>
+</td>
+<td class="px-6 py-4">
+<input class="prac-input w-24 px-3 py-1.5 rounded-md border border-outline-variant focus:ring-2 focus:ring-primary text-center font-body-md" max="20" min="0" type="number" value="১৯"/>
+</td>
+<td class="px-6 py-4">
+<div class="total-display w-24 px-3 py-1.5 rounded-md bg-primary-fixed text-on-primary-fixed text-center font-bold font-body-md">৮৭</div>
+</td>
+<td class="px-6 py-4">
+<button class="opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:bg-primary-container p-2 rounded-full">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</td>
+</tr>
+<!-- Student Row 3 -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-6 py-4 font-label-md text-label-md text-primary font-bold">১০৩</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary/10 flex items-center justify-center text-tertiary font-bold text-xs">SM</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium">সোহেল মিয়া (Sohel Mia)</p>
+<p class="text-xs text-gray-muted">ID: 2024-0018</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<input class="theory-input w-24 px-3 py-1.5 rounded-md border border-outline-variant focus:ring-2 focus:ring-primary text-center font-body-md" max="80" min="0" type="number" value="৫২"/>
+</td>
+<td class="px-6 py-4">
+<input class="prac-input w-24 px-3 py-1.5 rounded-md border border-outline-variant focus:ring-2 focus:ring-primary text-center font-body-md" max="20" min="0" type="number" value="১৭"/>
+</td>
+<td class="px-6 py-4">
+<div class="total-display w-24 px-3 py-1.5 rounded-md bg-primary-fixed text-on-primary-fixed text-center font-bold font-body-md">৬৯</div>
+</td>
+<td class="px-6 py-4">
+<button class="opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:bg-primary-container p-2 rounded-full">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="bg-surface-container-low p-4 flex justify-between items-center border-t border-outline-variant">
+<div class="flex gap-2">
+<button class="px-4 py-2 rounded-lg border border-outline text-label-md font-label-md hover:bg-surface-variant transition-all">Previous</button>
+<button class="px-4 py-2 rounded-lg bg-white border border-outline-variant text-label-md font-label-md shadow-sm">1</button>
+<button class="px-4 py-2 rounded-lg border border-outline text-label-md font-label-md hover:bg-surface-variant transition-all">2</button>
+<button class="px-4 py-2 rounded-lg border border-outline text-label-md font-label-md hover:bg-surface-variant transition-all">Next</button>
+</div>
+<div class="flex gap-4">
+<button class="text-secondary font-bold text-label-md flex items-center gap-2 hover:bg-secondary-container/30 px-4 py-2 rounded-lg transition-all">
+<span class="material-symbols-outlined">save</span>
+                            Save Progress
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full py-base px-gutter flex flex-col md:flex-row justify-between items-center gap-4 bg-surface-container-high border-t border-outline-variant mt-12">
+<p class="font-label-sm text-label-sm text-on-surface-variant">© 2024 Abdul Wadud Shah Degree College (AWSD). All Rights Reserved.</p>
+<div class="flex gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Contact Support</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors font-bold" href="#">Digital Bangladesh</a>
+</div>
+</footer>
+<script>
+        // Auto-calculation logic
+        const rows = document.querySelectorAll('#marksTableBody tr');
+        
+        const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+        const toBengali = (num) => num.toString().split('').map(d => bengaliDigits[parseInt(d)] || d).join('');
+        const fromBengali = (str) => str.split('').map(d => bengaliDigits.indexOf(d) === -1 ? d : bengaliDigits.indexOf(d)).join('');
+
+        rows.forEach(row => {
+            const theoryInput = row.querySelector('.theory-input');
+            const pracInput = row.querySelector('.prac-input');
+            const totalDisplay = row.querySelector('.total-display');
+
+            const calculate = () => {
+                const tVal = theoryInput.value ? parseInt(fromBengali(theoryInput.value)) : 0;
+                const pVal = pracInput.value ? parseInt(fromBengali(pracInput.value)) : 0;
+                const total = tVal + pVal;
+                totalDisplay.innerText = toBengali(total);
+                
+                // Visual feedback for pass/fail or excellence
+                if (total >= 80) {
+                    totalDisplay.className = 'total-display w-24 px-3 py-1.5 rounded-md bg-secondary-container text-on-secondary-container text-center font-bold font-body-md shadow-sm';
+                } else if (total < 33) {
+                    totalDisplay.className = 'total-display w-24 px-3 py-1.5 rounded-md bg-error-container text-on-error-container text-center font-bold font-body-md shadow-sm';
+                } else {
+                    totalDisplay.className = 'total-display w-24 px-3 py-1.5 rounded-md bg-primary-fixed text-on-primary-fixed text-center font-bold font-body-md shadow-sm';
+                }
+            };
+
+            theoryInput.addEventListener('input', calculate);
+            pracInput.addEventListener('input', calculate);
+        });
+
+        // Search highlight interaction
+        const searchInput = document.querySelector('input[placeholder="Search Student..."]');
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            rows.forEach(row => {
+                const name = row.querySelector('.font-medium').innerText.toLowerCase();
+                const roll = row.querySelector('td:first-child').innerText.toLowerCase();
+                if (name.includes(term) || roll.includes(term)) {
+                    row.classList.remove('opacity-20');
+                } else {
+                    row.classList.add('opacity-20');
+                }
+            });
+        });
+    </script>
+</body></html>
