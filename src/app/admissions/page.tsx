@@ -209,10 +209,12 @@ export default function AdmissionsPage() {
                     ? "অনলাইনে আবেদন ফরম পূরণ করুন। আবেদন ফি বিকাশ/নগদের মাধ্যমে প্রদান করতে পারবেন।"
                     : "Fill out the online application form. Application fee can be paid via bKash/Nagad."}
                 </p>
-                <Button className="bg-brand-accent hover:bg-yellow-600 text-slate-900 font-bold px-8 py-3 rounded-full shadow-lg">
-                  <ExternalLink size={14} className="mr-2" />
-                  {t("admissionsApply")}
-                </Button>
+                <Link href="/register">
+                  <Button className="bg-brand-accent hover:bg-yellow-600 text-slate-900 font-bold px-8 py-3 rounded-full shadow-lg">
+                    <ExternalLink size={14} className="mr-2" />
+                    {t("admissionsApply")}
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
 
