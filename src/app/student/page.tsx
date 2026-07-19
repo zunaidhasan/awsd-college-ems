@@ -25,6 +25,7 @@ import {
   Award,
   AlertCircle,
   CheckCircle2,
+  Bell,
   Lock
 } from "lucide-react";
 
@@ -358,6 +359,102 @@ function StudentDashboardContent() {
               </TableContainer>
             </CardContent>
           </Card>
+        )}
+
+        {/* Tab 5: Notifications */}
+        {tab === "notifications" && (
+          <div className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  {language === "bn" ? "নোটিফিকেশন" : "Notifications"}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {[
+                  {
+                    iconType: "exam",
+                    titleBn: "অর্ধবার্ষিক পরীক্ষার রুটিন প্রকাশিত",
+                    titleEn: "Half-Yearly Exam Routine Published",
+                    bodyBn: "আগামী ১লা আগস্ট থেকে পরীক্ষা শুরু হবে। রুটিন কলেজের নোটিশ বোর্ডে দেওয়া হয়েছে।",
+                    bodyEn: "Exams start from August 1. Schedule is on the college notice board.",
+                    whenBn: "১০ মিনিট আগে",
+                    whenEn: "10 minutes ago",
+                    unread: true,
+                  },
+                  {
+                    iconType: "fee",
+                    titleBn: "পেমেন্ট গৃহীত: ৫০০ টাকা",
+                    titleEn: "Payment Received: ৳500",
+                    bodyBn: "লাইব্রেরি ও আইসিটি ল্যাব ফি সফলভাবে গৃহীত হয়েছে।",
+                    bodyEn: "Library & ICT Lab fee received successfully.",
+                    whenBn: "২ দিন আগে",
+                    whenEn: "2 days ago",
+                    unread: false,
+                  },
+                  {
+                    iconType: "event",
+                    titleBn: "সাংস্কৃতিক সপ্তাহ উদযাপন",
+                    titleEn: "Cultural Week Celebration",
+                    bodyBn: "আগামী ২৫শে ডিসেম্বর থেকে সাংস্কৃতিক সপ্তাহ শুরু হবে।",
+                    bodyEn: "Cultural week begins December 25. Save the date!",
+                    whenBn: "১ সপ্তাহ আগে",
+                    whenEn: "1 week ago",
+                    unread: false,
+                  },
+                  {
+                    iconType: "general",
+                    titleBn: "গ্রীষ্মকালীন অবকাশ নোটিশ",
+                    titleEn: "Summer Vacation Notice",
+                    bodyBn: "৩ জুলাই থেকে ১০ জুলাই পর্যন্ত কলেজ বন্ধ থাকবে।",
+                    bodyEn: "College closed from July 3 to July 10.",
+                    whenBn: "২ সপ্তাহ আগে",
+                    whenEn: "2 weeks ago",
+                    unread: false,
+                  },
+                ].map((n, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex items-start gap-3 p-3 rounded-md border transition-colors ${
+                      n.unread
+                        ? "border-brand-primary/30 bg-brand-primary/5"
+                        : "border-outline-variant bg-white dark:bg-slate-900"
+                    }`}
+                  >
+                    <div
+                      className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
+                        n.iconType === "exam"
+                          ? "bg-brand-primary/10 text-brand-primary"
+                          : n.iconType === "fee"
+                          ? "bg-brand-secondary/10 text-brand-secondary"
+                          : n.iconType === "event"
+                          ? "bg-brand-accent/10 text-brand-accent"
+                          : "bg-slate-100 text-slate-600"
+                      }`}
+                    >
+                      <Bell size={18} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <p className="text-sm font-bold text-gray-800 dark:text-white truncate">
+                          {language === "bn" ? n.titleBn : n.titleEn}
+                        </p>
+                        {n.unread && (
+                          <span className="shrink-0 w-2 h-2 rounded-full bg-brand-primary" aria-label="unread" />
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed mt-0.5">
+                        {language === "bn" ? n.bodyBn : n.bodyEn}
+                      </p>
+                      <p className="text-[10px] font-semibold text-gray-400 mt-1 uppercase tracking-wider">
+                        {language === "bn" ? n.whenBn : n.whenEn}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
         )}
       </main>
 

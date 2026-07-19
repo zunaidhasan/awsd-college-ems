@@ -57,6 +57,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
           { label: t("timetable"), href: `${prefix}?tab=schedule`, icon: Calendar },
           { label: t("results"), href: `${prefix}?tab=results`, icon: FileSpreadsheet },
           { label: t("feesPayment"), href: `${prefix}?tab=fees`, icon: CreditCard },
+          { label: t("notifications"), href: `${prefix}?tab=notifications`, icon: Bell },
         ];
       default:
         return [];
