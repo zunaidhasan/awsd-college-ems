@@ -1,12 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { useLanguage } from "../../context/LanguageContext";
 import { Footer } from "../../components/layout/Footer";
 import { Card, CardContent } from "../../components/ui/Card";
 import { Badge } from "../../components/ui/Badge";
-import { Building2, UserCircle2, Search, ChevronLeft } from "lucide-react";
+import { Reveal } from "../../components/ui/Reveal";
+import { EmptyState } from "../../components/ui/EmptyState";
+import { Building2, Search, ChevronLeft, Users } from "lucide-react";
 
 const facultyMembers = [
   { id: "f-1", nameBn: "ড. মো: কামরুজ্জামান", nameEn: "Dr. Md. Kamruzzaman", designationBn: "শ্রেণী শিক্ষক, পদার্থবিজ্ঞান", designationEn: "Class Teacher, Physics", departmentBn: "বিজ্ঞান", departmentEn: "Science", photoTag: "KK" },
@@ -19,6 +21,16 @@ const facultyMembers = [
 
 export default function FacultyPage() {
   const { language, t } = useLanguage();
+  const [query, setQuery] = useState("");
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return facultyMembers;
+    return facultyMembers.filter((m) =>
+      [m.nameBn, m.nameEn, m.designationBn, m.designationEn, m.departmentBn, m.departmentEn]
+        .some((field) => field.toLowerCase().includes(q)),
+    );
+  }, [query]);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
@@ -46,32 +58,53 @@ export default function FacultyPage() {
           </div>
           <div className="flex items-center gap-2 bg-white dark:bg-slate-900 rounded-full px-4 py-2 border border-slate-200 dark:border-slate-800 shadow-sm">
             <Search size={16} className="text-slate-500" />
-            <input type="search" placeholder={language === "bn" ? "শিক্ষক অনুসন্ধান করুন" : "Search faculty"} className="bg-transparent outline-none text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 w-full" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={language === "bn" ? "শিক্ষক অনুসন্ধান করুন" : "Search faculty"}
+              aria-label={language === "bn" ? "শিক্ষক অনুসন্ধান করুন" : "Search faculty"}
+              className="bg-transparent outline-none text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 w-full min-w-[10rem]"
+            />
           </div>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {facultyMembers.map((member) => (
-            <Card key={member.id} className="group overflow-hidden hover:-translate-y-1 transition-all duration-300">
-              <div className="h-64 bg-gradient-to-br from-blue-500 to-indigo-700 relative">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.12),transparent_30%)] opacity-90" />
-                <div className="absolute inset-x-0 bottom-0 p-6">
-                  <div className="w-20 h-20 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-xl font-black text-white shadow-lg">
-                    {member.photoTag}
+        {filtered.length > 0 ? (
+          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {filtered.map((member, idx) => (
+              <Reveal key={member.id} delay={idx * 70}>
+                <Card className="group h-full overflow-hidden hover:-translate-y-1 transition-all duration-300">
+                  <div className="h-64 bg-gradient-to-br from-blue-500 to-indigo-700 relative">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.12),transparent_30%)] opacity-90 transition-opacity duration-500 group-hover:opacity-100" />
+                    <div className="absolute inset-x-0 bottom-0 p-6">
+                      <div className="w-20 h-20 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-xl font-black text-white shadow-lg transition-transform duration-300 group-hover:scale-105">
+                        {member.photoTag}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <CardContent className="p-6 bg-white dark:bg-slate-900">
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white">{language === "bn" ? member.nameBn : member.nameEn}</h3>
-                <p className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-semibold mt-2">{language === "bn" ? member.designationBn : member.designationEn}</p>
-                <div className="mt-4 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
-                  <span>{language === "bn" ? member.departmentBn : member.departmentEn}</span>
-                  <Badge variant="secondary" className="text-[10px] uppercase">{language === "bn" ? "দল" : "Department"}</Badge>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                  <CardContent className="p-6 bg-white dark:bg-slate-900">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">{language === "bn" ? member.nameBn : member.nameEn}</h3>
+                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-semibold mt-2">{language === "bn" ? member.designationBn : member.designationEn}</p>
+                    <div className="mt-4 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                      <span>{language === "bn" ? member.departmentBn : member.departmentEn}</span>
+                      <Badge variant="secondary" className="text-[10px] uppercase">{language === "bn" ? "বিভাগ" : "Department"}</Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Reveal>
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            icon={<Users size={40} />}
+            title={language === "bn" ? "কোনো শিক্ষক পাওয়া যায়নি" : "No faculty found"}
+            description={
+              language === "bn"
+                ? `"${query}" এর সাথে মিলে এমন কোনো শিক্ষক নেই। অন্য নাম বা বিভাগ দিয়ে চেষ্টা করুন।`
+                : `No faculty match "${query}". Try another name or department.`
+            }
+          />
+        )}
       </section>
 
       <Footer />

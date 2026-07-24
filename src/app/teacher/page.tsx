@@ -11,8 +11,12 @@ import { Button } from "../../components/ui/Button";
 import { Badge } from "../../components/ui/Badge";
 import { Input } from "../../components/ui/Input";
 import { TableContainer, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "../../components/ui/Table";
-import { mockClassStudents, mockTimetable, mockNotices } from "../../data/mockData";
+import { Skeleton, SkeletonCard } from "../../components/ui/Skeleton";
+import { Spinner } from "../../components/ui/Spinner";
+import { mockClassStudents, mockNotices, Notice } from "../../data/mockData";
 import { useRequireAuth } from "../../hooks/useRequireAuth";
+import { getNotices } from "../../lib/services/notices";
+import { getAllStudents, type RosterStudent } from "../../lib/services/students";
 import {
   Calendar,
   UserCheck,
@@ -37,8 +41,31 @@ function TeacherDashboardContent() {
 
   // Attendance management states
   const [selectedClass, setSelectedClass] = useState("Class 11");
-  const [students, setStudents] = useState(mockClassStudents);
+  const [students, setStudents] = useState<RosterStudent[]>(mockClassStudents);
+  const [notices, setNotices] = useState<Notice[]>(mockNotices);
   const [attendanceSavedMsg, setAttendanceSavedMsg] = useState("");
+
+  // Load live roster + notices; keep mock data on failure so the dashboard
+  // still renders when the backend is unreachable.
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const [liveStudents, liveNotices] = await Promise.all([
+          getAllStudents(),
+          getNotices(),
+        ]);
+        if (!active) return;
+        if (liveStudents.length) setStudents(liveStudents);
+        if (liveNotices.length) setNotices(liveNotices);
+      } catch (err) {
+        console.warn("[teacher] live data fetch failed, using mock data:", err);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // New: handle attendance toggle for individual student
   const handleToggleAttendance = (id: string) => {
@@ -81,6 +108,28 @@ function TeacherDashboardContent() {
         : `Marks for ${gradeSubject} saved successfully!`
     );
     setTimeout(() => setGradesSavedMsg(""), 4000);
+  }
+
+  if (!ready) {
+    return (
+      <div className="flex min-h-[calc(100vh-4rem)]">
+        <div className="hidden lg:block w-64 shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4 space-y-3">
+          <Skeleton width="w-full" height="h-10" className="rounded-xl" />
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} width="w-full" height="h-9" className="rounded-lg" />
+          ))}
+        </div>
+        <div className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6" aria-busy="true" aria-label="Loading teacher dashboard">
+          <Skeleton width="w-64" height="h-8" className="rounded-lg" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </div>
+          <SkeletonCard />
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -229,8 +278,14 @@ function TeacherDashboardContent() {
                         <td className="px-6 py-4 font-label-md text-primary font-bold">{student.roll}</td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden">
-                              <img className="w-full h-full object-cover" src={student.avatar || ""} alt="" />
+                            <div className="w-10 h-10 rounded-full overflow-hidden bg-surface-container-highest">
+                              {student.avatar ? (
+                                <img className="w-full h-full object-cover" src={student.avatar} alt="" />
+                              ) : (
+                                <span className="flex h-full w-full items-center justify-center bg-brand-primary/10 text-xs font-bold text-brand-primary">
+                                  {(language === "bn" ? student.nameBn : student.nameEn).trim().charAt(0).toUpperCase()}
+                                </span>
+                              )}
                             </div>
                             <div>
                               <p className="font-label-md font-bold text-on-surface">{language === "bn" ? student.nameBn : student.nameEn}</p>
@@ -471,7 +526,7 @@ function TeacherDashboardContent() {
               </CardTitle>
             </CardHeader>
             <CardContent className="divide-y divide-gray-150 dark:divide-slate-850 space-y-3.5">
-              {mockNotices.map((n) => (
+              {notices.map((n) => (
                 <div key={n.id} className="pt-3.5 first:pt-0">
                   <div className="flex items-center space-x-2 mb-1">
                     <span className="text-[10px] text-gray-400 font-bold">{n.date}</span>
@@ -495,7 +550,7 @@ function TeacherDashboardContent() {
 
 export default function TeacherDashboard() {
   return (
-    <Suspense fallback={<div className="p-6 text-center text-xs font-bold text-gray-500">Loading Teacher Dashboard...</div>}>
+    <Suspense fallback={<div className="flex min-h-[calc(100vh-4rem)] items-center justify-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400"><Spinner size={18} /> Loading dashboard…</div>}>
       <TeacherDashboardContent />
     </Suspense>
   );

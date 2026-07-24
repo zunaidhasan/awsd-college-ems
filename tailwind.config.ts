@@ -38,7 +38,14 @@ const config: Config = {
           850: "#1e2937",
         },
         slate: {
+          150: "#e9eef5",
           850: "#0f172a",
+          955: "#020617",
+        },
+        gray: {
+          150: "#eceef1",
+          450: "#8b8e98",
+          650: "#4b4e57",
         },
         yellow: {
           350: "#ca8a04",
@@ -123,6 +130,9 @@ const config: Config = {
         18: "4.5rem",
         22: "5.5rem",
         26: "6.5rem",
+      },
+      scale: {
+        102: "1.02",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

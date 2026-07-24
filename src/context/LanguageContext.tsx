@@ -194,7 +194,7 @@ const translations: Record<Language, Record<string, string>> = {
   },
   en: {
     // Branding & Header
-    collegeName: "ABDUL WADOD SHAH DEGREE COLLEGE",
+    collegeName: "ABDUL WADUD SHAH DEGREE COLLEGE",
     collegeNameEMS: "AWS Degree College EMS",
     collegeTagline: "The Beacon of Education, Culture & Progress",
     home: "Home",

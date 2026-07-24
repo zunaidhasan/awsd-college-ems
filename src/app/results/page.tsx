@@ -126,7 +126,7 @@ export default function ResultsSearchPage() {
               {/* College Logo / Header for report card */}
               <div className="text-center pb-4 border-b border-gray-200 dark:border-slate-850">
                 <h3 className="text-base font-extrabold text-brand-primary dark:text-brand-accent">
-                  আব্দুল ওদুদ শাহ ডিগ্রী কলেজ, নাটোর
+                  আবদুল ওদুদ শাহ্ ডিগ্রী কলেজ, চুয়াডাঙ্গা
                 </h3>
                 <p className="text-[10px] text-gray-500 font-bold uppercase mt-0.5">ACADEMIC REPORT CARD</p>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-left text-xs text-gray-650 font-semibold p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">

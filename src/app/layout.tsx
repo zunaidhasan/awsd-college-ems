@@ -3,6 +3,7 @@ import { Inter, Noto_Sans_Bengali } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "../context/LanguageContext";
 import { ThemeProvider } from "../context/ThemeContext";
+import { ToastProvider } from "../components/ui/Toast";
 import { TopNavbar } from "../components/layout/TopNavbar";
 
 const inter = Inter({ 
@@ -20,7 +21,7 @@ const notoBengali = Noto_Sans_Bengali({
 
 export const metadata: Metadata = {
   title: "Abdul Wadud Shah Degree College EMS",
-  description: "Education Management System - AWSD Degree College, Lalpur, Natore",
+  description: "Education Management System - AWSD Degree College, Damurhuda, Chuadanga",
   icons: {
     icon: "/images/favicon.ico",
   },
@@ -39,10 +40,12 @@ export default function RootLayout({
       <body className={`${inter.variable} ${notoBengali.variable} font-sans min-h-screen flex flex-col overflow-x-hidden transition-colors duration-200 bg-[var(--color-bg)] text-[var(--color-text)]`}>
         <ThemeProvider>
           <LanguageProvider>
-            <TopNavbar />
-            <main className="flex-1 flex flex-col">
-              {children}
-            </main>
+            <ToastProvider>
+              <TopNavbar />
+              <main className="flex-1 flex flex-col">
+                {children}
+              </main>
+            </ToastProvider>
           </LanguageProvider>
         </ThemeProvider>
       </body>

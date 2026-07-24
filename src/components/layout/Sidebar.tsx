@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useLanguage } from "../../context/LanguageContext";
-import { clearSessionUser } from "../../lib/auth";
+import { logout } from "../../lib/auth";
 import {
   LayoutDashboard,
   Users,
@@ -28,8 +28,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
   const router = useRouter();
   const { t } = useLanguage();
 
-  const handleLogout = () => {
-    clearSessionUser();
+  const handleLogout = async () => {
+    await logout();
     router.push("/");
   };
 

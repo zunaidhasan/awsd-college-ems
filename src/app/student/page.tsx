@@ -11,8 +11,14 @@ import { Button } from "../../components/ui/Button";
 import { Badge } from "../../components/ui/Badge";
 import { TableContainer, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "../../components/ui/Table";
 import { Modal } from "../../components/ui/Modal";
-import { mockTimetable, mockResults, mockInvoices, studentProfile, Invoice } from "../../data/mockData";
+import { Skeleton, SkeletonCard } from "../../components/ui/Skeleton";
+import { EmptyState } from "../../components/ui/EmptyState";
+import { mockTimetable, mockResults, mockInvoices, studentProfile as mockStudentProfile, Invoice, StudentProfile, StudentResult } from "../../data/mockData";
 import { useRequireAuth } from "../../hooks/useRequireAuth";
+import { getStudentProfile } from "../../lib/services/profile";
+import { getMyWard } from "../../lib/services/guardian";
+import { fetchStudentResults, overallGpa } from "../../lib/services/results";
+import { getInvoicesByStudent } from "../../lib/services/finance";
 import {
   Calendar,
   FileSpreadsheet,
@@ -40,10 +46,50 @@ function StudentDashboardContent() {
   const userName = user?.name ?? "Arif Rahman";
   const isGuardian = user?.role === "guardian" || mode === "guardian";
 
-  // Invoices and Payment state
+  // Live data (falls back to mock data if the backend is unreachable or the
+  // account has no linked student profile — e.g. guardian mode).
+  const [profile, setProfile] = useState<StudentProfile>(mockStudentProfile);
+  const [results, setResults] = useState<StudentResult[]>(mockResults);
   const [invoices, setInvoices] = useState<Invoice[]>(mockInvoices);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
-  
+
+  // Fetch this student's live data once auth is ready. Guardians currently keep
+  // Fetch live data once auth is ready. Students load their own linkedProfileId;
+  // guardians first resolve their ward's studentId, then load the same data.
+  useEffect(() => {
+    if (!ready) return;
+
+    let cancelled = false;
+    (async () => {
+      // Determine which student's data to load.
+      let studentId = user?.linkedProfileId;
+      if (isGuardian) {
+        try {
+          const ward = await getMyWard();
+          studentId = ward.studentId;
+        } catch {
+          // No ward linked / endpoint unavailable — keep mock data.
+          return;
+        }
+      }
+      if (cancelled || !studentId) return;
+
+      const [p, r, inv] = await Promise.allSettled([
+        getStudentProfile(studentId),
+        fetchStudentResults(studentId),
+        getInvoicesByStudent(studentId),
+      ]);
+      if (cancelled) return;
+      if (p.status === "fulfilled") setProfile(p.value);
+      if (r.status === "fulfilled") setResults(r.value);
+      if (inv.status === "fulfilled" && inv.value.length > 0) setInvoices(inv.value);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [ready, isGuardian, user?.linkedProfileId]);
+
   // bKash gateway simulator states
   const [bkashStep, setBkashStep] = useState<number>(1);
   const [bkashPhone, setBkashPhone] = useState<string>("01712123456");
@@ -51,7 +97,25 @@ function StudentDashboardContent() {
   const [bkashPin, setBkashPin] = useState<string>("");
 
   if (!ready) {
-    return <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center text-sm font-semibold text-slate-500">Loading student dashboard...</div>;
+    return (
+      <div className="flex min-h-[calc(100vh-4rem)]">
+        <div className="hidden lg:block w-64 shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4 space-y-3">
+          <Skeleton height="h-10" className="rounded-xl" />
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Skeleton key={i} height="h-9" className="rounded-lg" />
+          ))}
+        </div>
+        <div className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6" aria-busy="true" aria-label="Loading student dashboard">
+          <Skeleton height="h-8" width="w-64" className="rounded-lg" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </div>
+          <SkeletonCard />
+        </div>
+      </div>
+    );
   }
 
   const handleOpenBkash = (invoice: Invoice) => {
@@ -75,7 +139,7 @@ function StudentDashboardContent() {
       setBkashStep(3); // Proceed to PIN
     } else if (bkashStep === 3) {
       if (!bkashPin) return;
-      
+
       // Update Payment status in local state
       if (selectedInvoice) {
         const updated = invoices.map((inv) => {
@@ -98,13 +162,22 @@ function StudentDashboardContent() {
     window.print();
   };
 
+  // Derived from live data so the summary tiles never drift from the tables.
+  const dueTotal = invoices
+    .filter((inv) => inv.status !== "paid")
+    .reduce((sum, inv) => sum + inv.amount, 0);
+  const avgGpa = overallGpa(results);
+  // Letter grade for the average GPA (Bangladesh GPA-5 scale).
+  const avgGrade =
+    avgGpa >= 5 ? "A+" : avgGpa >= 4 ? "A" : avgGpa >= 3.5 ? "A-" : avgGpa >= 3 ? "B" : avgGpa >= 2 ? "C" : avgGpa >= 1 ? "D" : "F";
+
   return (
     <div className="flex flex-1 min-h-[calc(100vh-4rem)]">
       <Sidebar role={isGuardian ? "guardian" : "student"} />
 
       {/* Main Area */}
       <main className="flex-1 bg-slate-50 dark:bg-slate-950 p-4 sm:p-6 lg:p-8 space-y-6 pb-20 md:pb-8">
-        
+
         {/* Guardian Mode Banner */}
         {isGuardian && (
           <div className="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-900 rounded-xl p-3.5 flex items-center space-x-2 text-yellow-800 dark:text-yellow-400 text-xs font-bold shadow-sm">
@@ -118,26 +191,26 @@ function StudentDashboardContent() {
           <div>
             <h2 className="text-xl sm:text-2xl font-black flex items-center space-x-2">
               <GraduationCap className="text-brand-accent animate-pulse" size={24} />
-              <span>{t("welcome")}, {isGuardian ? studentProfile.nameBn : userName}</span>
+              <span>{t("welcome")}, {isGuardian ? profile.nameBn : userName}</span>
             </h2>
             <p className="text-xs text-slate-300 font-semibold mt-1">
-              {studentProfile.classBn} | {studentProfile.sectionBn} | {t("roll")}: {studentProfile.roll}
+              {profile.classBn} | {profile.sectionBn} | {t("roll")}: {profile.roll}
             </p>
           </div>
           <div className="text-xs space-y-1">
-            <p><b>রেজি নং:</b> {studentProfile.regNo}</p>
-            <p><b>রক্তের গ্রুপ:</b> {studentProfile.bloodGroup}</p>
+            <p><b>রেজি নং:</b> {profile.regNo}</p>
+            <p><b>রক্তের গ্রুপ:</b> {profile.bloodGroup}</p>
           </div>
         </div>
 
         {/* Tab 1: Overview */}
         {tab === "overview" && (
           <div className="space-y-6">
-            
+
             {/* Quick Metrics */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {/* Radial attendance circle preview */}
-              <Card className="flex items-center space-x-4 p-5">
+              <Card className="flex items-center space-x-4 p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <div className="relative w-14 h-14 flex items-center justify-center">
                   <svg className="w-full h-full transform -rotate-90">
                     <circle cx="28" cy="28" r="24" stroke="#e2e8f0" strokeWidth="4" fill="transparent" />
@@ -149,12 +222,12 @@ function StudentDashboardContent() {
                       strokeWidth="4"
                       fill="transparent"
                       strokeDasharray={2 * Math.PI * 24}
-                      strokeDashoffset={2 * Math.PI * 24 * (1 - studentProfile.attendancePercentage / 100)}
+                      strokeDashoffset={2 * Math.PI * 24 * (1 - profile.attendancePercentage / 100)}
                       strokeLinecap="round"
                     />
                   </svg>
                   <span className="absolute text-[10px] font-black text-gray-800 dark:text-white">
-                    {studentProfile.attendancePercentage}%
+                    {profile.attendancePercentage}%
                   </span>
                 </div>
                 <div>
@@ -163,23 +236,23 @@ function StudentDashboardContent() {
                 </div>
               </Card>
 
-              <Card className="flex items-center space-x-4 p-5">
+              <Card className="flex items-center space-x-4 p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <div className="w-12 h-12 bg-yellow-50 dark:bg-yellow-950/20 text-brand-accent rounded-full flex items-center justify-center font-black">
                   <Award size={22} />
                 </div>
                 <div>
                   <p className="text-[10px] text-gray-500 font-bold uppercase">{t("gpa")}</p>
-                  <p className="text-lg font-black text-gray-900 dark:text-white">{studentProfile.gpa} / ৫.০০</p>
+                  <p className="text-lg font-black text-gray-900 dark:text-white">{profile.gpa} / ৫.০০</p>
                 </div>
               </Card>
 
-              <Card className="flex items-center space-x-4 p-5">
+              <Card className="flex items-center space-x-4 p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <div className="w-12 h-12 bg-red-50 dark:bg-red-950/20 text-red-500 rounded-full flex items-center justify-center font-black">
                   <CreditCard size={22} />
                 </div>
                 <div>
                   <p className="text-[10px] text-gray-500 font-bold uppercase">{t("dueFees")}</p>
-                  <p className="text-lg font-black text-gray-900 dark:text-white">৳৫,৭০০</p>
+                  <p className="text-lg font-black text-gray-900 dark:text-white">৳{dueTotal.toLocaleString()}</p>
                 </div>
               </Card>
             </div>
@@ -191,13 +264,13 @@ function StudentDashboardContent() {
               </CardHeader>
               <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-semibold">
                 <div className="space-y-3.5">
-                  <p className="border-b pb-1"><span className="text-gray-500">বাবার নাম (Father&apos;s Name):</span> <span className="float-right text-gray-800 dark:text-white">{language === "bn" ? studentProfile.guardianNameBn : studentProfile.guardianNameEn}</span></p>
-                  <p className="border-b pb-1"><span className="text-gray-500">মোবাইল (Phone):</span> <span className="float-right text-gray-800 dark:text-white">{studentProfile.phone}</span></p>
-                  <p className="border-b pb-1"><span className="text-gray-500">জন্ম তারিখ (DOB):</span> <span className="float-right text-gray-800 dark:text-white">{studentProfile.dob}</span></p>
+                  <p className="border-b pb-1"><span className="text-gray-500">বাবার নাম (Father&apos;s Name):</span> <span className="float-right text-gray-800 dark:text-white">{language === "bn" ? profile.guardianNameBn : profile.guardianNameEn}</span></p>
+                  <p className="border-b pb-1"><span className="text-gray-500">মোবাইল (Phone):</span> <span className="float-right text-gray-800 dark:text-white">{profile.phone}</span></p>
+                  <p className="border-b pb-1"><span className="text-gray-500">জন্ম তারিখ (DOB):</span> <span className="float-right text-gray-800 dark:text-white">{profile.dob}</span></p>
                 </div>
                 <div className="space-y-3.5">
-                  <p className="border-b pb-1"><span className="text-gray-500">ইমেইল (Email):</span> <span className="float-right text-gray-800 dark:text-white">{studentProfile.email}</span></p>
-                  <p className="border-b pb-1"><span className="text-gray-500">ঠিকানা (Address):</span> <span className="float-right text-gray-800 dark:text-white">{language === "bn" ? studentProfile.addressBn : studentProfile.addressEn}</span></p>
+                  <p className="border-b pb-1"><span className="text-gray-500">ইমেইল (Email):</span> <span className="float-right text-gray-800 dark:text-white">{profile.email}</span></p>
+                  <p className="border-b pb-1"><span className="text-gray-500">ঠিকানা (Address):</span> <span className="float-right text-gray-800 dark:text-white">{language === "bn" ? profile.addressBn : profile.addressEn}</span></p>
                 </div>
               </CardContent>
             </Card>
@@ -266,10 +339,10 @@ function StudentDashboardContent() {
               </Button>
             </CardHeader>
             <CardContent className="space-y-4">
-              
+
               <div className="text-center py-4 border-b border-gray-150 dark:border-slate-800">
                 <h3 className="text-sm font-extrabold text-brand-primary dark:text-brand-accent uppercase tracking-wider">এইচএসসি অর্ধবার্ষিক পরীক্ষার ফলাফল বিবরণী ২০২৬</h3>
-                <p className="text-[10px] text-gray-500 font-bold mt-0.5">আব্দুল ওদুদ শাহ ডিগ্রী কলেজ, নাটোর</p>
+                <p className="text-[10px] text-gray-500 font-bold mt-0.5">আবদুল ওদুদ শাহ্ ডিগ্রী কলেজ, চুয়াডাঙ্গা</p>
               </div>
 
               <TableContainer>
@@ -283,7 +356,7 @@ function StudentDashboardContent() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {mockResults.map((res, idx) => (
+                  {results.map((res, idx) => (
                     <TableRow key={idx}>
                       <TableCell className="font-bold text-xs">
                         {language === "bn" ? res.subjectBn : res.subjectEn}
@@ -303,7 +376,7 @@ function StudentDashboardContent() {
 
               <div className="flex justify-between items-center p-4 bg-slate-100 dark:bg-slate-900 rounded-lg text-xs font-black">
                 <span>গড় জিপিএ (GPA AVERAGE)</span>
-                <span className="text-brand-secondary dark:text-green-400 text-sm">GPA 4.83 (A)</span>
+                <span className="text-brand-secondary dark:text-green-400 text-sm">GPA {avgGpa.toFixed(2)} ({avgGrade})</span>
               </div>
             </CardContent>
           </Card>
@@ -415,22 +488,20 @@ function StudentDashboardContent() {
                 ].map((n, idx) => (
                   <div
                     key={idx}
-                    className={`flex items-start gap-3 p-3 rounded-md border transition-colors ${
-                      n.unread
-                        ? "border-brand-primary/30 bg-brand-primary/5"
-                        : "border-outline-variant bg-white dark:bg-slate-900"
-                    }`}
+                    className={`flex items-start gap-3 p-3 rounded-md border transition-colors ${n.unread
+                      ? "border-brand-primary/30 bg-brand-primary/5"
+                      : "border-outline-variant bg-white dark:bg-slate-900"
+                      }`}
                   >
                     <div
-                      className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
-                        n.iconType === "exam"
-                          ? "bg-brand-primary/10 text-brand-primary"
-                          : n.iconType === "fee"
+                      className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${n.iconType === "exam"
+                        ? "bg-brand-primary/10 text-brand-primary"
+                        : n.iconType === "fee"
                           ? "bg-brand-secondary/10 text-brand-secondary"
                           : n.iconType === "event"
-                          ? "bg-brand-accent/10 text-brand-accent"
-                          : "bg-slate-100 text-slate-600"
-                      }`}
+                            ? "bg-brand-accent/10 text-brand-accent"
+                            : "bg-slate-100 text-slate-600"
+                        }`}
                     >
                       <Bell size={18} />
                     </div>

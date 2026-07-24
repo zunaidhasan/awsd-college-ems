@@ -12,7 +12,7 @@ export const Footer: React.FC = () => {
   const govtLinks = [
     { label: "Ministry of Education", url: "http://www.moedu.gov.bd" },
     { label: "DSHE", url: "http://www.dshe.gov.bd" },
-    { label: "Rajshahi Education Board", url: "http://www.rajshahieducationboard.gov.bd" },
+    { label: "Jessore Education Board", url: "https://www.jessoreboard.gov.bd" },
     { label: "National University", url: "http://www.nu.ac.bd" },
   ];
 

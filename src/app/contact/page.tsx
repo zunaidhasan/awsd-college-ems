@@ -23,10 +23,47 @@ import {
 export default function ContactPage() {
   const { language, t } = useLanguage();
   const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
+  const [errors, setErrors] = useState<Partial<Record<keyof typeof formData, string>>>({});
   const [submitted, setSubmitted] = useState(false);
+
+  // Bangladeshi mobile: 11 digits starting 01, optionally +880 / leading zero
+  // stripped. Accepts common separators (space / dash) which we strip first.
+  const isValidBdPhone = (raw: string) => {
+    const digits = raw.replace(/[\s-]/g, "").replace(/^\+?880/, "0");
+    return /^01[3-9]\d{8}$/.test(digits);
+  };
+
+  const validate = () => {
+    const next: Partial<Record<keyof typeof formData, string>> = {};
+    if (formData.name.trim().length < 2) {
+      next.name = language === "bn" ? "অনুগ্রহ করে আপনার পুরো নাম লিখুন।" : "Please enter your full name.";
+    }
+    if (!isValidBdPhone(formData.phone)) {
+      next.phone = language === "bn" ? "সঠিক মোবাইল নম্বর দিন (যেমন ০১৭XXXXXXXX)।" : "Enter a valid mobile number (e.g. 017XXXXXXXX).";
+    }
+    if (formData.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      next.email = language === "bn" ? "সঠিক ইমেইল ঠিকানা দিন।" : "Enter a valid email address.";
+    }
+    if (formData.message.trim().length < 10) {
+      next.message = language === "bn" ? "বার্তাটি কমপক্ষে ১০ অক্ষরের হতে হবে।" : "Message must be at least 10 characters.";
+    }
+    return next;
+  };
+
+  // Clear a field's error as the user corrects it.
+  const updateField = (key: keyof typeof formData) => (value: string) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+    setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const found = validate();
+    if (Object.keys(found).length > 0) {
+      setErrors(found);
+      return;
+    }
+    setErrors({});
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 4000);
     setFormData({ name: "", phone: "", email: "", message: "" });
@@ -197,12 +234,13 @@ export default function ContactPage() {
                     {language === "bn" ? "✅ আপনার বার্তা সফলভাবে পাঠানো হয়েছে!" : "✅ Your message has been sent successfully!"}
                   </div>
                 )}
-                <form onSubmit={handleSubmit} className="space-y-1">
+                <form onSubmit={handleSubmit} noValidate className="space-y-1">
                   <Input
                     label={language === "bn" ? "আপনার নাম *" : "Your Name *"}
                     placeholder={language === "bn" ? "পুরো নাম লিখুন" : "Enter full name"}
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) => updateField("name")(e.target.value)}
+                    error={errors.name}
                     required
                   />
                   <Input
@@ -210,7 +248,8 @@ export default function ContactPage() {
                     placeholder={language === "bn" ? "০১৭XX-XXXXXX" : "017XX-XXXXXX"}
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) => updateField("phone")(e.target.value)}
+                    error={errors.phone}
                     required
                   />
                   <Input
@@ -218,19 +257,28 @@ export default function ContactPage() {
                     placeholder={language === "bn" ? "example@mail.com" : "example@mail.com"}
                     type="email"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) => updateField("email")(e.target.value)}
+                    error={errors.email}
                   />
                   <div className="w-full mb-4">
                     <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
                       {language === "bn" ? "আপনার বার্তা *" : "Your Message *"}
                     </label>
                     <textarea
-                      className="w-full px-3.5 py-2.5 border rounded-lg text-sm bg-transparent outline-none transition-all focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary border-gray-300 dark:border-slate-700 text-gray-900 dark:text-slate-100 min-h-[120px] resize-y"
+                      className={`w-full px-3.5 py-2.5 border rounded-lg text-sm bg-transparent outline-none transition-all focus:ring-2 text-gray-900 dark:text-slate-100 min-h-[120px] resize-y ${
+                        errors.message
+                          ? "border-red-500 focus:ring-red-500/20 focus:border-red-500"
+                          : "border-gray-300 dark:border-slate-700 focus:ring-brand-primary/20 focus:border-brand-primary"
+                      }`}
                       placeholder={language === "bn" ? "আপনার বার্তা লিখুন..." : "Write your message here..."}
                       value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      onChange={(e) => updateField("message")(e.target.value)}
+                      aria-invalid={errors.message ? "true" : undefined}
                       required
                     />
+                    {errors.message && (
+                      <p className="mt-1 text-xs text-red-500">{errors.message}</p>
+                    )}
                   </div>
                   <Button type="submit" variant="primary" fullWidth className="py-3 font-bold">
                     <Send size={14} className="mr-2" />

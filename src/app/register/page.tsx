@@ -47,6 +47,7 @@ export default function RegisterPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submissionError, setSubmissionError] = useState<string>("");
+  const [errors, setErrors] = useState<Partial<Record<string, string>>>({});
 
   const [form, setForm] = useState({
     nameBn: "",
@@ -69,14 +70,71 @@ export default function RegisterPage() {
     previousInstitute: "",
   });
 
-  const update = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+  const update = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [key]: e.target.value });
+    // Clear this field's error as the user edits it.
+    setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
+  };
 
-  const next = () => setStep((s) => (Math.min(3, (s + 1) as Step)) as Step);
-  const back = () => setStep((s) => (Math.max(0, (s - 1) as Step)) as Step);
+  // Bangladeshi mobile: 11 digits starting 01[3-9], tolerating +880 / separators.
+  const isValidBdPhone = (raw: string) => {
+    const digits = raw.replace(/[\s-]/g, "").replace(/^\+?880/, "0");
+    return /^01[3-9]\d{8}$/.test(digits);
+  };
+  const isValidEmail = (raw: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw.trim());
+  const req = (msgBn: string, msgEn: string) => (language === "bn" ? msgBn : msgEn);
+
+  /** Validate the fields belonging to a given step. Returns an error map. */
+  const validateStep = (s: Step): Partial<Record<string, string>> => {
+    const next: Partial<Record<string, string>> = {};
+    if (s === 0) {
+      if (form.nameBn.trim().length < 2) next.nameBn = req("বাংলা নাম লিখুন।", "Enter your name in Bengali.");
+      if (form.nameEn.trim().length < 2) next.nameEn = req("ইংরেজি নাম লিখুন।", "Enter your name in English.");
+      if (!isValidEmail(form.email)) next.email = req("সঠিক ইমেইল দিন।", "Enter a valid email.");
+      if (!isValidBdPhone(form.phone)) next.phone = req("সঠিক মোবাইল নম্বর দিন।", "Enter a valid mobile number.");
+      if (!form.dob) next.dob = req("জন্ম তারিখ দিন।", "Select your date of birth.");
+      if (!form.gender) next.gender = req("লিঙ্গ নির্বাচন করুন।", "Select your gender.");
+      if (form.address.trim().length < 4) next.address = req("ঠিকানা লিখুন।", "Enter your address.");
+    } else if (s === 1) {
+      if (form.guardianName.trim().length < 2) next.guardianName = req("অভিভাবকের নাম লিখুন।", "Enter the guardian's name.");
+      if (!isValidBdPhone(form.guardianPhone)) next.guardianPhone = req("সঠিক মোবাইল নম্বর দিন।", "Enter a valid mobile number.");
+      if (!form.guardianRelation) next.guardianRelation = req("সম্পর্ক নির্বাচন করুন।", "Select the relation.");
+    } else if (s === 2) {
+      if (!form.classLevel) next.classLevel = req("শ্রেণী নির্বাচন করুন।", "Select a class level.");
+      if (!form.group) next.group = req("বিভাগ নির্বাচন করুন।", "Select a group.");
+      if (!form.session.trim()) next.session = req("শিক্ষাবর্ষ লিখুন।", "Enter the session.");
+      if (form.password.length < 6) next.password = req("কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।", "Password must be at least 6 characters.");
+    }
+    return next;
+  };
+
+  const next = () => {
+    const found = validateStep(step);
+    if (Object.keys(found).length > 0) {
+      setErrors(found);
+      return;
+    }
+    setErrors({});
+    setStep((s) => (Math.min(3, (s + 1) as Step)) as Step);
+  };
+  const back = () => {
+    setErrors({});
+    setStep((s) => (Math.max(0, (s - 1) as Step)) as Step);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Re-validate every step: conditionally-rendered steps drop their native
+    // `required` attributes from the DOM, so guard against gaps here.
+    for (const s of [0, 1, 2] as Step[]) {
+      const found = validateStep(s);
+      if (Object.keys(found).length > 0) {
+        setErrors(found);
+        setStep(s);
+        return;
+      }
+    }
+    setErrors({});
     setSubmissionError("");
     setSubmitting(true);
     const payload = {
@@ -205,6 +263,7 @@ export default function RegisterPage() {
                     placeholder="আব্দুল্লাহ আল মামুন"
                     value={form.nameBn}
                     onChange={update("nameBn")}
+                    error={errors.nameBn}
                     required
                   />
                   <Input
@@ -212,6 +271,7 @@ export default function RegisterPage() {
                     placeholder="Abdullah Al Mamun"
                     value={form.nameEn}
                     onChange={update("nameEn")}
+                    error={errors.nameEn}
                     required
                   />
                   <Input
@@ -220,6 +280,7 @@ export default function RegisterPage() {
                     placeholder="example@student.awsdc.edu.bd"
                     value={form.email}
                     onChange={update("email")}
+                    error={errors.email}
                     required
                   />
                   <Input
@@ -228,6 +289,7 @@ export default function RegisterPage() {
                     placeholder="01XXXXXXXXX"
                     value={form.phone}
                     onChange={update("phone")}
+                    error={errors.phone}
                     required
                   />
                   <Input
@@ -235,6 +297,7 @@ export default function RegisterPage() {
                     type="date"
                     value={form.dob}
                     onChange={update("dob")}
+                    error={errors.dob}
                     required
                   />
                   <div className="w-full mb-4">
@@ -244,13 +307,19 @@ export default function RegisterPage() {
                     <select
                       value={form.gender}
                       onChange={update("gender")}
-                      className="w-full px-3.5 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm bg-white/90 dark:bg-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary"
+                      aria-invalid={errors.gender ? "true" : undefined}
+                      className={`w-full px-3.5 py-2 border rounded-md text-sm bg-white/90 dark:bg-slate-900 outline-none focus:ring-2 ${
+                        errors.gender
+                          ? "border-red-500 focus:ring-red-500/20 focus:border-red-500"
+                          : "border-slate-300 dark:border-slate-700 focus:ring-brand-primary/20 focus:border-brand-primary"
+                      }`}
                       required
                     >
                       <option value="">{language === "bn" ? "-- নির্বাচন করুন --" : "-- Select --"}</option>
                       <option value="Male">{language === "bn" ? "পুরুষ" : "Male"}</option>
                       <option value="Female">{language === "bn" ? "নারী" : "Female"}</option>
                     </select>
+                    {errors.gender && <p className="mt-1 text-xs text-red-500">{errors.gender}</p>}
                   </div>
                   <Input
                     label={language === "bn" ? "রক্তের গ্রুপ (ঐচ্ছিক)" : "Blood Group (optional)"}
@@ -263,6 +332,7 @@ export default function RegisterPage() {
                     placeholder="Village / Post / Thana / District"
                     value={form.address}
                     onChange={update("address")}
+                    error={errors.address}
                     required
                   />
                 </div>
@@ -274,6 +344,7 @@ export default function RegisterPage() {
                     label={language === "bn" ? "অভিভাবকের নাম" : "Guardian Name"}
                     value={form.guardianName}
                     onChange={update("guardianName")}
+                    error={errors.guardianName}
                     required
                   />
                   <Input
@@ -282,6 +353,7 @@ export default function RegisterPage() {
                     placeholder="01XXXXXXXXX"
                     value={form.guardianPhone}
                     onChange={update("guardianPhone")}
+                    error={errors.guardianPhone}
                     required
                   />
                   <Input
@@ -297,7 +369,11 @@ export default function RegisterPage() {
                     <select
                       value={form.guardianRelation}
                       onChange={update("guardianRelation")}
-                      className="w-full px-3.5 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm bg-white/90 dark:bg-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary"
+                      className={`w-full px-3.5 py-2 border rounded-md text-sm bg-white/90 dark:bg-slate-900 outline-none focus:ring-2 ${
+                        errors.guardianRelation
+                          ? "border-red-500 focus:ring-red-500/20 focus:border-red-500"
+                          : "border-slate-300 dark:border-slate-700 focus:ring-brand-primary/20 focus:border-brand-primary"
+                      }`}
                       required
                     >
                       <option value="">{language === "bn" ? "-- নির্বাচন করুন --" : "-- Select --"}</option>
@@ -307,6 +383,9 @@ export default function RegisterPage() {
                       <option value="Sister">{language === "bn" ? "বোন" : "Sister"}</option>
                       <option value="Other">{language === "bn" ? "অন্যান্য" : "Other"}</option>
                     </select>
+                    {errors.guardianRelation && (
+                      <p className="mt-1 text-xs text-red-500">{errors.guardianRelation}</p>
+                    )}
                   </div>
                 </div>
               )}
@@ -320,7 +399,11 @@ export default function RegisterPage() {
                     <select
                       value={form.classLevel}
                       onChange={update("classLevel")}
-                      className="w-full px-3.5 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm bg-white/90 dark:bg-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary"
+                      className={`w-full px-3.5 py-2 border rounded-md text-sm bg-white/90 dark:bg-slate-900 outline-none focus:ring-2 ${
+                        errors.classLevel
+                          ? "border-red-500 focus:ring-red-500/20 focus:border-red-500"
+                          : "border-slate-300 dark:border-slate-700 focus:ring-brand-primary/20 focus:border-brand-primary"
+                      }`}
                       required
                     >
                       <option value="">{language === "bn" ? "-- নির্বাচন করুন --" : "-- Select --"}</option>
@@ -328,6 +411,9 @@ export default function RegisterPage() {
                       <option value="Degree">{language === "bn" ? "ডিগ্রী (Pass)" : "Degree (Pass)"}</option>
                       <option value="Honours">{language === "bn" ? "অনার্স" : "Honours"}</option>
                     </select>
+                    {errors.classLevel && (
+                      <p className="mt-1 text-xs text-red-500">{errors.classLevel}</p>
+                    )}
                   </div>
                   <div className="w-full mb-4">
                     <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
@@ -336,7 +422,11 @@ export default function RegisterPage() {
                     <select
                       value={form.group}
                       onChange={update("group")}
-                      className="w-full px-3.5 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm bg-white/90 dark:bg-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary"
+                      className={`w-full px-3.5 py-2 border rounded-md text-sm bg-white/90 dark:bg-slate-900 outline-none focus:ring-2 ${
+                        errors.group
+                          ? "border-red-500 focus:ring-red-500/20 focus:border-red-500"
+                          : "border-slate-300 dark:border-slate-700 focus:ring-brand-primary/20 focus:border-brand-primary"
+                      }`}
                       required
                     >
                       <option value="">{language === "bn" ? "-- নির্বাচন করুন --" : "-- Select --"}</option>
@@ -345,12 +435,14 @@ export default function RegisterPage() {
                       <option value="Business">{language === "bn" ? "ব্যবসায়" : "Business Studies"}</option>
                       <option value="Vocational">{language === "bn" ? "ভোকেশনাল" : "Vocational"}</option>
                     </select>
+                    {errors.group && <p className="mt-1 text-xs text-red-500">{errors.group}</p>}
                   </div>
                   <Input
                     label={language === "bn" ? "শিক্ষাবর্ষ" : "Academic Session"}
                     placeholder="2026-27"
                     value={form.session}
                     onChange={update("session")}
+                    error={errors.session}
                     required
                   />
                   <Input
@@ -370,6 +462,7 @@ export default function RegisterPage() {
                     }
                     value={form.password}
                     onChange={update("password")}
+                    error={errors.password}
                     required
                   />
                 </div>

@@ -11,8 +11,12 @@ import { Button } from "../../components/ui/Button";
 import { Badge } from "../../components/ui/Badge";
 import { Input } from "../../components/ui/Input";
 import { TableContainer, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from "../../components/ui/Table";
-import { mockNotices, mockClassStudents, mockResults, Notice } from "../../data/mockData";
+import { Spinner } from "../../components/ui/Spinner";
+import { Skeleton, SkeletonCard } from "../../components/ui/Skeleton";
+import { mockNotices, mockClassStudents, Notice } from "../../data/mockData";
 import { useRequireAuth } from "../../hooks/useRequireAuth";
+import { getNotices, createNotice } from "../../lib/services/notices";
+import { getAllStudents, type RosterStudent } from "../../lib/services/students";
 
 function AdminDashboardContent() {
   const { language, t } = useLanguage();
@@ -33,7 +37,7 @@ function AdminDashboardContent() {
   const [newNoticeCategory, setNewNoticeCategory] = useState<"academic" | "exam" | "event" | "general">("general");
 
   const [studentSearch, setStudentSearch] = useState("");
-  const [students, setStudents] = useState(mockClassStudents);
+  const [students, setStudents] = useState<RosterStudent[]>(mockClassStudents);
   const [newStudentNameBn, setNewStudentNameBn] = useState("");
   const [newStudentNameEn, setNewStudentNameEn] = useState("");
   const [newStudentRoll, setNewStudentRoll] = useState("");
@@ -45,16 +49,52 @@ function AdminDashboardContent() {
 
   const [globalSearchQuery, setGlobalSearchQuery] = useState("");
 
+  // Load live notices + student roster; keep mock data on failure so the
+  // dashboard still renders offline / when the backend is unreachable.
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const [liveNotices, liveStudents] = await Promise.all([
+          getNotices(),
+          getAllStudents(),
+        ]);
+        if (!active) return;
+        if (liveNotices.length) setNotices(liveNotices);
+        if (liveStudents.length) setStudents(liveStudents);
+      } catch (err) {
+        console.warn("[admin] live data fetch failed, using mock data:", err);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   if (!ready) {
     return (
-      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center text-sm font-semibold text-slate-500 bg-[#f8f9ff]">
-        <span className="material-symbols-outlined animate-spin mr-2">progress_activity</span>
-        Loading dashboard...
+      <div className="flex min-h-[calc(100vh-4rem)]">
+        <div className="hidden lg:block w-64 shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4 space-y-3">
+          <Skeleton width="w-full" height="h-10" className="rounded-xl" />
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} width="w-full" height="h-9" className="rounded-lg" />
+          ))}
+        </div>
+        <div className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6" aria-busy="true" aria-label="Loading admin dashboard">
+          <Skeleton width="w-64" height="h-8" className="rounded-lg" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </div>
+          <SkeletonCard />
+        </div>
       </div>
     );
   }
 
-  const handleCreateNotice = (e: React.FormEvent) => {
+  const handleCreateNotice = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newNoticeTitleBn || !newNoticeTitleEn) return;
 
@@ -68,7 +108,20 @@ function AdminDashboardContent() {
       contentEn: newNoticeContentEn,
     };
 
-    setNotices([noticeObj, ...notices]);
+    // Persist to the backend (monolingual DTO — English strings are canonical).
+    // On failure keep the optimistic local prepend so the UI still reflects it.
+    try {
+      const created = await createNotice({
+        title: newNoticeTitleEn,
+        content: newNoticeContentEn || newNoticeContentBn || newNoticeTitleEn,
+        audience: "ALL",
+      });
+      setNotices((prev) => [created, ...prev]);
+    } catch (err) {
+      console.warn("[admin] notice create failed, kept local only:", err);
+      setNotices((prev) => [noticeObj, ...prev]);
+    }
+
     setNewNoticeTitleBn("");
     setNewNoticeTitleEn("");
     setNewNoticeContentBn("");
@@ -116,17 +169,17 @@ function AdminDashboardContent() {
   };
 
   return (
-    <div className="flex flex-1 min-h-[calc(100vh-4rem)] bg-[#f8f9ff]">
+    <div className="flex flex-1 min-h-[calc(100vh-4rem)] bg-[#f8f9ff] dark:bg-slate-950">
       <Sidebar role="admin" />
 
       {/* Main Container */}
       <main className="flex-1 p-6 space-y-6 pb-20 md:pb-8 max-w-[1600px] mx-auto w-full">
         {/* TopAppBar Search Header */}
-        <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 bg-white p-4 rounded-xl border border-[#c5c5d3] shadow-sm">
+        <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl border border-[#c5c5d3] dark:border-slate-800 shadow-sm">
           <form onSubmit={handleGlobalSearch} className="relative flex-1 max-w-lg">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#444651]">search</span>
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#444651] dark:text-slate-400">search</span>
             <input
-              className="w-full pl-10 pr-4 py-2 bg-[#d8e3f6]/40 border-none rounded-lg focus:ring-2 focus:ring-[#00236f]/20 transition-all text-xs"
+              className="w-full pl-10 pr-4 py-2 bg-[#d8e3f6]/40 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-[#00236f]/20 dark:focus:ring-blue-500/30 transition-all text-xs dark:text-slate-100 dark:placeholder:text-slate-400"
               placeholder="Search records, students, or documents..."
               value={globalSearchQuery}
               onChange={(e) => setGlobalSearchQuery(e.target.value)}
@@ -137,13 +190,13 @@ function AdminDashboardContent() {
           <div className="flex items-center justify-between sm:justify-end gap-4">
             <button
               onClick={() => router.push("/admin?tab=notifications")}
-              className="relative p-2 text-[#444651] hover:bg-[#e5eeff] rounded-full transition-all"
+              className="relative p-2 text-[#444651] dark:text-slate-400 hover:bg-[#e5eeff] dark:hover:bg-slate-800 rounded-full transition-all"
             >
               <span className="material-symbols-outlined text-[24px]">notifications</span>
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
             </button>
-            <div className="flex items-center gap-2 border-l border-[#c5c5d3] pl-4">
-              <span className="text-xs font-bold text-[#00236f]">{adminName}</span>
+            <div className="flex items-center gap-2 border-l border-[#c5c5d3] dark:border-slate-700 pl-4">
+              <span className="text-xs font-bold text-[#00236f] dark:text-blue-300">{adminName}</span>
               <div className="w-8 h-8 rounded-full bg-[#00236f] text-white flex items-center justify-center font-bold text-xs">
                 A
               </div>
@@ -172,54 +225,54 @@ function AdminDashboardContent() {
           <div className="space-y-6">
             {/* Overview Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white border border-[#c5c5d3] p-6 rounded-xl flex flex-col justify-between shadow-sm hover:-translate-y-0.5 transition-all">
+              <div className="bg-white dark:bg-slate-900 border border-[#c5c5d3] dark:border-slate-800 p-6 rounded-xl flex flex-col justify-between shadow-sm hover:-translate-y-0.5 transition-all">
                 <div className="flex justify-between items-start">
-                  <span className="font-semibold text-xs text-[#444651] uppercase tracking-wider">Total Students</span>
-                  <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-[#00236f]">
+                  <span className="font-semibold text-xs text-[#444651] dark:text-slate-400 uppercase tracking-wider">Total Students</span>
+                  <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center text-[#00236f] dark:text-blue-300">
                     <span className="material-symbols-outlined">person</span>
                   </div>
                 </div>
                 <div className="mt-4">
-                  <span className="text-3xl font-extrabold text-[#111c2a]">১,২৫০</span>
-                  <p className="text-[10px] text-green-600 font-bold mt-1">+12% vs last year</p>
+                  <span className="text-3xl font-extrabold text-[#111c2a] dark:text-slate-100">{students.length.toLocaleString()}</span>
+                  <p className="text-[10px] text-green-600 font-bold mt-1">{language === "bn" ? "সক্রিয় তালিকাভুক্ত" : "Currently enrolled"}</p>
                 </div>
               </div>
 
-              <div className="bg-white border border-[#c5c5d3] p-6 rounded-xl flex flex-col justify-between shadow-sm hover:-translate-y-0.5 transition-all">
+              <div className="bg-white dark:bg-slate-900 border border-[#c5c5d3] dark:border-slate-800 p-6 rounded-xl flex flex-col justify-between shadow-sm hover:-translate-y-0.5 transition-all">
                 <div className="flex justify-between items-start">
-                  <span className="font-semibold text-xs text-[#444651] uppercase tracking-wider">Active Teachers</span>
-                  <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center text-[#006d30]">
+                  <span className="font-semibold text-xs text-[#444651] dark:text-slate-400 uppercase tracking-wider">Active Teachers</span>
+                  <div className="w-10 h-10 rounded-lg bg-green-50 dark:bg-emerald-950/40 flex items-center justify-center text-[#006d30] dark:text-emerald-400">
                     <span className="material-symbols-outlined">diversity_3</span>
                   </div>
                 </div>
                 <div className="mt-4">
-                  <span className="text-3xl font-extrabold text-[#111c2a]">৪৬</span>
-                  <p className="text-[10px] text-[#444651] font-bold mt-1">Stable headcount</p>
+                  <span className="text-3xl font-extrabold text-[#111c2a] dark:text-slate-100">৪৬</span>
+                  <p className="text-[10px] text-[#444651] dark:text-slate-400 font-bold mt-1">Stable headcount</p>
                 </div>
               </div>
 
-              <div className="bg-white border border-[#c5c5d3] p-6 rounded-xl flex flex-col justify-between shadow-sm hover:-translate-y-0.5 transition-all">
+              <div className="bg-white dark:bg-slate-900 border border-[#c5c5d3] dark:border-slate-800 p-6 rounded-xl flex flex-col justify-between shadow-sm hover:-translate-y-0.5 transition-all">
                 <div className="flex justify-between items-start">
-                  <span className="font-semibold text-xs text-[#444651] uppercase tracking-wider">Pending Fees</span>
-                  <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center text-[#ca8a04]">
+                  <span className="font-semibold text-xs text-[#444651] dark:text-slate-400 uppercase tracking-wider">Pending Fees</span>
+                  <div className="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-950/40 flex items-center justify-center text-[#ca8a04] dark:text-amber-400">
                     <span className="material-symbols-outlined">account_balance_wallet</span>
                   </div>
                 </div>
                 <div className="mt-4">
-                  <span className="text-3xl font-extrabold text-[#111c2a]">৳৮৫,৪০০</span>
+                  <span className="text-3xl font-extrabold text-[#111c2a] dark:text-slate-100">৳৮৫,৪০০</span>
                   <p className="text-[10px] text-red-600 font-bold mt-1">8% increase this week</p>
                 </div>
               </div>
 
-              <div className="bg-white border border-[#c5c5d3] p-6 rounded-xl flex flex-col justify-between shadow-sm hover:-translate-y-0.5 transition-all">
+              <div className="bg-white dark:bg-slate-900 border border-[#c5c5d3] dark:border-slate-800 p-6 rounded-xl flex flex-col justify-between shadow-sm hover:-translate-y-0.5 transition-all">
                 <div className="flex justify-between items-start">
-                  <span className="font-semibold text-xs text-[#444651] uppercase tracking-wider">Avg Attendance</span>
-                  <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-500">
+                  <span className="font-semibold text-xs text-[#444651] dark:text-slate-400 uppercase tracking-wider">Avg Attendance</span>
+                  <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center text-blue-500 dark:text-blue-300">
                     <span className="material-symbols-outlined">event_available</span>
                   </div>
                 </div>
                 <div className="mt-4">
-                  <span className="text-3xl font-extrabold text-[#111c2a]">৯৪.২%</span>
+                  <span className="text-3xl font-extrabold text-[#111c2a] dark:text-slate-100">৯৪.২%</span>
                   <p className="text-[10px] text-green-600 font-bold mt-1">Above target threshold</p>
                 </div>
               </div>
@@ -230,13 +283,13 @@ function AdminDashboardContent() {
               {/* SVG Performance Chart */}
               <Card className="lg:col-span-2 border-[#c5c5d3]">
                 <CardHeader>
-                  <CardTitle className="text-sm font-bold text-gray-800 flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-[#006d30]">trending_up</span>
+                  <CardTitle className="text-sm font-bold text-gray-800 dark:text-slate-100 flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[#006d30] dark:text-emerald-400">trending_up</span>
                     <span>{t("enrollmentTrend")}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col items-center">
-                  <svg viewBox="0 0 500 200" className="w-full h-48 bg-slate-50 rounded-lg p-2 border border-slate-100">
+                  <svg viewBox="0 0 500 200" className="w-full h-48 bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-100 dark:border-slate-800">
                     <path
                       d="M 50 150 Q 150 120 250 80 T 450 40"
                       fill="none"
@@ -253,29 +306,29 @@ function AdminDashboardContent() {
                     <text x="245" y="195" className="text-[10px] fill-gray-400 font-bold">২০২৫</text>
                     <text x="445" y="195" className="text-[10px] fill-gray-400 font-bold">২০২৬</text>
                   </svg>
-                  <p className="text-[11px] text-[#444651] mt-2 font-bold">বিগত ৩ বছরের বার্ষিক পাশের হার ও নতুন ভর্তির চিত্র বৃদ্ধি সূচক</p>
+                  <p className="text-[11px] text-[#444651] dark:text-slate-400 mt-2 font-bold">বিগত ৩ বছরের বার্ষিক পাশের হার ও নতুন ভর্তির চিত্র বৃদ্ধি সূচক</p>
                 </CardContent>
               </Card>
 
               {/* Action hub panel */}
               <Card className="border-[#c5c5d3]">
                 <CardHeader>
-                  <CardTitle className="text-sm font-bold text-gray-800 flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-[#ca8a04]">bolt</span>
+                  <CardTitle className="text-sm font-bold text-gray-800 dark:text-slate-100 flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[#ca8a04] dark:text-amber-400">bolt</span>
                     <span>{t("quickActions")}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Button variant="outline" fullWidth className="justify-start text-xs font-semibold py-2.5" onClick={() => router.push("/admin?tab=students")}>
-                    <span className="material-symbols-outlined mr-2 text-[#006d30]">person_add</span>
+                    <span className="material-symbols-outlined mr-2 text-[#006d30] dark:text-emerald-400">person_add</span>
                     {t("addStudent")}
                   </Button>
                   <Button variant="outline" fullWidth className="justify-start text-xs font-semibold py-2.5" onClick={() => router.push("/admin?tab=results")}>
-                    <span className="material-symbols-outlined mr-2 text-[#00236f]">description</span>
+                    <span className="material-symbols-outlined mr-2 text-[#00236f] dark:text-blue-300">description</span>
                     {t("publishResult")}
                   </Button>
                   <Button variant="outline" fullWidth className="justify-start text-xs font-semibold py-2.5" onClick={() => router.push("/admin?tab=notices")}>
-                    <span className="material-symbols-outlined mr-2 text-[#ca8a04]">campaign</span>
+                    <span className="material-symbols-outlined mr-2 text-[#ca8a04] dark:text-amber-400">campaign</span>
                     {t("createNotice")}
                   </Button>
                 </CardContent>
@@ -288,7 +341,7 @@ function AdminDashboardContent() {
         {tab === "students" && (
           <Card className="border-[#c5c5d3]">
             <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
-              <CardTitle className="text-base font-bold text-[#00236f] flex items-center gap-1.5">
+              <CardTitle className="text-base font-bold text-[#00236f] dark:text-blue-300 flex items-center gap-1.5">
                 <span className="material-symbols-outlined">group</span>
                 <span>{t("studentList")}</span>
               </CardTitle>
@@ -299,7 +352,7 @@ function AdminDashboardContent() {
             </CardHeader>
             <CardContent className="space-y-4">
               {showAddStudentForm && (
-                <form onSubmit={handleAddStudent} className="bg-slate-50 p-4 rounded-lg space-y-3 border border-[#c5c5d3]">
+                <form onSubmit={handleAddStudent} className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg space-y-3 border border-[#c5c5d3] dark:border-slate-800">
                   <h4 className="text-xs font-bold text-gray-800">নতুন শিক্ষার্থীর তথ্য দিন</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <Input
@@ -335,13 +388,13 @@ function AdminDashboardContent() {
               )}
 
               <div className="relative">
-                <span className="material-symbols-outlined absolute left-3 top-3 text-[#444651] text-[18px]">search</span>
+                <span className="material-symbols-outlined absolute left-3 top-3 text-[#444651] dark:text-slate-400 text-[18px]">search</span>
                 <input
                   type="text"
                   placeholder="রোল বা নাম দিয়ে সার্চ করুন..."
                   value={studentSearch}
                   onChange={(e) => setStudentSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border rounded-lg text-sm bg-transparent outline-none border-[#c5c5d3] text-gray-900"
+                  className="w-full pl-10 pr-4 py-2 border rounded-lg text-sm bg-transparent outline-none border-[#c5c5d3] dark:border-slate-700 text-gray-900 dark:text-slate-100"
                 />
               </div>
 
@@ -367,7 +420,7 @@ function AdminDashboardContent() {
                         <TableCell className="font-bold">{student.roll}</TableCell>
                         <TableCell>
                           <div>
-                            <div className="font-bold text-xs text-gray-800">
+                            <div className="font-bold text-xs text-gray-800 dark:text-slate-100">
                               {language === "bn" ? student.nameBn : student.nameEn}
                             </div>
                             <div className="text-[10px] text-gray-400">Class 12 (Science)</div>
@@ -395,39 +448,39 @@ function AdminDashboardContent() {
         {tab === "results" && (
           <Card className="border-[#c5c5d3]">
             <CardHeader>
-              <CardTitle className="text-base font-bold text-[#00236f] flex items-center gap-1.5">
+              <CardTitle className="text-base font-bold text-[#00236f] dark:text-blue-300 flex items-center gap-1.5">
                 <span className="material-symbols-outlined">description</span>
                 <span>{t("publishResult")}</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {resultPublishedMsg && (
-                <div className="p-3 bg-green-50 text-[#006d30] text-xs font-bold rounded-lg border border-green-200">
+                <div className="p-3 bg-green-50 dark:bg-emerald-950/30 text-[#006d30] dark:text-emerald-400 text-xs font-bold rounded-lg border border-green-200 dark:border-emerald-900">
                   {resultPublishedMsg}
                 </div>
               )}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                  <label className="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1.5">
                     {t("class")}
                   </label>
                   <select
                     value={selectedResultClass}
                     onChange={(e) => setSelectedResultClass(e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg text-sm bg-transparent outline-none border-[#c5c5d3]"
+                    className="w-full px-3 py-2 border rounded-lg text-sm bg-transparent outline-none border-[#c5c5d3] dark:border-slate-700"
                   >
                     <option value="Class 11">একাদশ শ্রেণী (Class 11)</option>
                     <option value="Class 12">দ্বাদশ শ্রেণী (Class 12)</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                  <label className="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1.5">
                     {t("subject")}
                   </label>
                   <select
                     value={resultSubject}
                     onChange={(e) => setResultSubject(e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg text-sm bg-transparent outline-none border-[#c5c5d3]"
+                    className="w-full px-3 py-2 border rounded-lg text-sm bg-transparent outline-none border-[#c5c5d3] dark:border-slate-700"
                   >
                     <option value="Math">উচ্চতর গণিত (Math)</option>
                     <option value="Physics">পদার্থবিজ্ঞান (Physics)</option>
@@ -449,8 +502,8 @@ function AdminDashboardContent() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <Card className="lg:col-span-2 border-[#c5c5d3]">
               <CardHeader>
-                <CardTitle className="text-sm font-bold text-gray-800 flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[#ca8a04]">campaign</span>
+                <CardTitle className="text-sm font-bold text-gray-800 dark:text-slate-100 flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[#ca8a04] dark:text-amber-400">campaign</span>
                   <span>{t("createNotice")}</span>
                 </CardTitle>
               </CardHeader>
@@ -473,13 +526,13 @@ function AdminDashboardContent() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                    <label className="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1.5">
                       {t("category")}
                     </label>
                     <select
                       value={newNoticeCategory}
                       onChange={(e) => setNewNoticeCategory(e.target.value as any)}
-                      className="w-full px-3 py-2 border rounded-lg text-sm bg-transparent outline-none border-[#c5c5d3]"
+                      className="w-full px-3 py-2 border rounded-lg text-sm bg-transparent outline-none border-[#c5c5d3] dark:border-slate-700"
                     >
                       <option value="general">সাধারণ (General)</option>
                       <option value="academic">একাডেমিক (Academic)</option>
@@ -502,6 +555,11 @@ function AdminDashboardContent() {
                 <CardTitle className="text-sm font-bold text-gray-800">সাম্প্রতিক প্রকাশিত নোটিশসমূহ</CardTitle>
               </CardHeader>
               <CardContent className="divide-y divide-gray-100 space-y-3">
+                {notices.length === 0 && (
+                  <p className="py-6 text-center text-xs font-semibold text-gray-400">
+                    {language === "bn" ? "এখনো কোনো নোটিশ প্রকাশিত হয়নি।" : "No notices published yet."}
+                  </p>
+                )}
                 {notices.map((n) => (
                   <div key={n.id} className="pt-3 first:pt-0">
                     <div className="flex items-center gap-2 mb-1.5">
@@ -510,7 +568,7 @@ function AdminDashboardContent() {
                         {n.category}
                       </Badge>
                     </div>
-                    <p className="font-bold text-xs text-gray-800 line-clamp-2">
+                    <p className="font-bold text-xs text-gray-800 dark:text-slate-100 line-clamp-2">
                       {language === "bn" ? n.titleBn : n.titleEn}
                     </p>
                   </div>
@@ -524,13 +582,13 @@ function AdminDashboardContent() {
         {tab === "search" && (
           <Card className="border-[#c5c5d3]">
             <CardHeader>
-              <CardTitle className="text-base font-bold text-[#00236f] flex items-center gap-1.5">
+              <CardTitle className="text-base font-bold text-[#00236f] dark:text-blue-300 flex items-center gap-1.5">
                 <span className="material-symbols-outlined">manage_search</span>
                 <span>Search Results for &ldquo;{searchParams.get("q")}&rdquo;</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-xs text-[#444651] font-medium">Found results in Student Database:</p>
+              <p className="text-xs text-[#444651] dark:text-slate-400 font-medium">Found results in Student Database:</p>
               <TableContainer>
                 <TableHead>
                   <TableRow>
@@ -551,7 +609,7 @@ function AdminDashboardContent() {
                     .map((student) => (
                       <TableRow key={student.id}>
                         <TableCell className="font-bold">{student.roll}</TableCell>
-                        <TableCell className="font-bold text-xs text-gray-800">
+                        <TableCell className="font-bold text-xs text-gray-800 dark:text-slate-100">
                           {language === "bn" ? student.nameBn : student.nameEn}
                         </TableCell>
                         <TableCell className="text-xs">Class 12 (Science)</TableCell>
@@ -584,41 +642,41 @@ function AdminDashboardContent() {
         {tab === "notifications" && (
           <Card className="border-[#c5c5d3]">
             <CardHeader>
-              <CardTitle className="text-base font-bold text-[#00236f] flex items-center gap-1.5">
+              <CardTitle className="text-base font-bold text-[#00236f] dark:text-blue-300 flex items-center gap-1.5">
                 <span className="material-symbols-outlined">notifications_active</span>
                 <span>System Notifications</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 divide-y divide-gray-100">
               <div className="flex items-start gap-4 py-4 first:pt-0">
-                <div className="w-10 h-10 rounded-full bg-blue-100 text-[#00236f] flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-950/40 text-[#00236f] dark:text-blue-300 flex items-center justify-center shrink-0">
                   <span className="material-symbols-outlined">info</span>
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-xs font-bold text-[#111c2a]">System Backup Completed</h4>
-                  <p className="text-xs text-[#444651]">Database synchronization completed successfully. Academic database is secure.</p>
+                  <h4 className="text-xs font-bold text-[#111c2a] dark:text-slate-100">System Backup Completed</h4>
+                  <p className="text-xs text-[#444651] dark:text-slate-400">Database synchronization completed successfully. Academic database is secure.</p>
                   <span className="text-[10px] text-gray-450 font-bold block pt-1">Today • 04:30 AM</span>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 py-4">
-                <div className="w-10 h-10 rounded-full bg-green-100 text-[#006d30] flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-emerald-950/40 text-[#006d30] dark:text-emerald-400 flex items-center justify-center shrink-0">
                   <span className="material-symbols-outlined">payments</span>
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-xs font-bold text-[#111c2a]">New Payments Verified</h4>
-                  <p className="text-xs text-[#444651]">Twelve (12) student semester fees were processed and reconciled automatically.</p>
+                  <h4 className="text-xs font-bold text-[#111c2a] dark:text-slate-100">New Payments Verified</h4>
+                  <p className="text-xs text-[#444651] dark:text-slate-400">Twelve (12) student semester fees were processed and reconciled automatically.</p>
                   <span className="text-[10px] text-gray-450 font-bold block pt-1">Yesterday • 05:15 PM</span>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 py-4">
-                <div className="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-full bg-red-100 dark:bg-red-950/40 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0">
                   <span className="material-symbols-outlined">error</span>
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-xs font-bold text-[#111c2a]">Attendance Alert</h4>
-                  <p className="text-xs text-[#444651]">Average attendance of Class 11 Section B fell below target threshold (85%).</p>
+                  <h4 className="text-xs font-bold text-[#111c2a] dark:text-slate-100">Attendance Alert</h4>
+                  <p className="text-xs text-[#444651] dark:text-slate-400">Average attendance of Class 11 Section B fell below target threshold (85%).</p>
                   <span className="text-[10px] text-gray-450 font-bold block pt-1">2 days ago</span>
                 </div>
               </div>
@@ -632,7 +690,7 @@ function AdminDashboardContent() {
 
 export default function AdminDashboard() {
   return (
-    <Suspense fallback={<div className="p-6 text-center text-xs font-bold text-gray-500 bg-[#f8f9ff]">Loading Admin Dashboard...</div>}>
+    <Suspense fallback={<div className="flex min-h-[calc(100vh-4rem)] items-center justify-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400"><Spinner size={18} /> Loading dashboard…</div>}>
       <AdminDashboardContent />
     </Suspense>
   );

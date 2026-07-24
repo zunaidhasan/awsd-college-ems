@@ -1,13 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useLanguage } from "../context/LanguageContext";
 import { mockNotices, mockResults, Notice } from "../data/mockData";
+import { getPublicNotices } from "../lib/services/notices";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
 import { Badge } from "../components/ui/Badge";
 import { Modal } from "../components/ui/Modal";
+import { EmptyState } from "../components/ui/EmptyState";
+import { Reveal } from "../components/ui/Reveal";
 import { Footer } from "../components/layout/Footer";
 import {
   Calendar,
@@ -34,7 +37,25 @@ export default function LandingPage() {
   const [selectedNotice, setSelectedNotice] = useState<Notice | null>(null);
   const [filterCategory, setFilterCategory] = useState<string>("all");
 
-  const filteredNotices = mockNotices.filter((n) => {
+  // Public notices from the backend (no auth needed). Falls back to mock data
+  // if the backend is unreachable, so the homepage always renders content.
+  const [notices, setNotices] = useState<Notice[]>(mockNotices);
+
+  useEffect(() => {
+    let cancelled = false;
+    getPublicNotices()
+      .then((data) => {
+        if (!cancelled && data.length > 0) setNotices(data);
+      })
+      .catch(() => {
+        /* keep mock notices on failure */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const filteredNotices = notices.filter((n) => {
     if (filterCategory === "all") return true;
     return n.category === filterCategory;
   });
@@ -55,54 +76,76 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* 1. Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-900 via-indigo-950 to-blue-950 text-white py-24 px-4 overflow-hidden border-b-4 border-blue-600">
+      <section className="relative isolate overflow-hidden border-b-4 border-blue-600 px-4 py-28 text-white md:py-36">
+        {/* Animated brand gradient canvas */}
+        <div className="hero-gradient absolute inset-0 -z-20 bg-[linear-gradient(120deg,#0f2a6b_0%,#1E3A8A_28%,#1e1b4b_60%,#0c1a4a_100%)]" />
         {/* Hero background image */}
-        <div className="absolute inset-0 z-0">
-          <img src="/images/campus-hero.png" alt="Campus" className="w-full h-full object-cover object-center opacity-30" />
+        <div className="absolute inset-0 -z-10">
+          <img
+            src="/images/campus-hero.png"
+            alt=""
+            aria-hidden="true"
+            className="h-full w-full object-cover object-center opacity-25 mix-blend-luminosity"
+          />
         </div>
-        {/* Subtle grid pattern background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20" />
-        <div className="absolute inset-0 bg-blue-950/70 mix-blend-multiply" />
-        
-        <div className="max-w-5xl mx-auto text-center relative z-10 space-y-6">
-          <div className="inline-flex items-center space-x-2 bg-blue-500/20 text-blue-300 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase border border-blue-500/30 mb-2">
+        {/* Floating decorative orbs */}
+        <div className="hero-orb absolute -left-24 top-10 -z-10 h-72 w-72 rounded-full bg-blue-500/25 blur-3xl" />
+        <div className="hero-orb absolute -right-16 bottom-0 -z-10 h-80 w-80 rounded-full bg-indigo-500/20 blur-3xl [animation-delay:3s]" />
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-15" />
+        {/* Depth vignette */}
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(5,12,40,0.55)_100%)]" />
+
+        <div className="relative z-10 mx-auto max-w-5xl space-y-7 text-center">
+          <div className="motion-safe:animate-[fadeUp_0.6s_cubic-bezier(0.16,1,0.3,1)_both] inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/15 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-200 backdrop-blur-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            </span>
             <Building2 size={14} />
             <span>Welcome to EMS Portal</span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight drop-shadow-md">
+          <h1 className="font-bengali text-5xl font-extrabold tracking-tight drop-shadow-[0_2px_20px_rgba(0,0,0,0.35)] motion-safe:animate-[fadeUp_0.7s_cubic-bezier(0.16,1,0.3,1)_0.08s_both] md:text-7xl">
             আবদুল ওদুদ শাহ্ ডিগ্রী কলেজ
           </h1>
-          <p className="text-blue-100 text-lg md:text-xl font-medium tracking-wide max-w-4xl mx-auto leading-relaxed">
-            ABDUL WADOD SHAH DEGREE COLLEGE | Damurhuda, Chuadanga | EIIN: 115429 | Established: 23 June 1994
+          <p className="mx-auto max-w-4xl text-sm font-medium leading-relaxed tracking-wide text-blue-100/90 motion-safe:animate-[fadeUp_0.7s_cubic-bezier(0.16,1,0.3,1)_0.16s_both] md:text-lg">
+            ABDUL WADUD SHAH DEGREE COLLEGE · Damurhuda, Chuadanga · EIIN: 115429 · Established 23 June 1994
           </p>
-          
+
           {/* Quick Contacts inside Hero */}
-          <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-xs md:text-sm text-blue-200/90 bg-blue-950/50 backdrop-blur-sm px-6 py-3 rounded-full border border-blue-800/40 w-fit mx-auto">
-            <span className="flex items-center space-x-1">
+          <div className="mx-auto flex w-fit flex-wrap items-center justify-center gap-x-6 gap-y-2 rounded-full border border-blue-700/40 bg-blue-950/40 px-6 py-3 text-xs text-blue-200/90 backdrop-blur-md motion-safe:animate-[fadeUp_0.7s_cubic-bezier(0.16,1,0.3,1)_0.24s_both] md:text-sm">
+            <a href="tel:0762356022" className="flex items-center gap-1.5 transition-colors hover:text-white">
               <Phone size={14} className="text-blue-400" />
               <span>07623-56022</span>
-            </span>
-            <span className="h-4 w-px bg-blue-800 hidden sm:inline" />
-            <span className="flex items-center space-x-1">
+            </a>
+            <span className="hidden h-4 w-px bg-blue-800 sm:inline" />
+            <a href="tel:01718119853" className="flex items-center gap-1.5 transition-colors hover:text-white">
               <Smartphone size={14} className="text-blue-400" />
-              <span>Mobile: 01718-119853</span>
-            </span>
-            <span className="h-4 w-px bg-blue-800 hidden sm:inline" />
-            <span className="flex items-center space-x-1">
+              <span>01718-119853</span>
+            </a>
+            <span className="hidden h-4 w-px bg-blue-800 sm:inline" />
+            <a href="mailto:aosdcollege@yahoo.com" className="flex items-center gap-1.5 transition-colors hover:text-white">
               <Mail size={14} className="text-blue-400" />
               <span>aosdcollege@yahoo.com</span>
-            </span>
+            </a>
           </div>
 
-          <div className="pt-6 flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-4 pt-6 motion-safe:animate-[fadeUp_0.7s_cubic-bezier(0.16,1,0.3,1)_0.32s_both]">
             <Link href="/login">
-              <Button size="lg" className="shadow-xl bg-yellow-500 hover:bg-yellow-600 text-slate-955 font-black px-10 py-4 text-base tracking-wide rounded-full flex items-center transition-all duration-300 hover:scale-105">
+              <Button
+                size="lg"
+                className="group bg-gradient-to-r from-amber-400 to-yellow-500 px-10 py-4 text-base font-black tracking-wide text-slate-900 shadow-xl shadow-yellow-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-yellow-500/30"
+              >
                 {t("exploreEMS")}
-                <ChevronRight size={20} className="ml-1" />
+                <ChevronRight size={20} className="ml-1 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
             </Link>
             <Link href="/results">
-              <Button size="lg" variant="outline" className="border-white/40 text-white hover:bg-white/10 font-bold px-10 py-4 text-base rounded-full">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-white/40 bg-white/5 px-10 py-4 text-base font-bold text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-white/70 hover:bg-white/15"
+              >
                 {t("results")}
               </Button>
             </Link>
@@ -111,93 +154,67 @@ export default function LandingPage() {
       </section>
 
       {/* 2. Key Stats Bar */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10 w-full">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="bg-white/95 dark:bg-slate-900/95 backdrop-blur border-slate-100 dark:border-slate-800 text-center">
-            <CardContent className="py-6 space-y-1">
-              <Users className="mx-auto text-blue-600" size={28} />
-              <p className="text-2xl font-black text-gray-900 dark:text-white">১২০০+</p>
-              <p className="text-xs text-gray-500 font-semibold">{t("statsStudents")}</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-white/95 dark:bg-slate-900/95 backdrop-blur border-slate-100 dark:border-slate-800 text-center">
-            <CardContent className="py-6 space-y-1">
-              <BookOpen className="mx-auto text-blue-600" size={28} />
-              <p className="text-2xl font-black text-gray-900 dark:text-white">৪৫+</p>
-              <p className="text-xs text-gray-500 font-semibold">{t("statsTeachers")}</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-white/95 dark:bg-slate-900/95 backdrop-blur border-slate-100 dark:border-slate-800 text-center">
-            <CardContent className="py-6 space-y-1">
-              <Award className="mx-auto text-blue-600" size={28} />
-              <p className="text-2xl font-black text-gray-900 dark:text-white">১৫</p>
-              <p className="text-xs text-gray-500 font-semibold">{t("statsDepartments")}</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-white/95 dark:bg-slate-900/95 backdrop-blur border-slate-100 dark:border-slate-800 text-center">
-            <CardContent className="py-6 space-y-1">
-              <TrendingUp className="mx-auto text-blue-500" size={28} />
-              <p className="text-2xl font-black text-gray-900 dark:text-white">৯৮.৫%</p>
-              <p className="text-xs text-gray-500 font-semibold">{t("statsPassRate")}</p>
-            </CardContent>
-          </Card>
+      <section className="relative z-10 mx-auto -mt-10 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {[
+            { Icon: Users, value: "১২০০+", label: t("statsStudents"), tint: "from-blue-500 to-indigo-600" },
+            { Icon: BookOpen, value: "৪৫+", label: t("statsTeachers"), tint: "from-emerald-500 to-teal-600" },
+            { Icon: Award, value: "১৫", label: t("statsDepartments"), tint: "from-amber-500 to-orange-600" },
+            { Icon: TrendingUp, value: "৯৮.৫%", label: t("statsPassRate"), tint: "from-sky-500 to-blue-600" },
+          ].map(({ Icon, value, label, tint }, idx) => (
+            <Reveal key={label} delay={idx * 90}>
+              <Card className="group border-slate-100 bg-white/95 text-center backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900/95">
+                <CardContent className="space-y-2 py-6">
+                  <div className={`mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${tint} text-white shadow-md transition-transform duration-300 group-hover:scale-110`}>
+                    <Icon size={24} />
+                  </div>
+                  <p className="text-2xl font-black text-gray-900 dark:text-white">{value}</p>
+                  <p className="text-xs font-semibold text-gray-500">{label}</p>
+                </CardContent>
+              </Card>
+            </Reveal>
+          ))}
         </div>
       </section>
 
       {/* 2.5 At a Glance Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-blue-900 to-indigo-950 text-white p-6">
-            <div className="flex items-center space-x-2">
-              <Info className="text-blue-400" size={24} />
-              <CardTitle className="text-xl md:text-2xl font-black">
-                প্রতিষ্ঠানের এক নজরে তথ্য (College At a Glance)
-              </CardTitle>
-            </div>
-            <p className="text-blue-200 text-xs mt-1">Official administrative details and institute profile facts</p>
-          </CardHeader>
-          <CardContent className="p-6 md:p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              
-              <div className="flex items-start space-x-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100/80 dark:border-slate-800 hover:shadow-md transition-all duration-200">
-                <Building2 size={24} className="text-blue-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">EIIN & MPO CODE</h4>
-                  <p className="text-sm font-extrabold text-slate-800 dark:text-slate-100">EIIN: 115429</p>
-                  <p className="text-xs text-slate-500 font-semibold">MPO: 6203013201</p>
-                </div>
+        <Reveal>
+          <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-brand-primary to-indigo-950 text-white p-6">
+              <div className="flex items-center space-x-2">
+                <Info className="text-blue-300" size={24} />
+                <CardTitle className="text-xl md:text-2xl font-black">
+                  প্রতিষ্ঠানের এক নজরে তথ্য (College At a Glance)
+                </CardTitle>
               </div>
-
-              <div className="flex items-start space-x-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100/80 dark:border-slate-800 hover:shadow-md transition-all duration-200">
-                <Calendar size={24} className="text-blue-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Established Date</h4>
-                  <p className="text-sm font-extrabold text-slate-800 dark:text-slate-100">23 June 1994</p>
-                  <p className="text-xs text-slate-500 font-semibold">Type: Non-Govt. Degree</p>
-                </div>
+              <p className="text-blue-200 text-xs mt-1">Official administrative details and institute profile facts</p>
+            </CardHeader>
+            <CardContent className="p-6 md:p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                  { Icon: Building2, label: "EIIN & MPO CODE", line1: "EIIN: 115429", line2: "MPO: 6203013201" },
+                  { Icon: Calendar, label: "Established Date", line1: "23 June 1994", line2: "Type: Non-Govt. Degree" },
+                  { Icon: GraduationCap, label: "Programs & Groups", line1: "HSC, Degree, Honours", line2: "Humanities, Science, B. Studies" },
+                  { Icon: MapPin, label: "Location & Contact", line1: "Damurhuda, Chuadanga", line2: "Khulna Division, BD" },
+                ].map(({ Icon, label, line1, line2 }, idx) => (
+                  <Reveal key={label} delay={idx * 80}>
+                    <div className="group flex h-full items-start gap-3 rounded-xl border border-slate-100/80 bg-slate-50 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-primary/30 hover:shadow-md dark:border-slate-800 dark:bg-slate-950">
+                      <span className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-brand-primary/10 text-brand-primary transition-colors duration-300 group-hover:bg-brand-primary group-hover:text-white dark:bg-brand-primary/20">
+                        <Icon size={20} />
+                      </span>
+                      <div>
+                        <h4 className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">{label}</h4>
+                        <p className="text-sm font-extrabold text-slate-800 dark:text-slate-100">{line1}</p>
+                        <p className="text-xs text-slate-500 font-semibold">{line2}</p>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
               </div>
-
-              <div className="flex items-start space-x-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100/80 dark:border-slate-800 hover:shadow-md transition-all duration-200">
-                <GraduationCap size={24} className="text-blue-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Programs & Groups</h4>
-                  <p className="text-sm font-extrabold text-slate-800 dark:text-slate-100">HSC, Degree, Honours</p>
-                  <p className="text-xs text-slate-500 font-semibold">Humanities, Science, B. Studies</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100/80 dark:border-slate-800 hover:shadow-md transition-all duration-200">
-                <MapPin size={24} className="text-blue-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Location & Contact</h4>
-                  <p className="text-sm font-extrabold text-slate-800 dark:text-slate-100">Damurhuda, Chuadanga</p>
-                  <p className="text-xs text-slate-500 font-semibold">Khulna Division, BD</p>
-                </div>
-              </div>
-
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Reveal>
       </section>
 
       {/* 3. Messages & Notices Section */}
@@ -331,25 +348,39 @@ export default function LandingPage() {
               </div>
 
               {/* Notice List */}
-              <div className="divide-y divide-gray-100 dark:divide-slate-800 space-y-3">
-                {filteredNotices.map((notice) => (
-                  <div key={notice.id} className="pt-3 first:pt-0 group">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <Clock size={12} className="text-gray-400" />
-                      <span className="text-[10px] text-gray-400 font-bold">{notice.date}</span>
-                      <Badge variant={getCategoryColor(notice.category)} className="text-[9px] scale-90">
-                        {notice.category}
-                      </Badge>
+              {filteredNotices.length > 0 ? (
+                <div className="divide-y divide-gray-100 dark:divide-slate-800 space-y-3">
+                  {filteredNotices.map((notice) => (
+                    <div key={notice.id} className="pt-3 first:pt-0 group">
+                      <div className="flex items-center space-x-2 mb-1">
+                        <Clock size={12} className="text-gray-400" />
+                        <span className="text-[10px] text-gray-400 font-bold">{notice.date}</span>
+                        <Badge variant={getCategoryColor(notice.category)} className="text-[9px] scale-90">
+                          {notice.category}
+                        </Badge>
+                      </div>
+                      <button
+                        onClick={() => setSelectedNotice(notice)}
+                        className="text-left font-bold text-gray-800 dark:text-slate-200 text-xs hover:text-brand-primary dark:hover:text-brand-accent transition-colors block line-clamp-2"
+                      >
+                        {language === "bn" ? notice.titleBn : notice.titleEn}
+                      </button>
                     </div>
-                    <button
-                      onClick={() => setSelectedNotice(notice)}
-                      className="text-left font-bold text-gray-800 dark:text-slate-200 text-xs hover:text-brand-primary dark:hover:text-brand-accent transition-colors block line-clamp-2"
-                    >
-                      {language === "bn" ? notice.titleBn : notice.titleEn}
-                    </button>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <EmptyState
+                  className="py-8"
+                  bn={language === "bn"}
+                  icon={<FileText size={28} strokeWidth={1.75} aria-hidden="true" />}
+                  title={language === "bn" ? "এই বিভাগে কোনো নোটিশ নেই" : "No notices in this category"}
+                  description={
+                    language === "bn"
+                      ? "অন্য একটি বিভাগ নির্বাচন করুন অথবা পরে আবার দেখুন।"
+                      : "Try another category or check back later."
+                  }
+                />
+              )}
 
               <div className="pt-2 text-center">
                 <Button size="sm" variant="outline" className="w-full text-xs font-bold">
@@ -394,9 +425,10 @@ export default function LandingPage() {
               { nameBn: "তানজিলা আক্তার", nameEn: "Tanzila Akter", gpa: "4.95", year: "2025" },
               { nameBn: "সাদমান রহমান", nameEn: "Sadman Rahman", gpa: "4.88", year: "2025" },
             ].map((std, idx) => (
-              <Card key={idx} className="bg-white dark:bg-slate-900 text-center hover:scale-102 transition-transform duration-200">
+              <Reveal key={idx} delay={idx * 90}>
+                <Card className="group h-full bg-white dark:bg-slate-900 text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
                 <CardContent className="pt-6 space-y-2">
-                  <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold text-gray-700 dark:text-gray-300 mx-auto border-2 border-brand-accent">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-100 to-yellow-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center font-black text-brand-accent mx-auto border-2 border-brand-accent shadow-sm transition-transform duration-300 group-hover:scale-110">
                     M{idx + 1}
                   </div>
                   <div>
@@ -405,7 +437,8 @@ export default function LandingPage() {
                   </div>
                   <Badge variant="secondary" className="text-[10px] font-bold">GPA {std.gpa}</Badge>
                 </CardContent>
-              </Card>
+                </Card>
+              </Reveal>
             ))}
           </div>
         </div>
